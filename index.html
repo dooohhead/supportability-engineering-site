@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supportability Engineering — White Paper by John A. Bowman</title>
-  <meta name="description" content="A phase-by-phase cost-benefit analysis of Supportability Engineering and the Shift Left principle. Free white paper by John A. Bowman." />
+  <title>Supportability Engineering — Three-Volume Series by John A. Bowman</title>
+  <meta name="description" content="Three-volume white paper series: Supportability Engineering and Shift Left for traditional software, agentic AI systems, and agentic development workflows. Free download by John A. Bowman." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
@@ -558,7 +558,179 @@
       color: rgba(255,255,255,0.25);
     }
 
-    /* ── ANIMATIONS ── */
+    /* ── BUNDLE PREVIEW CARDS ── */
+    .bundle-preview {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+    .bundle-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+    }
+    .bundle-card-accent {
+      background: rgba(201,153,58,0.07);
+      border-color: rgba(201,153,58,0.25);
+    }
+    .bundle-card-num {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .bundle-card-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+    .bundle-card-desc {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+    }
+
+    /* ── SECOND PAPER SECTION ── */
+    .section-agentic {
+      position: relative;
+      z-index: 1;
+      background: rgba(201,153,58,0.04);
+      border-top: 1px solid rgba(201,153,58,0.15);
+      border-bottom: 1px solid rgba(201,153,58,0.15);
+    }
+    .section-agentic-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .agentic-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(201,153,58,0.15);
+      border: 1px solid rgba(201,153,58,0.35);
+      color: var(--gold);
+      border-radius: 3px;
+      padding: 0.25rem 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .agentic-failures {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .agentic-failure-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 6px;
+    }
+    .agentic-failure-icon {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      background: rgba(201,153,58,0.12);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .agentic-failure-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 0.2rem;
+    }
+    .agentic-failure-desc {
+      font-size: 0.76rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.5;
+    }
+
+    .bundle-card-teal {
+      background: rgba(13,115,119,0.1);
+      border-color: rgba(13,115,119,0.35);
+    }
+    .bundle-card-teal .bundle-card-num { color: #2dd4bf; }
+
+    /* ── VOL 3 SECTION ── */
+    .section-vol3 {
+      position: relative;
+      z-index: 1;
+      background: rgba(13,115,119,0.05);
+      border-top: 1px solid rgba(13,115,119,0.2);
+      border-bottom: 1px solid rgba(13,115,119,0.2);
+    }
+    .section-vol3-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .teal-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(13,115,119,0.15);
+      border: 1px solid rgba(13,115,119,0.4);
+      color: #2dd4bf;
+      border-radius: 3px;
+      padding: 0.25rem 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .assumption-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .assumption-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 6px;
+      border-left: 2px solid rgba(13,115,119,0.5);
+    }
+    .assumption-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 0.2rem;
+    }
+    .assumption-desc {
+      font-size: 0.76rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .section-vol3-inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -593,19 +765,19 @@
   <!-- NAV -->
   <nav>
     <div class="nav-brand">Supportability <span>Engineering</span></div>
-    <a href="#download" class="nav-cta">Get the White Paper</a>
+    <a href="#download" class="nav-cta">Get the Bundle</a>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-left">
-      <div class="hero-eyebrow anim anim-1">White Paper · 2026</div>
+      <div class="hero-eyebrow anim anim-1">Three-Volume Series · 2026</div>
       <h1 class="anim anim-2">
-        Why the Best Support Organizations<br>
-        <em>Shift Left</em>
+        Supportability Engineering:<br>
+        The Complete <em>Shift Left</em> Series
       </h1>
       <p class="hero-desc anim anim-3">
-        A phase-by-phase cost-benefit analysis of Supportability Engineering — the discipline of designing observability, runbooks, and failure modes into your software before the first line of code is written.
+        Three white papers. One framework. The complete guide to designing supportability into software — for traditional systems, agentic AI products, and the new reality of AI-generated code.
       </p>
       <div class="hero-meta anim anim-4">
         <div class="meta-item">
@@ -613,12 +785,29 @@
           <span class="meta-value">John A. Bowman</span>
         </div>
         <div class="meta-item">
-          <span class="meta-label">Framework</span>
-          <span class="meta-value">6-Phase Shift Left</span>
+          <span class="meta-label">Volumes</span>
+          <span class="meta-value">3 White Papers</span>
         </div>
         <div class="meta-item">
           <span class="meta-label">Format</span>
-          <span class="meta-value">Free Download · PDF</span>
+          <span class="meta-value">Free Bundle · DOCX</span>
+        </div>
+      </div>
+      <div class="bundle-preview anim anim-5">
+        <div class="bundle-card">
+          <div class="bundle-card-num">Vol. 1</div>
+          <div class="bundle-card-title">Why the Best Support Organizations Shift Left</div>
+          <div class="bundle-card-desc">The foundational six-phase framework for traditional software.</div>
+        </div>
+        <div class="bundle-card bundle-card-accent">
+          <div class="bundle-card-num">Vol. 2</div>
+          <div class="bundle-card-title">Shifting Left When the System Can Think</div>
+          <div class="bundle-card-desc">Supportability for agentic AI systems as the product being built.</div>
+        </div>
+        <div class="bundle-card bundle-card-teal">
+          <div class="bundle-card-num">Vol. 3 · New</div>
+          <div class="bundle-card-title">When the Builder Can't Sign Off</div>
+          <div class="bundle-card-desc">Supportability for systems built by AI agents, not human engineers.</div>
         </div>
       </div>
     </div>
@@ -626,8 +815,8 @@
     <!-- FORM CARD -->
     <div id="download" class="form-card anim anim-3">
       <div id="form-content">
-        <h2 class="form-card-title">Download the White Paper</h2>
-        <p class="form-card-sub">Enter your details below for instant access. No spam — just the white paper and occasional updates on Supportability Engineering.</p>
+        <h2 class="form-card-title">Get All Three Free</h2>
+        <p class="form-card-sub">The complete three-volume series — traditional software, agentic AI systems, and agentic development workflows. One form, instant access to all three.</p>
 
         <form id="lead-form" novalidate>
           <div class="form-row">
@@ -672,7 +861,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
             </svg>
-            Download Free White Paper
+            Download All Three Free
           </button>
         </form>
         <p class="form-privacy">Your information is never sold or shared with third parties.</p>
@@ -686,12 +875,24 @@
           </svg>
         </div>
         <h3>You're all set.</h3>
-        <p>Thanks for your interest in Supportability Engineering. Your download is ready — click below to get the white paper.</p>
+        <p>All three volumes are ready. Download each one below.</p>
         <a href="Supportability_Engineering_WhitePaper.docx" download class="btn-dl-direct">
           <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
           </svg>
-          Download White Paper
+          Vol. 1 — Shift Left (Traditional)
+        </a>
+        <a href="Supportability_Engineering_Agentic_WhitePaper.docx" download class="btn-dl-direct" style="margin-top:0.6rem; background: linear-gradient(135deg, #1b3a5c, #0f2340); border: 1px solid rgba(201,153,58,0.5);">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          Vol. 2 — Shift Left (Agentic Systems)
+        </a>
+        <a href="Supportability_Engineering_AgenticDev_WhitePaper.docx" download class="btn-dl-direct" style="margin-top:0.6rem; background: linear-gradient(135deg, #0d7377, #094d50); border: 1px solid rgba(13,115,119,0.6);">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          Vol. 3 — Shift Left (Agentic Development)
         </a>
         <p style="margin-top:1.5rem; font-size:0.75rem; color:rgba(255,255,255,0.3);">John will be in touch personally — dooohhead@gmail.com</p>
       </div>
@@ -748,6 +949,100 @@
       </div>
     </div>
   </section>
+
+  <!-- AGENTIC PAPER SECTION -->
+  <div class="section-agentic">
+    <div class="section-agentic-inner">
+      <div>
+        <div class="agentic-tag">Vol. 2 — Companion Paper</div>
+        <h2 class="section-title" style="margin-top:0;">Shifting Left When<br>the System Can Think</h2>
+        <p class="section-body" style="margin-bottom:1.5rem;">Agentic AI systems introduce a new class of failure that traditional supportability frameworks weren't built for. The companion paper extends every phase of the framework for the agentic era.</p>
+        <p class="section-body" style="margin-bottom:0; font-size:0.875rem;">In traditional software, a failure has a call stack. In an agentic workflow, a failure has a <em style="color:rgba(255,255,255,0.7);">reasoning chain</em> — and that is far harder to reconstruct after the fact.</p>
+      </div>
+      <div class="agentic-failures">
+        <div class="agentic-failure-item">
+          <div class="agentic-failure-icon">1</div>
+          <div>
+            <div class="agentic-failure-title">Non-Deterministic Failure</div>
+            <div class="agentic-failure-desc">Same input, same agent, different outcome. Traditional QA replay assumptions break entirely.</div>
+          </div>
+        </div>
+        <div class="agentic-failure-item">
+          <div class="agentic-failure-icon">2</div>
+          <div>
+            <div class="agentic-failure-title">Silent Confident Failure</div>
+            <div class="agentic-failure-desc">The agent completes the task. No error fires. The output looks plausible. It is wrong.</div>
+          </div>
+        </div>
+        <div class="agentic-failure-item">
+          <div class="agentic-failure-icon">3</div>
+          <div>
+            <div class="agentic-failure-title">Mid-Execution Intervention Triggers</div>
+            <div class="agentic-failure-desc">Decisions the agent should surface to a human — designed in from requirements, not discovered in production.</div>
+          </div>
+        </div>
+        <div class="agentic-failure-item">
+          <div class="agentic-failure-icon">4</div>
+          <div>
+            <div class="agentic-failure-title">Context Window Drift</div>
+            <div class="agentic-failure-desc">Long-running tasks change the agent's effective working memory. Step 40 is not Step 4.</div>
+          </div>
+        </div>
+        <div class="agentic-failure-item">
+          <div class="agentic-failure-icon">5</div>
+          <div>
+            <div class="agentic-failure-title">Tool Schema Drift</div>
+            <div class="agentic-failure-desc">A renamed parameter in an external API produces reasoning failures, not integration errors.</div>
+          </div>
+        </div>
+        <div class="agentic-failure-item">
+          <div class="agentic-failure-icon">6</div>
+          <div>
+            <div class="agentic-failure-title">Adversarial Redirect</div>
+            <div class="agentic-failure-desc">External content that instructs the agent to ignore its system prompt. A new class of failure at the intersection of security and supportability.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOL 3 SECTION -->
+  <div class="section-vol3">
+    <div class="section-vol3-inner">
+      <div>
+        <div class="teal-tag">Vol. 3 — New</div>
+        <h2 class="section-title" style="margin-top:0; color:var(--white);">When the Builder<br>Can't Sign Off</h2>
+        <p class="section-body" style="margin-bottom:1.5rem;">The hardest problem in the series. What happens to Supportability Engineering when the code is generated by an agent, the architecture emerged from autonomous sessions, and no human fully authored what went to production?</p>
+        <p class="section-body" style="margin-bottom:0; font-size:0.875rem;">The framework assumes humans make design decisions. Volume 3 addresses what happens when they don't — and how to ensure agent-built systems are still operable at 2am.</p>
+      </div>
+      <div class="assumption-list">
+        <div class="assumption-item">
+          <div>
+            <div class="assumption-title">Assumption 1 Broken: Someone knows why the code was written this way</div>
+            <div class="assumption-desc">In agentic development, the institutional knowledge that used to live in the engineer's head now lives nowhere — unless it was deliberately captured.</div>
+          </div>
+        </div>
+        <div class="assumption-item">
+          <div>
+            <div class="assumption-title">Assumption 2 Broken: The architecture was designed</div>
+            <div class="assumption-desc">Agentic development produces architecture through accretion. Blind spots appear not because a designer missed them — but because nobody designed anything.</div>
+          </div>
+        </div>
+        <div class="assumption-item">
+          <div>
+            <div class="assumption-title">Assumption 3 Broken: The reviewer understands what they're reviewing</div>
+            <div class="assumption-desc">AI-generated code looks clean and correct. Reviewers are less likely to catch subtle supportability issues in code they didn't write and can't fully reason about at volume.</div>
+          </div>
+        </div>
+        <div class="assumption-item">
+          <div>
+            <div class="assumption-title">Assumption 4 Broken: The feedback loop has a human memory</div>
+            <div class="assumption-desc">If the next sprint is also agentic, SFL findings need to flow into agent context — not just a quarterly slide deck that no agent will ever read.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- COST CURVE -->
   <div class="section-cost">
@@ -816,12 +1111,16 @@
         <span class="tag">Shift Left</span>
         <span class="tag">Runbooks</span>
         <span class="tag">Operational Readiness</span>
+        <span class="tag">Agentic AI</span>
+        <span class="tag">Reasoning Trace</span>
+        <span class="tag">AI Governance</span>
+        <span class="tag">Agentic Development</span>
       </div>
     </div>
     <div class="about-bio">
-      <p>John A. Bowman is a Supportability Engineering practitioner with experience designing and implementing shift-left supportability frameworks in enterprise software environments. His work sits at the intersection of support operations, software design, and organizational reliability.</p>
-      <p>The Supportability Engineering framework — including the full six-phase template package — was developed to give engineering and support organizations a concrete, structured mechanism for designing operational readiness in from the start, rather than engineering it retroactively after the first major incident.</p>
-      <p>John is available for <strong style="color:rgba(255,255,255,0.85);">consulting engagements</strong>, <strong style="color:rgba(255,255,255,0.85);">staff roles</strong> in support engineering or operational readiness, and <strong style="color:rgba(255,255,255,0.85);">advisory work</strong> with teams building or maturing their supportability practice. Reach out directly — he responds to every message.</p>
+      <p>John A. Bowman is a Supportability Engineering practitioner with experience designing and implementing shift-left supportability frameworks in enterprise software environments. His work sits at the intersection of support operations, software design, AI governance, and organizational reliability.</p>
+      <p>This three-volume series covers the complete landscape of modern software development: the foundational six-phase framework for traditional systems, its extension for agentic AI products, and the governance model for systems produced by agentic development workflows — where no human fully authored the code that went to production.</p>
+      <p>John is available for <strong style="color:rgba(255,255,255,0.85);">consulting engagements</strong>, <strong style="color:rgba(255,255,255,0.85);">staff roles</strong> in support engineering, operational readiness, or AI governance, and <strong style="color:rgba(255,255,255,0.85);">advisory work</strong> with teams navigating supportability at any level of AI involvement. Reach out directly — he responds to every message.</p>
     </div>
   </section>
 
