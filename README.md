@@ -63,7 +63,7 @@ The hardest problem in the series. What happens to Supportability Engineering wh
   SE_AgenticSystems_Templates.docx                        Vol. 2 — Agentic system extensions (A-SRD through A-SFL)
   SE_AgenticDev_Templates.docx                            Vol. 3 — Agentic development extensions (D-SRD through D-SFL)
 
-/baseline-kit
+/starter
   SE_Baseline_1_ContextDocument.docx                      Pre-populated agent injection standard — use immediately
   SE_Baseline_2_GateConfigSpec.docx                       Three CI/CD gates with GitHub Actions + GitLab CI config
   SE_Baseline_3_PRTemplateAddition.docx                   PR template addition for agent-generated code review
