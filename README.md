@@ -53,21 +53,26 @@ The hardest problem in the series. What happens to Supportability Engineering wh
 ## What's in This Repository
 
 ```
-/white-papers
+/doc
   Supportability_Engineering_WhitePaper.docx              Vol. 1
   Supportability_Engineering_Agentic_WhitePaper.docx      Vol. 2
   Supportability_Engineering_AgenticDev_WhitePaper.docx   Vol. 3
+  Supportability_Engineering_AIOperations_WhitePaper.docx Vol. 4
 
 /templates
   Supportability_Engineering_Templates.docx               Vol. 1 — Six phase templates (SRD, SAR, SIC, STP, SRR, SFL)
   SE_AgenticSystems_Templates.docx                        Vol. 2 — Agentic system extensions (A-SRD through A-SFL)
   SE_AgenticDev_Templates.docx                            Vol. 3 — Agentic development extensions (D-SRD through D-SFL)
+  SE_AIOperations_Templates.docx                          Vol. 4 — Governance for the AI systems operating your support stack. 
 
 /starter
   SE_Baseline_1_ContextDocument.docx                      Pre-populated agent injection standard — use immediately
   SE_Baseline_2_GateConfigSpec.docx                       Three CI/CD gates with GitHub Actions + GitLab CI config
   SE_Baseline_3_PRTemplateAddition.docx                   PR template addition for agent-generated code review
   SE_Baseline_4_FeatureSpecification.docx                 Per-feature delta specification template
+
+/scripts
+  contains drop-in script files that get you Supportability right away
 ```
 
 ---
