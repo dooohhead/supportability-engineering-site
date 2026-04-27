@@ -162,7 +162,7 @@
       <div class="hero-meta anim anim-4">
         <div class="meta-item"><span class="meta-label">Author</span><span class="meta-value">John A. Bowman</span></div>
         <div class="meta-item"><span class="meta-label">Covers</span><span class="meta-value">4 Broken Assumptions</span></div>
-        <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Free · DOCX</span></div>
+        <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Free · PDF</span></div>
       </div>
     </div>
 
@@ -343,7 +343,7 @@
       if (!data.firstName || !data.email) { document.getElementById('fname').focus(); return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { document.getElementById('email').focus(); return; }
       // ── REPLACE WITH YOUR FORMSPREE ENDPOINT ──
-      // fetch('https://formspree.io/f/YOUR_FORM_ID', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+       fetch('https://formspree.io/f/xnjlwnyk', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
       console.log('Lead captured:', data);
       document.getElementById('form-content').style.display = 'none';
       const s = document.getElementById('success-state');
