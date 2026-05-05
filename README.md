@@ -73,6 +73,14 @@ The hardest problem in the series. What happens to Supportability Engineering wh
 
 /scripts
   contains drop-in script files that get you Supportability right away
+
+/skills
+  SE_AI_Context_README.md                                Start here
+  SE_AI_Content_Core.md
+  SE_Phase_Defaults_SAR.md
+  SE_Phase_Defaults_SIC.md
+  SE_Phase_Defaults_SRD.md
+  SE_Phase_Defaults_STP_SRR_SFL.md
 ```
 
 ---
