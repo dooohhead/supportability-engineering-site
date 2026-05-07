@@ -36,8 +36,10 @@ Examples:
 
 ## ARCHIVE_INSTRUCTION
 Trigger: user says "archive conversation"
-Action: create Supportability-Engineering-YYYY-MM-DD.docx
+Action: create [ProjectName]-[ChatWindowName]-YYYY-MM-DD.docx
+Example: Supportability-Engineering-HallucinationPrevention-2026-05-07.docx
 Format: user prompts followed by AI responses in order, full session
+Note: if chat window name is unknown, ask user before creating the file
 
 ## OWNER
 John A. Bowman|dooohhead@gmail.com|902-489-2429|Confidential
