@@ -1,258 +1,228 @@
-# SE PHASE DEFAULTS — STP / SRR / SFL
-**Phases:** 4 — Test | 5 — Release | 6 — Operate
+# SE_DEFAULTS_STP_SRR_SFL v1.2
 
 ---
+# STP — Phase 4 | Test
+gate: Any required test fail→release blocked
 
-# STP — SUPPORTABILITY TEST PLAN
-**Gate:** Release blocked if any required test fails
+## INTERVENTION_TRIGGERS — STP SPECIFIC
+Stop and ask whenever:
+- SRD failure mode list has not been confirmed final (cannot test against a moving target)
+- A failure mode cannot be triggered in the test environment and no alternative is proposed
+- Log output reviewed but correlation ID or entity ID is missing and reviewer is uncertain
+- An alert fired but routing destination has not been verified end-to-end
+- A runbook walkthrough was not completed by someone unfamiliar with the feature
+- Tabletop simulation was skipped or abbreviated without documented justification
+- Any test result is marked Pass without evidence
+- Overall recommendation is unclear
 
-## PURPOSE
-Validate in test environment that every failure mode can be detected, diagnosed, and escalated correctly by support — without engineering involvement. Simulate 2am before it happens.
+INTERVENTION_FORMAT: "STOP — [test/scenario] cannot be confirmed complete: [specific question]. Please clarify before I record a result."
 
----
+## FAILURE_INJECTION_DEFAULTS
+Each SRD failure mode must be triggered deliberately. Pass=all 4 true.
+|Dimension|Pass Criteria|Fail Trigger|
+|---|---|---|
+|Detected|Alert fires <5min of injection|No alert|wrong destination|wrong severity|
+|Logged correctly|Correlation ID present|correct level|entity ID included|Missing ID|wrong level|no context|
+|Alert fires|Correct severity+routing|Misfired|wrong team|no alert|
+|Result assigned|Explicit pass or fail per mode|Partial=fail|
+INTERVENTION: if a failure mode cannot be triggered in the test environment → ask: "How will [failure mode] be tested if it cannot be triggered in the test environment? An alternative must be documented or the test is incomplete."
+INTERVENTION: if a result is Partial → ask: "Partial is a Fail. What specifically failed and what is the remediation plan before release?"
+OVERRIDE: adjust detection window to feature SLA
 
-## STP DEFAULT VALUES — OVERRIDE AS NEEDED
+## LOG_QUALITY_DEFAULTS
+|Criterion|Pass Standard|
+|---|---|
+|Transaction boundary coverage|Log at every entry AND exit|
+|Log level accuracy|Zero errors at INFO; zero debug in prod path|
+|PII absence|Zero PII fields across all test scenarios|
+|Searchability|Findable by customer_id AND correlation_id|
+|Noise level|<10 lines per normal transaction (excl. debug)|
+|Full trace|Correlation ID query returns complete end-to-end path|
+INTERVENTION: if log review was not performed against actual test output → ask: "Has actual log output been reviewed, or is this based on code inspection only? These are not equivalent. Confirm which."
+INTERVENTION: if PII absence has not been verified in test output → ask: "Has log output been checked for PII in the test environment? Code review is not sufficient — test output must be checked."
 
-### Failure Injection Testing — Default Pass Criteria
-Each failure mode from the SRD must be triggered deliberately. Default pass = all four columns true:
+## ALERT_VALIDATION_DEFAULTS
+|Point|Requirement|
+|---|---|
+|Every SRD-defined alert fires|Required. Zero untested alerts to production.|
+|Severity matches BI|BI-1=Critical|BI-2=High|BI-3=Medium|BI-4=Low|
+|Routes correctly|Support=BI-3/4|Eng=BI-2|VP=BI-1|
+|Context sufficient|component|entity_id|correlation_id|description|
+|No false positives|Zero alerts during healthy operation test|
+INTERVENTION: if any alert has not been end-to-end tested in the test environment → ask: "Alert [X] has not been fired and confirmed received. This must be tested before release. When will this be completed?"
+INTERVENTION: if routing destination is assumed but not verified → ask: "Has the alert routing for [alert] been confirmed with the recipient? Assumption is not sufficient."
 
-| Test Dimension | Default Pass Criteria | Default Fail Trigger |
-|----------------|----------------------|--------------------|
-| Detected | Alert fires within 5 min of injection | No alert, wrong destination, wrong severity |
-| Logged correctly | Correlation ID present, correct level, entity ID included | Missing ID, wrong level, no context |
-| Alert fires | Correct severity, correct routing | Misfired, wrong team, no alert |
-| Pass/Fail assigned | Explicit pass or fail per failure mode | Partial = fail |
+## RUNBOOK_WALKTHROUGH_DEFAULTS
+|Standard|Default|
+|---|---|
+|Tester|Support engineer who did NOT write runbook|
+|Available tools|Logs+alerts+dashboards only (production equivalent)|
+|Engineering contact|Unavailable during walkthrough|
+|Pass threshold|Independently diagnosed+correct escalation identified|
+|Time threshold|BI-3/4: <30min|BI-1/2: <15min|
+|Gap action|Every gap found→required action before release|
+INTERVENTION: if walkthrough was performed by the runbook author → flag: "The walkthrough must be performed by someone who did not write the runbook. This result is invalid. Reassign and re-run."
+INTERVENTION: if engineering was available during the walkthrough → flag: "Engineering contact availability during walkthrough invalidates the test. Re-run with engineering unavailable."
+INTERVENTION: if a gap was found but no action is documented → ask: "Gap found in runbook for [failure mode]. What is the remediation action and who owns it? Release is blocked until this is resolved."
 
-**Override:** Adjust detection window for features with different SLA thresholds.
+## TABLETOP_DEFAULTS
+|Element|Default|
+|---|---|
+|Scenario|BI-2 incident|
+|Duration|60min|
+|Participants|Support lead+on-call engineer+1 junior support|
+|Escalation path|Must be invoked correctly without coaching|
+|Customer comms|Template selected+sent within 30min|
+|PIR|Must be triggered during simulation|
+INTERVENTION: if tabletop was skipped → ask: "Tabletop simulation is required. What is the justification for skipping it? This must be documented and approved before release."
+INTERVENTION: if escalation path was not invoked correctly during simulation → ask: "Escalation path was not correctly followed. What corrective action will be taken before release?"
+OVERRIDE: add BI-1 scenario for revenue-critical features
 
----
+## STP_SIGN-OFF
+Required: QA Lead|Support Lead|Engineering Lead
+Rule: overall=PASS before any signature collected
+INTERVENTION: if overall recommendation is not clearly PASS → ask: "The overall result is not confirmed PASS. Release is blocked. What items remain and who owns resolution?"
 
-### Log Quality Review — Default Criteria
-| Criterion | Default Pass Standard |
-|-----------|----------------------|
-| Transaction boundary coverage | Log entry at every entry AND exit point |
-| Log level accuracy | Zero errors logged at INFO; zero debug in production path |
-| PII absence | Zero PII fields in any log output across all test scenarios |
-| Searchability | Every log findable by customer ID and by correlation ID |
-| Noise level | <10 log lines per normal transaction (not including debug) |
-| Full trace reconstructable | Correlation ID query returns complete transaction path end-to-end |
-
-**Override:** Adjust noise threshold for high-frequency/low-complexity transactions (e.g., health checks excluded).
-
----
-
-### Alert Validation — Default Criteria
-| Validation Point | Default Requirement |
-|-----------------|---------------------|
-| Every SRD-defined alert fires | Required — zero untested alerts may reach production |
-| Severity matches BI classification | BI-1 → Critical; BI-2 → High; BI-3 → Medium; BI-4 → Low |
-| Routes to correct team | Support for BI-3/4; Engineering for BI-2; VP for BI-1 |
-| Alert context sufficient | Includes: component, customer/entity ID if available, correlation ID, brief description |
-| No false positives in normal operation | Zero alerts fired during healthy operation test scenarios |
-
-**Override:** Add vendor/platform-specific alert routing rules.
-
----
-
-### Runbook Walkthrough — Default Standards
-Run with a support engineer who did NOT write the runbook. Default pass criteria:
-
-| Standard | Default |
-|----------|---------|
-| Tester profile | Support engineer unfamiliar with feature |
-| Tools available | Only logs, alerts, dashboards available in production |
-| Engineering contact | Not available during walkthrough |
-| Pass threshold per failure mode | Independently diagnosed and correct escalation path identified |
-| Time threshold | Diagnosis in <30 min for BI-3/4; <15 min for BI-1/2 |
-| Gap documentation | Every gap found → action required before release |
-
-**Override:** Adjust time thresholds for feature-specific SLAs.
-
----
-
-### On-Call Simulation — Default Scenario Structure
-| Element | Default |
-|---------|---------|
-| Scenario | BI-2 incident (VP-level) — most common enterprise escalation scenario |
-| Duration | 60 minutes |
-| Participants | Support lead, on-call engineer, one junior support tester |
-| Escalation path | Must be invoked correctly without coaching |
-| Customer comms | Template must be selected and sent within 30 min |
-| PIR initiation | Must be triggered during simulation |
-
-**Override:** Run additional scenarios for BI-1 (existential incidents) and feature-specific failure types.
-
----
-
-## STP SIGN-OFF REQUIREMENT
-Required signatories: QA Lead, Support Lead, Engineering Lead.
-**Overall recommendation must be APPROVED FOR RELEASE before any signature is collected.**
-
----
----
-
-# SRR — SUPPORT READINESS REVIEW
-**Gate:** Both Support Lead + Engineering Lead must sign. Release does not proceed without both.
-
-## PURPOSE
-Final gate before production. Confirm all upstream deliverables are complete and support can operate the feature independently from minute one of production.
+## STP_VALIDATION
+PASS: all_SRD_failure_modes_injection_tested=true|log_quality_all_pass=true|all_alerts_validated_end_to_end=true|runbook_walkthroughs_by_non_author=true|tabletop_completed=true|overall=PASS
+INTERVENTION: if any criterion false → list failures, ask user for resolution plan. Release blocked until all pass.
 
 ---
+# SRR — Phase 5 | Release
+gate: Support Lead+Eng Lead both sign. Neither alone sufficient.
 
-## SRR DEFAULT VALUES — OVERRIDE AS NEEDED
+## INTERVENTION_TRIGGERS — SRR SPECIFIC
+Stop and ask whenever:
+- Any upstream deliverable (SRD/SAR/SIC/STP) is not confirmed signed
+- Open items are being carried forward from any upstream phase
+- Monitoring dashboards have not been verified in the production environment
+- Baseline metrics are not established (pre-production or load test data missing)
+- A runbook has not been independently reviewed
+- On-call rotation has not been updated with a named owner for this feature
+- Rollback has not been tested in a pre-production environment
+- Communication templates have not been approved
+- Either Support Lead or Engineering Lead has not confirmed availability to sign
+- Release date is imminent and items remain open
 
-### Upstream Deliverable Defaults
-Default expectation: all four deliverables complete and signed before SRR begins.
+INTERVENTION_FORMAT: "STOP — [item] is not confirmed complete. Release cannot proceed: [specific question]. Please resolve before I record this as ready."
 
-| Deliverable | Default Status Required | Acceptable Exception |
-|-------------|------------------------|---------------------|
-| SRD | Signed | None |
-| SAR | Signed, all High gaps closed | None |
-| SIC | Signed, all required items checked | None |
-| STP | Signed, overall result = PASS | None |
+## UPSTREAM_DEFAULTS
+All 4 required before SRR begins. No exceptions.
+|Deliverable|Required Status|
+|---|---|
+|SRD|Signed|
+|SAR|Signed+all H gaps closed|
+|SIC|Signed+all R items checked|
+|STP|Signed+overall=PASS|
+INTERVENTION: if any deliverable is not confirmed signed → ask: "Deliverable [X] is not confirmed signed. SRR cannot begin until all four upstream deliverables are complete. What is the status?"
+INTERVENTION: if open items are being carried forward → flag: "Open items cannot be carried into production. Each item must be resolved or the release is BLOCKED. List all open items and their resolution plan."
 
-**No exceptions.** Open items carried forward → BLOCKED release decision.
+## MONITORING_DEFAULTS
+|Requirement|Standard|
+|---|---|
+|Dashboards live|Verified against known good state in production|
+|Baseline established|Min 24hr pre-prod load test data|
+|All alerts active|End-to-end routing test in prod config|
+|On-call chain tested|Test alert sent; delivery confirmed to correct person|
+INTERVENTION: if dashboards have only been verified in a non-production environment → ask: "Production monitoring must be verified in production, not a staging environment. Has this been confirmed?"
+INTERVENTION: if baseline data is less than 24 hours → ask: "Baseline data is less than 24 hours. Is there a justification for proceeding? This must be explicitly accepted as a risk."
 
----
+## COMMS_TEMPLATE_DEFAULTS
+|BI|Requirement|Approvers|
+|---|---|---|
+|BI-1|Immediate notification+executive flash|Support Lead+Account Mgmt Lead|
+|BI-2|Customer update within 30min+internal escalation|Support Lead+Account Mgmt Lead|
+|BI-3|Customer update within 2hr|Support Lead|
+|BI-4|Resolution summary only|Support Lead|
+INTERVENTION: if templates have been drafted but not approved → ask: "Templates must be approved before release, not after. Who needs to approve and has that happened?"
+INTERVENTION: if BI-1 or BI-2 templates have not been reviewed by Account Management → flag: "BI-1 and BI-2 templates require Account Management approval. This has not been confirmed."
 
-### Production Monitoring Defaults
-| Requirement | Default Standard |
-|-------------|-----------------|
-| Dashboards live | Verified against known good state before SRR |
-| Baseline established | Minimum 24 hours of pre-production load test data |
-| All alerts active | End-to-end routing test completed in production config |
-| On-call chain tested | Test alert sent; delivery confirmed to correct person |
+## RELEASE_DECISION
+APPROVED: all items complete, no outstanding
+CONDITIONAL: documented accepted risk+VP sign-off (rare)
+BLOCKED: outstanding items→resolve→re-run SRR
+INTERVENTION: if CONDITIONAL is being proposed → ask: "What specific risk is being accepted and who is authorizing it? VP sign-off is required. This must be documented before release proceeds."
 
----
+## SRR_SIGN-OFF
+Required: Support Lead|Engineering Lead|Product Owner|Release Manager
+INTERVENTION: if either Support Lead or Engineering Lead is unavailable to sign → ask: "Both Support Lead and Engineering Lead must sign. Neither can delegate. When will [unavailable signatory] be available?"
 
-### Runbook Publication Defaults
-| Requirement | Default Standard |
-|-------------|-----------------|
-| Published location | Support knowledge base, accessible to all support staff |
-| Version control | Yes — version, date, and author on each runbook |
-| Independent review | Each runbook reviewed by support engineer who did not write it |
-| Reviewer documented | Reviewer name and date on runbook cover |
-
----
-
-### Communication Template Defaults
-| BI Level | Default Template Requirement |
-|----------|------------------------------|
-| BI-1 | Immediate customer notification + executive flash |
-| BI-2 | Customer update within 30 min + internal escalation notice |
-| BI-3 | Customer update within 2 hours |
-| BI-4 | Resolution summary only |
-
-All templates approved by: Support Lead + Account Management Lead (for BI-1 and BI-2).
-
----
-
-### Release Decision Options
-- **APPROVED** — all items complete, no outstanding issues
-- **CONDITIONAL** — released with documented accepted risk (rare; requires VP sign-off)
-- **BLOCKED** — outstanding items must be resolved and SRR re-run
-
-**Override:** Add feature-specific readiness criteria not covered by defaults (e.g., data migration verified, external partner briefed, regulatory approval obtained).
-
----
-
-## SRR SIGN-OFF REQUIREMENT
-Required: Support Lead, Engineering Lead, Product Owner, Release Manager.
-**Both Support Lead AND Engineering Lead must sign. Neither alone is sufficient.**
-
----
----
-
-# SFL — SUPPORTABILITY FEEDBACK LOOP
-**Gate:** Quarterly review. Outputs feed into next SRD cycle.
-
-## PURPOSE
-Close the loop between production incidents and upstream design. Convert operational experience into backlog items. Make every incident an investment, not just a cost.
+## SRR_VALIDATION
+PASS: all_upstream_signed=true|no_open_items_carried=true|monitoring_live_in_prod=true|baseline_established=true|runbooks_independently_reviewed=true|on-call_named_owner=true|rollback_tested=true|comms_approved=true|both_leads_signed=true
+INTERVENTION: if any criterion false → list failures. Release does not proceed. Ask user for resolution plan and timeline for each outstanding item.
 
 ---
+# SFL — Phase 6 | Operate
+gate: Quarterly. Sign-off confirms review+backlog items created for all H gaps.
 
-## SFL DEFAULT VALUES — OVERRIDE AS NEEDED
+## INTERVENTION_TRIGGERS — SFL SPECIFIC
+Stop and ask whenever:
+- An incident is being scored without a complete incident record available
+- A gap is logged but has no assigned owner or backlog reference
+- A runbook was used but accuracy has not been assessed post-incident
+- Quarterly review attendance is incomplete (any of the three required roles missing)
+- Shift left effectiveness metric cannot be calculated due to missing data
+- A H priority gap has not been converted to a backlog item
+- The same root category has appeared 3+ times and no systemic fix has been proposed
+- Sign-off is being requested before all H gaps have backlog items
 
-### Incident Scoring — Defaults
-Score every incident on three dimensions (1–5). See scoring table in SE_AI_Context_Core.md.
+INTERVENTION_FORMAT: "STOP — [specific SFL item] is incomplete: [specific question]. Please resolve before I record this period as reviewed."
 
-**Default scoring cadence:** Within 24 hours of incident closure.
-**Default scorer:** Primary support engineer who handled the incident.
-**Default reviewer:** Support lead (quarterly aggregate review).
+## INCIDENT_SCORING_DEFAULTS
+Score within 24hr of closure. Scorer=primary support engineer. Reviewer=support lead.
+|Threshold|Action|
+|---|---|
+|Any dimension 1 or 2|Mandatory gap log entry|
+|Avg score <3|Backlog item for next sprint|
+|Avg score <2|Escalate to eng lead for architecture review|
+|Consistent 1s same dimension|Trigger SRD or SAR review for affected feature|
+INTERVENTION: if incident record is incomplete → ask: "I cannot score this incident without [specific missing detail]. Please provide before I assign a score."
+INTERVENTION: if a score of 1 or 2 is assigned and no gap log entry exists → flag: "A score of 1 or 2 requires a mandatory gap log entry. This has not been created. Who will own this?"
 
-| Score Threshold | Default Action |
-|----------------|---------------|
-| Any dimension scoring 1 or 2 | Mandatory observability gap log entry created |
-| Average score < 3 | Backlog item created for next sprint |
-| Average score < 2 | Escalated to engineering lead for architecture review |
-| Consistent 1s on same dimension | SRD or SAR review triggered for affected feature |
+## GAP_LOG_DEFAULTS
+|Priority|Criteria|Resolution Target|
+|---|---|---|
+|H|Caused/extended BI-1 or BI-2|Next sprint|
+|M|Caused unnecessary eng escalation|Within 2 sprints|
+|L|No escalation impact|Quarterly review|
+Rule: every gap logged=backlog item. Closed only by code change or doc update.
+INTERVENTION: if a H gap has no backlog item → ask: "Gap [X] is High priority and has no backlog item. Who will create it and in which sprint? I will not mark this gap as tracked without this."
+INTERVENTION: if a gap is proposed to be closed without a code change or documentation update → flag: "Gaps can only be closed by a code change or documentation update. What specifically was changed?"
 
-**Override:** Adjust thresholds for feature criticality or customer tier.
+## RUNBOOK_ACCURACY_DEFAULTS
+|Accuracy|Action|Version|
+|---|---|---|
+|Accurate|Log only|No change|
+|Partial|Update within 48hr of closure|Minor (x.1)|
+|Inaccurate|Update same day+notify all support|Major (x.0)|
+INTERVENTION: if a runbook was used in an incident but accuracy has not been assessed → ask: "Was the runbook accurate during this incident? I cannot close the incident record without a runbook accuracy assessment."
+INTERVENTION: if runbook update is overdue (>48hr for Partial, >24hr for Inaccurate) → flag: "Runbook update is overdue for [runbook]. This must be completed. Who is responsible?"
 
----
+## QUARTERLY_REVIEW_DEFAULTS
+Required attendees: Support Lead|Engineering Lead|Product Owner
+Agenda: avg score by feature|top 3 root categories|gap log opened vs closed|runbook updates|shift-left metric|backlog items for next SRD
+INTERVENTION: if any required attendee is absent → ask: "Quarterly review requires Support Lead, Engineering Lead, and Product Owner. [role] is absent. The review cannot be signed off without all three present or a documented exception."
+INTERVENTION: if the same root category appears in top 3 for two consecutive quarters → flag: "Root category [X] has appeared in top 3 for two consecutive quarters. A systemic fix must be proposed before this quarter's review is closed. Who owns this?"
 
-### Observability Gap Log — Default Triage
-| Priority | Default Criteria | Default Resolution Target |
-|----------|-----------------|--------------------------|
-| High | Caused or extended a BI-1 or BI-2 incident | Next sprint |
-| Medium | Caused unnecessary escalation to engineering | Within 2 sprints |
-| Low | Would have been nice to have; no escalation impact | Quarterly review |
+## SHIFT_LEFT_METRIC_DEFAULTS
+Target: 20% reduction in preventable incidents QoQ
+|Metric|Method|
+|---|---|
+|Total incidents|Ticket system count|
+|Traceable to SRD gap|Tagged at PIR|
+|Traceable to SAR gap|Tagged at PIR|
+|Traceable to SIC gap|Tagged at PIR|
+|Traceable to STP gap|Tagged at PIR|
+|Traceable to SRR gap|Tagged at PIR|
+|% preventable|(sum phase-traceable/total)×100|
+|Cost of preventable|Eng hours×burdened rate+customer impact estimate|
+INTERVENTION: if PIR tags are missing for incidents → ask: "Incidents cannot be phase-traced without PIR tags. How many incidents this period are untagged? The metric cannot be calculated without this."
+INTERVENTION: if metric shows 0% improvement for two consecutive quarters → flag: "No improvement in preventable incidents for two quarters. This requires a framework review. Who will lead this?"
 
-**Default rule:** Every gap logged becomes a backlog item. Gaps are never closed without a code change or documentation update.
+## SFL_SIGN-OFF
+Required: Support Lead|Engineering Lead|Product Owner
+INTERVENTION: if any H gap has no backlog item at time of sign-off → flag: "Sign-off cannot be granted while H priority gaps are untracked. [X] gaps remain without backlog items."
 
----
-
-### Runbook Accuracy Defaults
-| Accuracy Level | Default Action |
-|----------------|---------------|
-| Accurate | Note in log, no update required |
-| Partial | Update within 48 hours of incident closure |
-| Inaccurate | Update same day; notify all support staff |
-
-**Default version control:** Increment minor version on partial update (1.1 → 1.2); increment major version on structural change (1.x → 2.0).
-
----
-
-### Quarterly Review — Default Agenda
-1. Average supportability score by feature (last 90 days)
-2. Top 3 recurring incident root categories
-3. Observability gaps: opened vs. closed count
-4. Runbook updates: count and summary
-5. Shift left effectiveness metric (% preventable incidents)
-6. Backlog items proposed for next cycle
-
-**Default attendees:** Support Lead, Engineering Lead, Product Owner.
-**Default output:** Backlog items for next SRD cycle; updated framework gap list.
-
----
-
-### Shift Left Effectiveness Metric — Defaults
-Target: 20% reduction in preventable incidents quarter-over-quarter.
-
-| Metric | Default Tracking Method |
-|--------|------------------------|
-| Total incidents | Ticket system count |
-| Incidents traceable to SRD gap | Tagged at PIR |
-| Incidents traceable to SAR gap | Tagged at PIR |
-| Incidents traceable to SIC gap | Tagged at PIR |
-| Incidents traceable to STP gap | Tagged at PIR |
-| Incidents traceable to SRR gap | Tagged at PIR |
-| % preventable | (sum of phase-traceable incidents) / total × 100 |
-| Cost of preventable incidents | Engineering hours × burdened rate + customer impact estimate |
-
-**Override:** Adjust targets based on current baseline. New implementations should target 20% improvement starting from first quarter of full framework adoption.
-
----
-
-## SFL SIGN-OFF REQUIREMENT
-Required: Support Lead, Engineering Lead, Product Owner.
-**Quarterly. Sign-off confirms review occurred, findings documented, and backlog items created for all High priority gaps.**
-
----
-
-## WHAT TO OVERRIDE IN A SESSION (ALL STP/SRR/SFL)
-- Time thresholds → adjust for feature-specific SLAs
-- Alert routing → replace generic roles with named individuals and tools
-- Communication templates → draft feature-specific content
-- Scoring thresholds → adjust for feature criticality tier
-- Quarterly targets → set based on current baseline metrics
+## SFL_VALIDATION
+PASS: all_incidents_scored=true|all_H_gaps_have_backlog_item=true|all_used_runbooks_assessed=true|quarterly_review_all_attendees_present=true|shift_left_metric_calculated=true|all_3_sign-offs_obtained=true
+INTERVENTION: if any criterion false → list failures. Quarterly sign-off withheld. Ask user for resolution plan.

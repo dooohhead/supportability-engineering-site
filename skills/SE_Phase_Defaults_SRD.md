@@ -1,118 +1,100 @@
-# SE PHASE DEFAULTS — SRD (Supportability Requirements Document)
-**Phase:** 1 — Requirements | **Gate:** Support signs off before design begins
+# SE_DEFAULTS_SRD v1.2
+phase:1|deliverable:SRD|gate:Support sign-off→design begins
 
----
+## INTERVENTION_TRIGGERS — SRD SPECIFIC
+Stop and ask whenever:
+- Feature description is missing or too vague to map failure modes
+- Customer segments not identified (cannot pre-classify impact without this)
+- A failure mode type applies but user has not described the specific scenario
+- BI or CI classification is being assigned without user confirming revenue at risk or customer tier
+- Escalation contacts are unnamed (generic role is not sufficient for a complete SRD)
+- A compliance flag is triggered but user has not confirmed scope or regulatory context
+- Observability requirement is vague (e.g. "add logging" — ask: what specifically must be observable?)
+- SLA value needed but not provided by user
+- Sign-off role is unnamed
+- Any field left blank that is marked Required
 
-## PURPOSE
-Capture supportability requirements before design starts. Answer three questions for every feature:
-1. How will we know it is working?
-2. How will we know it broke?
-3. What does support need to resolve it at 2am without calling the builder?
+INTERVENTION_FORMAT: "STOP — [specific field/section] is unclear or missing. [specific question]. Please answer before I continue."
 
----
+## OBSERVABILITY_DEFAULTS
+|Observable|Method|Priority|
+|---|---|---|
+|Feature entry/exit events|Log|H|
+|Transaction success/failure|Metric+Log|H|
+|Error rate per endpoint|Metric|H|
+|Latency p50/p95/p99|Metric|H|
+|Customer/entity ID on all events|Log field|H|
+|Correlation ID propagation|Log field|H|
+|Dependency call outcomes|Log|M|
+|Queue depth (async only)|Metric|M|
+INTERVENTION: if user says "add logging" or similar without specifying what → ask: "What specific events, transactions, or states must be observable? List them before I populate this table."
+OVERRIDE: add feature-specific business events
 
-## DEFAULT VALUES — OVERRIDE AS NEEDED
+## FAILURE_MODES_DEFAULTS
+|Type|Override With|
+|---|---|
+|Complete Outage|Feature total failure state|
+|Partial Failure|Feature partial failure states|
+|Degraded State|Feature performance thresholds|
+|Data Issue|Feature data validity criteria|
+|Performance|Feature SLA numbers|
+|Security/Auth|Feature auth paths|
+INTERVENTION: if user has not described at least one specific failure scenario → ask: "Describe how this feature can fail. I need at least one concrete failure scenario before I can populate the failure mode inventory."
+Each mode requires: customer_experience|detection_method|initial_response — ask for each if not provided.
 
-### Observability Requirements
-| What Must Be Observable | How | Tool | Priority |
-|------------------------|-----|------|----------|
-| Feature entry/exit events | Log | Centralized logging platform | H |
-| Transaction success/failure | Metric + Log | APM + logging | H |
-| Error rate per endpoint | Metric | APM | H |
-| Latency per endpoint (p50/p95/p99) | Metric | APM | H |
-| Customer/entity ID on all events | Log field | Logging | H |
-| Correlation ID propagation | Log field | Logging | H |
-| Dependency call outcomes | Log | Logging | M |
-| Queue depth (if async) | Metric | APM | M |
+## IMPACT_DEFAULTS
+|Failure Mode|CI|BI|Escalation|
+|---|---|---|---|
+|Complete Outage|1|1|L3|
+|Partial Failure|2|2|L2|
+|Degraded State|3|3|L2|
+|Data Issue|2|2|L2|
+|Performance|3|3|L1|
+|Security/Auth|1|1|L4|
+INTERVENTION: before applying any default BI/CI → ask: "Which customer tiers use this feature and what is the revenue at risk for each failure mode? I am applying defaults — confirm or override."
+INTERVENTION: if enterprise customers are involved and default is CI-2 or lower → flag: "Enterprise customers may warrant a higher classification. Confirm BI/CI before proceeding."
 
-**Override:** Add feature-specific business events (e.g., order completed, payment processed, login succeeded).
+## READINESS_DEFAULTS
+|Criterion|Owner|Target Phase|
+|---|---|---|
+|Logging standard verified|Engineering|SIC|
+|Dashboards live with baseline|Eng+Support|STP|
+|Alerts configured and tested|Eng+Support|STP|
+|Runbook written+reviewed+published|Support|STP|
+|Impact classification in ticketing|Support|SRR|
+|On-call rotation updated|Support Lead|SRR|
+|Team trained on failure modes|Support Lead|SRR|
+|Rollback documented and tested|Engineering|SRR|
+INTERVENTION: if any owner field is unnamed → ask for the name before finalizing the SRD.
+OVERRIDE: add feature-specific criteria
 
----
+## ESCALATION_DEFAULTS
+|Level|Trigger|Response Time|Comms|
+|---|---|---|---|
+|L1|BI-4|4 business hrs|On resolution|
+|L2|BI-3|2hr|Within 2hr|
+|L3|BI-2|30min|Within 30min|
+|L4|BI-1|Immediate|Immediate|
+INTERVENTION: if escalation contacts are not named → ask: "Who specifically is L1/L2/L3/L4 for this feature? Generic role titles are not sufficient for a complete SRD."
+INTERVENTION: if on-call coverage hours not stated → ask before finalizing escalation path.
 
-### Failure Mode Inventory — Default Categories
-| Type | Default Examples | Override With |
-|------|-----------------|---------------|
-| Complete Outage | Service unreachable, timeout on all requests | Feature-specific total failure state |
-| Partial Failure | Subset of users affected, one code path failing | Feature-specific partial states |
-| Degraded State | Slow response, increased error rate below threshold | Feature-specific performance thresholds |
-| Data Issue | Wrong results returned, stale data served | Feature-specific data validity criteria |
-| Performance | Latency exceeds SLA, queue backlog | Feature-specific SLA numbers |
-| Security / Auth | Auth failure, permission escalation, token expiry | Feature-specific auth paths |
+## COMPLIANCE_DEFAULTS
+|Flag|Default|Override If|
+|---|---|---|
+|PII|No|User profile/email/address/payment|
+|Financial data|No|Billing/payments/invoices|
+|Health/medical|No|Health/wellness/insurance|
+|Regulatory reporting|No|Financial/healthcare/government|
+|Data residency|No|Multi-region/EU/APAC|
+|Audit trail|Yes|No compliance surface|
+INTERVENTION: if feature touches user data of any kind and PII flag has not been explicitly assessed → ask: "Does this feature handle, store, or transmit any user data? I cannot set compliance flags without confirmation."
+INTERVENTION: if regulatory reporting flag may apply → ask: "Is this feature subject to any regulatory reporting obligations on failure? Do not assume No."
 
-**Override:** Replace examples with actual feature failure modes. Every item needs: customer experience, expected detection method, initial response action.
+## SIGN-OFF
+Required: Product Owner|Engineering Lead|Support Lead|QA Lead
+Rule: no sign-off→no design phase
+INTERVENTION: if any signatory is unnamed → ask for names before document is marked complete.
 
----
-
-### Business Impact Pre-Classification — Defaults
-| Failure Mode | Default CI | Default BI | Default Escalation |
-|-------------|-----------|-----------|-------------------|
-| Complete Outage | CI-1 | BI-1 | L3 (VP) |
-| Partial Failure | CI-2 | BI-2 | L2 (Engineering) |
-| Degraded State | CI-3 | BI-3 | L2 (Engineering) |
-| Data Issue | CI-2 | BI-2 | L2 (Engineering) |
-| Performance | CI-3 | BI-3 | L1 (Support) |
-| Security / Auth | CI-1 | BI-1 | L4 (CEO) |
-
-**Override:** Adjust based on actual customer segments affected and revenue at risk. Enterprise-only features may warrant higher BI classification even for partial failures.
-
----
-
-### Support Readiness Criteria — Defaults
-| Criterion | Default Owner | Default Target Phase |
-|-----------|--------------|---------------------|
-| Logging standard implemented and verified | Engineering | SIC (Build) |
-| Monitoring dashboards live with baseline | Eng / Support | STP (Test) |
-| All alerts configured and tested | Eng / Support | STP (Test) |
-| Runbook written, reviewed, published | Support | STP (Test) |
-| Customer impact classification in ticketing | Support | SRR (Release) |
-| On-call rotation updated | Support Lead | SRR (Release) |
-| Support team trained on failure modes | Support Lead | SRR (Release) |
-| Rollback procedure documented and tested | Engineering | SRR (Release) |
-
-**Override:** Add feature-specific criteria (e.g., data migration verified, external partner notified, compliance review complete).
-
----
-
-### Escalation Path Defaults
-| Level | Default Trigger | Default Response Time |
-|-------|-----------------|-----------------------|
-| L1 — Support only | BI-4 | 4 business hours |
-| L2 — Engineering | BI-3 | 2 hours |
-| L3 — VP | BI-2 | 30 minutes |
-| L4 — CEO/Executive | BI-1 | Immediate |
-
-**Customer communication defaults:**
-- BI-1: Immediate notification
-- BI-2: Within 30 min
-- BI-3: Within 2 hours
-- BI-4: On resolution
-
-**Override:** Replace with actual named contacts and on-call coverage hours.
-
----
-
-### Compliance Flags — Default Assessment
-| Flag | Default Assumption | Override If |
-|------|--------------------|-------------|
-| PII involved | No | Feature handles user profile, email, name, address, payment data |
-| Financial data | No | Feature involves billing, payments, pricing, invoices |
-| Health/medical | No | Feature in health, wellness, insurance context |
-| Regulatory reporting | No | Financial services, healthcare, government contexts |
-| Data residency | No | Multi-region deployment with EU/APAC customers |
-| Audit trail required | Yes (default on) | Feature has no compliance surface |
-
----
-
-## SIGN-OFF REQUIREMENT
-Required signatories: Product Owner, Engineering Lead, Support Lead, QA Lead.
-**No SRD sign-off = design phase does not begin.**
-
----
-
-## WHAT TO OVERRIDE IN A SESSION
-When working on a specific feature, replace:
-- Observability table → add feature-specific events
-- Failure mode types → replace examples with real failure scenarios
-- BI/CI classification → adjust for actual customer tier distribution
-- Escalation contacts → replace generic roles with named individuals
-- Compliance flags → assess for actual feature scope
+## VALIDATION
+PASS: feature_described=true|segments_identified=true|observability_rows≥6|failure_modes=6|impact_rows=6|readiness_rows=8|escalation_levels=4|compliance_flags=6|sign-off_roles_named=4
+INTERVENTION: if any PASS criterion is false → list which criteria failed, ask user to supply missing information. Do not mark SRD complete or allow design to begin until all criteria pass.

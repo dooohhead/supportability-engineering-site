@@ -1,55 +1,43 @@
-# SE AI CONTEXT DOCUMENTS — USAGE GUIDE
+# SE_AI_CONTEXT_USAGE v1.2
 
-## WHAT THIS SET IS
-Five markdown files optimized for AI consumption. Paste into any AI conversation to instantly orient it to the Supportability Engineering framework. Replaces build scripts. No installation required.
+## FILES
+|File|Purpose|Include When|
+|---|---|---|
+|SE_AI_Context_Core.md|Framework identity, phases, scoring, classification, global intervention rules|Every session|
+|SE_Phase_Defaults_SRD.md|Phase 1 defaults+interventions+validation|Requirements work|
+|SE_Phase_Defaults_SAR.md|Phase 2 defaults+interventions+validation|Architecture review|
+|SE_Phase_Defaults_SIC.md|Phase 3 defaults+interventions+validation|Build/PR review|
+|SE_Phase_Defaults_STP_SRR_SFL.md|Phases 4/5/6 defaults+interventions+validation|Test/release/operate work|
 
----
+## USAGE_PATTERNS
+Full session: Core.md + relevant phase defaults file
+Single phase: Core.md + that phase file only
+Quick ref: Core.md only
 
-## FILES IN THIS SET
+## HOW_AI_USES_THESE_FILES
+1. Parses tables as structured lookup data, not prose.
+2. Applies defaults automatically unless user overrides.
+3. INTERVENTION_TRIGGERS checked continuously — AI stops and asks before proceeding past any ambiguity.
+4. VALIDATION block checked at phase completion — AI lists failures and asks for resolution, never auto-corrects.
+5. AI_BEHAVIOUR_RULES in Core apply globally across all phases.
+6. INTERVENTION_FORMAT is the standard output format when a trigger fires — specific, not generic.
 
-| File | Purpose | When to Include |
-|------|---------|----------------|
-| `SE_AI_Context_Core.md` | Full framework identity, all six phases, scoring, classification | Always — include in every session |
-| `SE_Phase_Defaults_SRD.md` | Phase 1 defaults + override instructions | When working on requirements or filling an SRD |
-| `SE_Phase_Defaults_SAR.md` | Phase 2 defaults + override instructions | When doing architecture review or filling a SAR |
-| `SE_Phase_Defaults_SIC.md` | Phase 3 defaults + override instructions | When in build phase or doing PR review |
-| `SE_Phase_Defaults_STP_SRR_SFL.md` | Phases 4/5/6 defaults + override instructions | When testing, releasing, or doing quarterly SFL review |
+## INTERVENTION_BEHAVIOUR
+When a trigger fires, AI outputs: "STOP — [specific question]. Please answer before I continue."
+AI does not guess. AI does not proceed. AI waits for user input.
+This applies to: missing fields|ambiguous inputs|unnamed roles|unconfirmed defaults|framework rule conflicts.
 
----
+## OVERRIDE_SYNTAX
+Tell AI: "Override [field] with [value]"
+Examples:
+- "Override escalation L2 with Sarah Chen"
+- "Override error rate threshold to >0.5% sustained 3min"
+- "Override runbook walkthrough time to <10min"
 
-## HOW TO USE
+## ARCHIVE_INSTRUCTION
+Trigger: user says "archive conversation"
+Action: create Supportability-Engineering-YYYY-MM-DD.docx
+Format: user prompts followed by AI responses in order, full session
 
-### Option A — Full framework session
-Paste: `SE_AI_Context_Core.md` + whichever phase defaults file is relevant.
-
-### Option B — Single phase work
-Paste: `SE_AI_Context_Core.md` + the specific phase defaults file only.
-
-### Option C — Quick reference only
-Paste: `SE_AI_Context_Core.md` alone.
-
----
-
-## HOW TO CUSTOMIZE DEFAULTS
-
-Every phase defaults file has a section: **WHAT TO OVERRIDE IN A SESSION**.
-
-When starting a session for a specific feature:
-1. Paste the relevant files
-2. Tell the AI: "Override [specific default] with [feature-specific value]"
-3. The AI will apply your override for the session
-
-Example prompts:
-- "Override the escalation contacts in SRD defaults with: L2 = Sarah Chen, L3 = Marcus Webb"
-- "Override the error rate alert threshold in SIC defaults to >0.5% sustained 3 min (we have a tighter SLA)"
-- "Override the runbook walkthrough time threshold to <10 min — this is a BI-1 feature"
-
----
-
-## ARCHIVE INSTRUCTION
-When session ends and user says "archive conversation": create a .docx file named `Supportability-Engineering-YYYY-MM-DD.docx` containing the full conversation with user prompts followed by AI responses in order.
-
----
-
-## OWNERSHIP
-John A. Bowman | dooohhead@gmail.com | 902-489-2429 | Confidential — Consulting IP
+## OWNER
+John A. Bowman|dooohhead@gmail.com|902-489-2429|Confidential
