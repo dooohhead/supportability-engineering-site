@@ -1,124 +1,89 @@
-# SUPPORTABILITY ENGINEERING — AI CONTEXT DOCUMENT
-**Framework:** Supportability Engineering | **Author:** John A. Bowman | **Version:** 1.0
+# SE_CORE v1.2
+owner:John A. Bowman|dooohhead@gmail.com|902-489-2429|Confidential
 
----
+## AI_BEHAVIOUR_RULES
+RULE: never assume missing context. Always ask.
+RULE: if user input is ambiguous, stop and clarify before proceeding.
+RULE: if a required field has no value, prompt user — do not invent a default silently.
+RULE: after completing any phase document, summarize what was assumed and ask user to confirm.
+RULE: flag every place a default was applied without explicit user confirmation.
 
-## IDENTITY
+## INTERVENTION_TRIGGERS
+Stop and ask whenever any of the following are true:
+- Feature name, scope, or purpose not stated
+- Customer segments affected not identified
+- A failure mode referenced but not described
+- Escalation contact is generic (e.g. "Engineering Lead") and no name provided
+- A threshold (latency/error rate/SLA) not specified and a default is being applied
+- A compliance flag applies but scope not confirmed by user
+- Any upstream deliverable referenced but not confirmed complete
+- A sign-off role is unnamed
+- Volume context (V1/V2/V3/V4) not stated
+- User instruction contradicts a framework rule
 
-Supportability Engineering (SE) is a shift-left framework. Goal: every software system is diagnosable, operable, and supportable from first line of code — not after first major incident.
+INTERVENTION_FORMAT:
+"STOP — I need clarification before proceeding: [specific question]. Please provide this before I continue."
+Never proceed past a trigger on an assumption.
 
-**Core law:** Cost of fixing a supportability gap grows exponentially the later it is found.
-- Found at Requirements → minutes to fix
-- Found at Design → hours
-- Found at Build → hours to days
-- Found at Test → days
-- Found at Release → days to weeks
-- Found in Production → weeks to months, per incident, indefinitely
+## DEF
+SE=Supportability Engineering. Shift-left framework. Goal: every system diagnosable/operable/supportable from line 1 of code.
+Law: gap fix cost grows exponentially with discovery phase.
+Chain: SRD→SAR→SIC→STP→SRR→SFL→SRD(next)
 
-**Value proposition (marketing language):** "The best support organizations don't respond faster. They designed their systems so that when something breaks, anyone on the team can pick it up and know exactly what to do."
+## PHASES
+|#|Abbr|Full Name|Gate|
+|---|---|---|---|
+|1|SRD|Supportability Requirements Document|Support sign-off required. No SRD→no design.|
+|2|SAR|Supportability Architecture Review|Open items→build acceptance criteria|
+|3|SIC|Supportability Implementation Checklist|No SIC sign-off→PR blocked|
+|4|STP|Supportability Test Plan|Any fail→release blocked|
+|5|SRR|Support Readiness Review|Support Lead+Eng Lead both must sign|
+|6|SFL|Supportability Feedback Loop|Quarterly. Outputs→next SRD.|
 
----
+## PHASE_SCOPE
+SRD: observability reqs|failure modes|impact classification|escalation paths|compliance flags
+SAR: failure point map|gap list (prioritized)|trace boundaries|degradation paths|dependency risks
+SIC: logging standards|error handling|golden signals|failure mode unit tests|review gate
+STP: failure injection|log review|alert validation|dashboard check|runbook walkthrough|tabletop sim
+SRR: upstream complete|monitoring live|runbooks published|on-call ready|rollback tested|comms ready
+SFL: incident scoring|gap log|runbook accuracy|quarterly review|shift-left metric
 
-## FRAMEWORK STRUCTURE
+## COST_CURVE
+|Phase|Fix Cost|
+|---|---|
+|SRD|minutes|
+|SAR|hours|
+|SIC|hours–days|
+|STP|days|
+|SRR|days–weeks|
+|Production|weeks–months/incident, indefinite|
 
-Six phases. Each produces a signed deliverable. Each feeds the next. Operate feeds back to Requirements.
+## IMPACT_CLASS
+CI=Customer Impact 1–4 (1=all affected)
+BI=Business Impact 1–4 (1=existential)
+L1=Support|L2=Engineering|L3=VP|L4=CEO
+BI-1:L4+immediate|BI-2:L3+30min|BI-3:L2+2hr|BI-4:L1+on-resolution
+INTERVENTION: if BI/CI level ambiguous or not user-confirmed → ask before assigning.
 
-```
-SRD → SAR → SIC → STP → SRR → SFL → SRD (next cycle)
-```
+## GOLDEN_SIGNALS
+latency|error_rate|throughput|saturation
+All 4 mandatory at SIC.
+INTERVENTION: if any signal threshold not user-confirmed → state default being applied and ask for confirmation before using.
 
-| Phase | Deliverable | Full Name | Gate |
-|-------|------------|-----------|------|
-| 1 — Requirements | SRD | Supportability Requirements Document | Support signs off. No SRD = no design. |
-| 2 — Design | SAR | Supportability Architecture Review | Open items = build acceptance criteria |
-| 3 — Build | SIC | Supportability Implementation Checklist | PR cannot merge without SIC sign-off |
-| 4 — Test | STP | Supportability Test Plan | Release blocked if any required test fails |
-| 5 — Release | SRR | Support Readiness Review | Both Support Lead + Eng Lead must sign |
-| 6 — Operate | SFL | Supportability Feedback Loop | Quarterly; feeds back to next SRD |
+## SFL_SCORE
+|Score|Detectable|Diagnosable|Resolvable|
+|---|---|---|---|
+|5|Before customer impact|<15min|Support only|
+|4|<5min of impact|<30min|Minor eng input|
+|3|<30min|<2hr|Eng escalation|
+|2|Via complaint|>2hr|Senior eng|
+|1|Not detected|Unknown|Code change required|
+INTERVENTION: if scoring a real incident and context incomplete → ask for missing details before scoring.
 
----
+## VOLUMES
+V1=traditional software|V2=agentic AI product (A-prefix)|V3=agentic dev (D-prefix)|V4=AI ops (O-prefix+AOSR)
+INTERVENTION: if volume context not stated at session start → ask before applying phase defaults.
 
-## PHASE SUMMARIES
-
-### Phase 1 — SRD (Requirements)
-Before design begins. Ask: How will we know it's working? How will we know it broke? What does support need to fix it at 2am without calling the builder?
-- Captures: observability requirements, failure mode inventory, customer impact pre-classification, escalation paths, compliance flags
-- Output: signed document. Support signs before design starts.
-- Without it: support learns what failure looks like during an incident.
-
-### Phase 2 — SAR (Design)
-Before first line of code. Someone with support experience reviews the architecture diagram.
-- Captures: failure point map, observability gap list (prioritized), trace boundary definition, degradation paths, dependency risks
-- Output: annotated architecture + gap list. Open items = mandatory build acceptance criteria.
-- Without it: blind spots get built in permanently.
-
-### Phase 3 — SIC (Build)
-Attaches to every PR. Developer completes, reviewer independently verifies.
-- Checks: logging standards, error handling, four golden signals (latency/error rate/throughput/saturation), unit tests for every failure mode in SRD, code review supportability gate
-- Output: signed checklist. PR cannot merge without it.
-- Without it: logs exist but are useless; errors written for the author, not support.
-
-### Phase 4 — STP (Test)
-Before release. Run in test environment. Simulate 2am.
-- Tests: failure injection, log quality review, alert validation, dashboard verification, runbook walkthrough (by someone who didn't write it), on-call tabletop simulation
-- Output: pass/fail recommendation. Fail = release blocked.
-- Without it: runbooks fail in practice; alerts misfire; team has never rehearsed.
-
-### Phase 5 — SRR (Release)
-Final gate before production. Not a rubber stamp.
-- Confirms: all upstream deliverables complete, monitoring live, runbooks published, on-call rotation updated, rollback tested, comms templates ready, customer impact loaded in ticketing
-- Output: dual sign-off (Support Lead + Engineering Lead). No signatures = no release.
-- Without it: features ship before support is ready.
-
-### Phase 6 — SFL (Operate)
-Every incident generates data. Data improves the framework.
-- Captures: incident supportability score (detectable/diagnosable/resolvable 1–5), observability gap log, runbook accuracy log, quarterly review, shift left effectiveness metric
-- Output: backlog items fed to next SRD cycle
-- Without it: every incident is a sunk cost; same problems recur indefinitely.
-
----
-
-## SCORING DEFINITIONS (SFL)
-
-| Score | Detectable | Diagnosable | Resolvable |
-|-------|-----------|-------------|-----------|
-| 5 | Before customer impact | <15 min | Support only |
-| 4 | Within 5 min | <30 min | Minor eng input |
-| 3 | Within 30 min | <2 hrs | Eng escalation required |
-| 2 | Via customer complaint | >2 hrs | Senior eng required |
-| 1 | Not detected — customer reported first | Could not identify | Code change required |
-
----
-
-## IMPACT CLASSIFICATION
-
-- **CI** = Customer Impact (1–4, where 1 = all customers affected)
-- **BI** = Business Impact (1–4, where 1 = existential/revenue-critical)
-- **Escalation:** L1 = Support | L2 = Engineering | L3 = VP | L4 = CEO/Executive
-- **BI-1:** CEO + immediate comms | **BI-2:** VP + 30 min comms | **BI-3:** Engineering + 2 hr comms | **BI-4:** Support + comms on resolution
-
----
-
-## FOUR GOLDEN SIGNALS (mandatory SIC instrumentation)
-
-1. **Latency** — request/response time
-2. **Error Rate** — % failed requests
-3. **Throughput** — requests/sec or transactions/min
-4. **Saturation** — CPU, memory, queue depth
-
----
-
-## EXTENDED VOLUMES
-
-| Volume | Scope |
-|--------|-------|
-| Vol. 1 | Traditional software — foundational framework |
-| Vol. 2 | Agentic AI as the product (A- prefix templates) |
-| Vol. 3 | Agentic development workflows (D- prefix templates) |
-| Vol. 4 | AI operational tools (O- prefix templates + AOSR 7th phase) |
-
----
-
-## CONTACT / OWNERSHIP
-
-John A. Bowman | dooohhead@gmail.com | 902-489-2429 | Confidential — Consulting IP
+## VALIDATION
+PASS: phases=6|chain=SRD→SAR→SIC→STP→SRR→SFL|gates_defined=6|golden_signals=4|BI_levels=4|score_rows=5|volumes=4
+INTERVENTION: if validation fails → list failed criteria and ask user how to proceed. Do not auto-correct.
