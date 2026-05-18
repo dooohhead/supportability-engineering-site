@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supportability Engineering — The SRD</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0F2340;
+    --navy2:  #1B3A5C;
+    --gold:   #C9993A;
+    --gold2:  #E8B84B;
+    --white:  #FFFFFF;
+    --mid:    #8BA3BC;
+    --ai:     #7C3AED;
+    --ai2:    #9D5FF5;
+    --ai-bg:  rgba(124,58,237,0.10);
+  }
+
+  body {
+    background: #0a1828;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .card {
+    width: 920px;
+    max-width: 100%;
+    background: var(--navy);
+    border: 1px solid rgba(201,153,58,0.25);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy2);
+    padding: 44px 56px 38px;
+    border-bottom: 3px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,153,58,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .header-left { flex: 1; }
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 44px;
+    line-height: 1.08;
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+  .headline em { color: var(--gold); font-style: italic; }
+  .subhead {
+    font-size: 14px;
+    color: var(--mid);
+    font-weight: 300;
+    line-height: 1.65;
+    max-width: 440px;
+  }
+  .header-stat {
+    flex-shrink: 0;
+    text-align: center;
+    background: rgba(15,35,64,0.5);
+    border: 1px solid rgba(201,153,58,0.2);
+    border-radius: 2px;
+    padding: 20px 28px;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 46px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--mid);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  /* SHARED */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 2.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,153,58,0.22), transparent);
+    margin: 0 56px;
+  }
+  .gap { height: 36px; }
+
+  /* THREE QUESTIONS */
+  .questions-wrap { padding: 36px 56px 0; }
+  .questions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .q-card {
+    background: rgba(27,58,92,0.5);
+    border: 1px solid rgba(201,153,58,0.18);
+    border-top: 2px solid var(--gold);
+    border-radius: 2px;
+    padding: 20px 18px;
+  }
+  .q-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    color: rgba(201,153,58,0.18);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .q-text { font-size: 12.5px; color: var(--white); line-height: 1.55; }
+  .q-text strong { color: var(--gold); font-weight: 600; }
+
+  /* SRD CONTENTS */
+  .srd-wrap { padding: 36px 56px 0; }
+  .srd-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .srd-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 16px 16px 14px;
+    background: rgba(27,58,92,0.35);
+    border-radius: 2px;
+    border-left: 2px solid rgba(201,153,58,0.35);
+  }
+  .srd-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+  .srd-title { font-size: 12px; font-weight: 600; color: var(--white); line-height: 1.3; }
+  .srd-desc { font-size: 11px; color: var(--mid); line-height: 1.45; }
+
+  /* AI SECTION */
+  .ai-wrap { padding: 36px 56px 0; }
+  .ai-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 2.5px;
+    color: var(--ai2);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ai-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--ai2);
+    box-shadow: 0 0 8px var(--ai2);
+  }
+  .ai-intro {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.65;
+    margin-bottom: 18px;
+    font-weight: 300;
+    max-width: 750px;
+  }
+  .ai-intro strong { color: var(--white); font-weight: 500; }
+  .ai-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .ai-card {
+    background: var(--ai-bg);
+    border: 1px solid rgba(124,58,237,0.22);
+    border-top: 2px solid var(--ai);
+    border-radius: 2px;
+    padding: 16px 14px;
+  }
+  .ai-card-title { font-size: 11.5px; font-weight: 600; color: var(--ai2); margin-bottom: 6px; line-height: 1.3; }
+  .ai-card-desc { font-size: 10.5px; color: var(--mid); line-height: 1.45; }
+  .ai-strip {
+    background: rgba(124,58,237,0.07);
+    border: 1px solid rgba(124,58,237,0.18);
+    border-left: 3px solid var(--ai);
+    border-radius: 2px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .ai-strip-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .ai-strip-text { font-size: 12px; color: var(--mid); line-height: 1.6; }
+  .ai-strip-text strong { color: var(--white); font-weight: 500; }
+
+  /* SIGN-OFF */
+  .signoff-wrap { padding: 36px 56px 0; }
+  .signoff-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .signoff-card {
+    background: rgba(27,58,92,0.3);
+    border: 1px solid rgba(201,153,58,0.12);
+    border-radius: 2px;
+    padding: 14px 14px 12px;
+    text-align: center;
+  }
+  .signoff-role { font-size: 11px; font-weight: 600; color: var(--white); margin-bottom: 5px; }
+  .signoff-desc { font-size: 10px; color: var(--mid); line-height: 1.4; }
+  .signoff-gate {
+    margin-top: 12px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(201,153,58,0.45);
+    letter-spacing: 1px;
+  }
+
+  /* QUOTE */
+  .tagline {
+    padding: 32px 56px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 36px;
+    border-top: 1px solid rgba(201,153,58,0.12);
+  }
+  .quote-mark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 72px;
+    color: rgba(201,153,58,0.14);
+    line-height: 0.7;
+    flex-shrink: 0;
+  }
+  .quote-text {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.55;
+  }
+  .quote-text span { color: var(--gold); }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy2);
+    border-top: 1px solid rgba(201,153,58,0.2);
+    padding: 14px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-name { font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--gold); letter-spacing: 1px; }
+  .footer-tag { font-family: 'DM Mono', monospace; font-size: 9.5px; color: var(--mid); letter-spacing: 0.5px; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="eyebrow">Supportability Engineering  ·  Phase 1 — Requirements</div>
+      <div class="headline">The Supportability<br>Requirements <em>Document</em></div>
+      <div class="subhead">Before a single line of code is written, the SRD captures every failure mode, every observability requirement, and every escalation path — so support can operate the system independently at 2am.</div>
+    </div>
+    <div class="header-stat">
+      <div class="stat-num">$300K+</div>
+      <div class="stat-label">Fully-loaded cost<br>of one major incident<br>without an SRD</div>
+    </div>
+  </div>
+
+  <!-- THREE QUESTIONS -->
+  <div class="questions-wrap">
+    <div class="section-label">The Three Questions Nobody Asks — Until It's Too Late</div>
+    <div class="questions">
+      <div class="q-card">
+        <div class="q-number">01</div>
+        <div class="q-text">How will we know this feature is <strong>working?</strong></div>
+      </div>
+      <div class="q-card">
+        <div class="q-number">02</div>
+        <div class="q-text">How will we know it has <strong>broken?</strong></div>
+      </div>
+      <div class="q-card">
+        <div class="q-number">03</div>
+        <div class="q-text">What does support need to diagnose it at <strong>2am</strong> — without calling the engineer who built it?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+  <div class="divider"></div>
+  <div class="gap"></div>
+
+  <!-- SRD CONTENTS -->
+  <div class="srd-wrap">
+    <div class="section-label">What a Complete SRD Contains</div>
+    <div class="srd-grid">
+      <div class="srd-item">
+        <div class="srd-tag">§ 1.1</div>
+        <div class="srd-title">Feature Description</div>
+        <div class="srd-desc">Plain language readable by support with no prior context. The starting point for every incident.</div>
+      </div>
+      <div class="srd-item">
+        <div class="srd-tag">§ 1.2</div>
+        <div class="srd-title">Customer Segments Affected</div>
+        <div class="srd-desc">Who is impacted, their contract tier, and which SLAs apply — mapped before go-live.</div>
+      </div>
+      <div class="srd-item">
+        <div class="srd-tag">§ 1.3</div>
+        <div class="srd-title">Observability Requirements</div>
+        <div class="srd-desc">Specific events, metrics, and logs that must be measurable in production. Not "we'll add logging."</div>
+      </div>
+      <div class="srd-item">
+        <div class="srd-tag">§ 1.4</div>
+        <div class="srd-title">Failure Mode Inventory</div>
+        <div class="srd-desc">Every way it can fail — complete outage, partial failure, degraded state, data issue — defined in advance.</div>
+      </div>
+      <div class="srd-item">
+        <div class="srd-tag">§ 1.5</div>
+        <div class="srd-title">Business Impact Pre-Classification</div>
+        <div class="srd-desc">Severity scores loaded before go-live. Triage that took an hour now takes 30 seconds.</div>
+      </div>
+      <div class="srd-item">
+        <div class="srd-tag">§ 1.6</div>
+        <div class="srd-title">Escalation Path Definition</div>
+        <div class="srd-desc">Who to call at what severity. Regulatory flags. Customer communication thresholds. Decided now.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+  <div class="divider"></div>
+  <div class="gap"></div>
+
+  <!-- AI SECTION -->
+  <div class="ai-wrap">
+    <div class="ai-label">The SRD in AI &amp; Agentic Systems</div>
+    <div class="ai-intro">
+      Traditional software fails loudly. <strong>AI agents fail silently</strong> — completing tasks, reporting success, and returning wrong results with no error logged and no alert fired. The SRD is the mechanism that makes these failures visible <strong>before</strong> they reach production.
+    </div>
+    <div class="ai-grid">
+      <div class="ai-card">
+        <div class="ai-card-title">Agentic AI as the Product</div>
+        <div class="ai-card-desc">Six failure categories traditional software doesn't have — non-deterministic failure, silent confident failure, context window drift, tool schema drift, adversarial redirect, and mid-execution intervention triggers — each requiring its own observability requirement in the SRD.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-title">AI-Generated Code</div>
+        <div class="ai-card-desc">When AI writes the code, no one may fully understand why. The SRD becomes the specification that generated code is held accountable to — the failure mode inventory and observability requirements that exist independent of the agent that produced the implementation.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-title">AIOps &amp; Autonomous Incident Response</div>
+        <div class="ai-card-desc">AIOps platforms execute against a framework. Supportability Engineering is that framework. Deploying autonomous incident response without an SRD means agents operating in systems with undefined failure modes and no pre-established escalation paths.</div>
+      </div>
+    </div>
+    <div class="ai-strip">
+      <div class="ai-strip-icon">⚡</div>
+      <div class="ai-strip-text">
+        <strong>The core finding:</strong> AI agents deployed in microservices incident response fail when observability was not designed in at build time. The SRD ensures observability is designed in — before the agent is deployed, not after the first autonomous remediation goes wrong.
+      </div>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+  <div class="divider"></div>
+  <div class="gap"></div>
+
+  <!-- SIGN-OFF -->
+  <div class="signoff-wrap">
+    <div class="section-label">The Sign-Off Gate — Support Confirms Currency Before Design Proceeds</div>
+    <div class="signoff-row">
+      <div class="signoff-card">
+        <div class="signoff-role">Product Owner</div>
+        <div class="signoff-desc">Feature description accurate. Customer segments correct. SLA commitments mapped.</div>
+      </div>
+      <div class="signoff-card">
+        <div class="signoff-role">Engineering Lead</div>
+        <div class="signoff-desc">Observability requirements achievable. Failure mode inventory complete.</div>
+      </div>
+      <div class="signoff-card">
+        <div class="signoff-role">Support Lead</div>
+        <div class="signoff-desc">Readiness criteria sufficient. Escalation path operable. <em>This is the gate.</em></div>
+      </div>
+      <div class="signoff-card">
+        <div class="signoff-role">QA Lead</div>
+        <div class="signoff-desc">Failure modes are testable. The test plan can be built from this document.</div>
+      </div>
+    </div>
+    <div class="signoff-gate">If the SRD is not current — design does not start.</div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="tagline">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">The best support organizations don't respond faster. They designed their systems so that when something breaks, <span>anyone on the team can pick it up and know exactly what to do.</span></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-name">John A. Bowman  ·  Supportability Engineering  ·  dooohhead@gmail.com</div>
+    <div class="footer-tag">#SRD  ·  #ShiftLeft  ·  #SupportabilityEngineering  ·  #AIOps</div>
+  </div>
+
+</div>
+</body>
+</html>

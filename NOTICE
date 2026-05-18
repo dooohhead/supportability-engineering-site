@@ -1,0 +1,52 @@
+NOTICE
+Supportability Engineering Framework
+=====================================
+
+Copyright (c) 2026 John A. Bowman. All rights reserved.
+
+FRAMEWORK AUTHORSHIP
+
+"Supportability Engineering" is an original methodology developed by
+John A. Bowman. This includes:
+
+  - The Supportability Engineering framework name and identity
+  - The six-phase deliverable system and its structure:
+      Phase 1 — Supportability Requirements Document (SRD)
+      Phase 2 — Supportability Architecture Review (SAR)
+      Phase 3 — Supportability Implementation Checklist (SIC)
+      Phase 4 — Supportability Test Plan (STP)
+      Phase 5 — Support Readiness Review (SRR)
+      Phase 6 — Supportability Feedback Loop (SFL)
+  - The shift-left cost curve analysis and phase-by-phase cost-benefit model
+  - The template packs for all four volumes (Vol. 1–4)
+  - The Baseline Standards Kit (Docs 1–4)
+  - The AI Context File set (SE_AI_Context_Core.md and phase defaults)
+  - The four-volume white paper series:
+      Vol. 1 — Why the Best Support Organizations Shift Left
+      Vol. 2 — Shifting Left When the System Can Think
+      Vol. 3 — When the Builder Can't Sign Off
+      Vol. 4 — When the AI Running Your Support Needs Supporting
+  - The AOSR (AI Operations Governance Review) phase introduced in Vol. 4
+  - The template prefix system (A-, D-, O- prefix conventions)
+  - The SFL Incident Supportability Scoring rubric (1–5 scale)
+  - The Shift Left Effectiveness Metric framework
+
+ATTRIBUTION REQUIREMENTS
+
+Any use, reference, citation, presentation, or derivative of the
+Supportability Engineering framework — in any medium — must credit:
+
+  "Supportability Engineering framework by John A. Bowman
+   https://github.com/dooohhead/supportability-engineering-site"
+
+This requirement applies whether the use is internal, academic, editorial,
+or otherwise non-commercial.
+
+CONTACT
+
+John A. Bowman
+dooohhead@gmail.com
+902-489-2429
+
+For commercial licensing, speaking engagements, consulting inquiries, or
+permission requests outside the scope of the root LICENSE, contact directly.
