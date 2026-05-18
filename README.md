@@ -2,6 +2,11 @@
 
 > A shift-left framework that ensures software systems are designed to be diagnosed, operated, and supported from the first line of code — not after the first major incident.
 
+© 2026 John A. Bowman. All rights reserved.
+The Supportability Engineering framework, white papers, and templates are licensed under CC BY-NC-ND 4.0.
+The /starter and /scripts directories are licensed under MIT.
+See NOTICE for full attribution requirements.
+
 ---
 
 ## What This Is
