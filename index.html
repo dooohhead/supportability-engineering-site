@@ -1,1223 +1,702 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supportability Engineering — Four-Volume Series by John A. Bowman</title>
-  <meta name="description" content="Four-volume white paper series: Supportability Engineering for traditional software, agentic AI systems, agentic development workflows, and AI operations. Free download by John A. Bowman." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --navy:   #0f2340;
-      --navy2:  #1b3a5c;
-      --accent: #2563eb;
-      --accent2:#1d4ed8;
-      --gold:   #c9993a;
-      --light:  #f0f4fa;
-      --muted:  #6b7a90;
-      --white:  #ffffff;
-      --text:   #1a2535;
-      --border: rgba(255,255,255,0.08);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--navy);
-      color: var(--white);
-      overflow-x: hidden;
-    }
-
-    /* ── NOISE TEXTURE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.25rem 2.5rem;
-      background: rgba(15, 35, 64, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-brand {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1rem;
-      letter-spacing: 0.02em;
-      color: var(--white);
-      opacity: 0.9;
-    }
-    .nav-brand span { color: var(--gold); }
-    .nav-cta {
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--gold);
-      text-decoration: none;
-      border: 1px solid rgba(201,153,58,0.4);
-      padding: 0.5rem 1.1rem;
-      border-radius: 3px;
-      transition: all 0.2s;
-    }
-    .nav-cta:hover { background: rgba(201,153,58,0.12); border-color: var(--gold); }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 4rem;
-      padding: 8rem 2.5rem 4rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      z-index: 1;
-    }
-
-    /* Decorative grid lines */
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0; left: 50%;
-      width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(37,99,235,0.3) 30%, rgba(37,99,235,0.3) 70%, transparent);
-      pointer-events: none;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-    }
-    .hero-eyebrow::before {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 1px;
-      background: var(--gold);
-    }
-
-    .hero h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.6rem, 4.5vw, 4rem);
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-      margin-bottom: 1.5rem;
-    }
-    .hero h1 em {
-      font-style: italic;
-      color: #7eb3f7;
-    }
-
-    .hero-desc {
-      font-size: 1.05rem;
-      line-height: 1.75;
-      color: rgba(255,255,255,0.7);
-      font-weight: 300;
-      margin-bottom: 2.5rem;
-      max-width: 480px;
-    }
-
-    .hero-meta {
-      display: flex;
-      gap: 2rem;
-    }
-    .meta-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-    .meta-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .meta-value {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.85);
-    }
-
-    /* ── FORM CARD ── */
-    .form-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 2.5rem;
-      backdrop-filter: blur(8px);
-      position: relative;
-      overflow: hidden;
-    }
-    .form-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--gold));
-    }
-
-    .form-card-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-    .form-card-sub {
-      font-size: 0.875rem;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 2rem;
-      line-height: 1.5;
-    }
-
-    .form-group {
-      margin-bottom: 1.1rem;
-    }
-    .form-group label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 0.45rem;
-    }
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 6px;
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.925rem;
-      transition: border-color 0.2s, background 0.2s;
-      outline: none;
-    }
-    .form-group input::placeholder { color: rgba(255,255,255,0.25); }
-    .form-group input:focus,
-    .form-group select:focus {
-      border-color: rgba(37,99,235,0.7);
-      background: rgba(255,255,255,0.09);
-    }
-    .form-group select option { background: var(--navy2); color: var(--white); }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-    .btn-download {
-      width: 100%;
-      margin-top: 0.75rem;
-      padding: 0.95rem 1.5rem;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border: none;
-      border-radius: 6px;
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.925rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-    }
-    .btn-download:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(37,99,235,0.4);
-    }
-    .btn-download svg { width: 16px; height: 16px; }
-
-    .form-privacy {
-      margin-top: 1rem;
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.3);
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    /* ── SUCCESS STATE ── */
-    .success-state {
-      display: none;
-      text-align: center;
-      padding: 1rem 0;
-    }
-    .success-icon {
-      width: 56px;
-      height: 56px;
-      background: rgba(37,99,235,0.15);
-      border: 1px solid rgba(37,99,235,0.4);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.25rem;
-    }
-    .success-state h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.4rem;
-      margin-bottom: 0.6rem;
-    }
-    .success-state p {
-      font-size: 0.875rem;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
-    }
-    .btn-dl-direct {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.85rem 1.75rem;
-      background: linear-gradient(135deg, var(--gold), #a87a28);
-      border-radius: 6px;
-      color: var(--white);
-      font-weight: 600;
-      font-size: 0.9rem;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-dl-direct:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,153,58,0.35); }
-
-    /* ── PHASES SECTION ── */
-    .section-phases {
-      position: relative;
-      z-index: 1;
-      padding: 6rem 2.5rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      line-height: 1.15;
-      margin-bottom: 1.25rem;
-    }
-    .section-body {
-      font-size: 1rem;
-      line-height: 1.8;
-      color: rgba(255,255,255,0.6);
-      font-weight: 300;
-      max-width: 580px;
-      margin-bottom: 3.5rem;
-    }
-
-    .phases-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .phase-card {
-      background: rgba(15,35,64,0.8);
-      padding: 2rem 1.75rem;
-      transition: background 0.2s;
-      position: relative;
-    }
-    .phase-card:hover { background: rgba(27,58,92,0.9); }
-    .phase-num {
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.75rem;
-    }
-    .phase-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.15rem;
-      margin-bottom: 0.3rem;
-    }
-    .phase-abbr {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 0.85rem;
-    }
-    .phase-desc {
-      font-size: 0.82rem;
-      line-height: 1.65;
-      color: rgba(255,255,255,0.5);
-    }
-    .phase-arrow {
-      position: absolute;
-      top: 50%;
-      right: -12px;
-      transform: translateY(-50%);
-      z-index: 2;
-      width: 24px;
-      height: 24px;
-      background: var(--navy);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.3);
-      font-size: 0.6rem;
-    }
-
-    /* ── COST CURVE ── */
-    .section-cost {
-      position: relative;
-      z-index: 1;
-      background: rgba(255,255,255,0.025);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .section-cost-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 6rem 2.5rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-
-    .cost-table {
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .cost-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .cost-row:last-child { border-bottom: none; }
-    .cost-row.header { background: rgba(37,99,235,0.15); }
-    .cost-cell {
-      padding: 0.85rem 1.1rem;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.5;
-      border-right: 1px solid rgba(255,255,255,0.05);
-    }
-    .cost-cell:last-child { border-right: none; }
-    .cost-cell.bad { color: #f87171; }
-    .cost-cell.good { color: #86efac; }
-    .cost-row.header .cost-cell {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
-    }
-    .cost-phase {
-      font-weight: 600;
-      color: rgba(255,255,255,0.85);
-      font-size: 0.82rem;
-    }
-
-    /* ── QUOTE SECTION ── */
-    .section-quote {
-      position: relative;
-      z-index: 1;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 6rem 2.5rem;
-      text-align: center;
-    }
-    .big-quote {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(1.5rem, 3vw, 2.4rem);
-      line-height: 1.45;
-      font-style: italic;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 1.5rem;
-    }
-    .big-quote-source {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* ── ABOUT SECTION ── */
-    .section-about {
-      position: relative;
-      z-index: 1;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 6rem 2.5rem;
-      display: grid;
-      grid-template-columns: 2fr 3fr;
-      gap: 5rem;
-      align-items: start;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .about-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-    }
-    .about-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.2rem;
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-    }
-    .about-title {
-      font-size: 0.875rem;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.03em;
-    }
-    .about-contact a {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.82rem;
-      color: var(--accent);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .about-contact a:hover { color: #7eb3f7; }
-    .about-bio {
-      font-size: 1rem;
-      line-height: 1.85;
-      color: rgba(255,255,255,0.6);
-      font-weight: 300;
-    }
-    .about-bio p + p { margin-top: 1.25rem; }
-    .about-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 2rem;
-    }
-    .tag {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 3px;
-      padding: 0.3rem 0.7rem;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 2rem 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    footer p {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.25);
-    }
-
-    /* ── BUNDLE PREVIEW CARDS ── */
-    .bundle-preview {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.75rem;
-      margin-top: 2rem;
-    }
-    .bundle-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 8px;
-      padding: 1rem 1.1rem;
-    }
-    .bundle-card-accent {
-      background: rgba(201,153,58,0.07);
-      border-color: rgba(201,153,58,0.25);
-    }
-    .bundle-card-num {
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.4rem;
-    }
-    .bundle-card-title {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.9);
-      margin-bottom: 0.4rem;
-      line-height: 1.3;
-    }
-    .bundle-card-desc {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.5;
-    }
-
-    /* ── SECOND PAPER SECTION ── */
-    .section-agentic {
-      position: relative;
-      z-index: 1;
-      background: rgba(201,153,58,0.04);
-      border-top: 1px solid rgba(201,153,58,0.15);
-      border-bottom: 1px solid rgba(201,153,58,0.15);
-    }
-    .section-agentic-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 6rem 2.5rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-    .agentic-tag {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      background: rgba(201,153,58,0.15);
-      border: 1px solid rgba(201,153,58,0.35);
-      color: var(--gold);
-      border-radius: 3px;
-      padding: 0.25rem 0.6rem;
-      margin-bottom: 1rem;
-    }
-    .agentic-failures {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .agentic-failure-item {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      padding: 0.85rem 1rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 6px;
-    }
-    .agentic-failure-icon {
-      width: 28px;
-      height: 28px;
-      min-width: 28px;
-      background: rgba(201,153,58,0.12);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: var(--gold);
-    }
-    .agentic-failure-title {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 0.2rem;
-    }
-    .agentic-failure-desc {
-      font-size: 0.76rem;
-      color: rgba(255,255,255,0.4);
-      line-height: 1.5;
-    }
-
-    .bundle-card-teal {
-      background: rgba(13,115,119,0.1);
-      border-color: rgba(13,115,119,0.35);
-    }
-    .bundle-card-teal .bundle-card-num { color: #2dd4bf; }
-
-    .bundle-card-purple {
-      background: rgba(124,58,237,0.1);
-      border-color: rgba(124,58,237,0.35);
-    }
-    .bundle-card-purple .bundle-card-num { color: #a78bfa; }
-    .section-vol3 {
-      position: relative;
-      z-index: 1;
-      background: rgba(13,115,119,0.05);
-      border-top: 1px solid rgba(13,115,119,0.2);
-      border-bottom: 1px solid rgba(13,115,119,0.2);
-    }
-    .section-vol3-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 6rem 2.5rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-    .teal-tag {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      background: rgba(13,115,119,0.15);
-      border: 1px solid rgba(13,115,119,0.4);
-      color: #2dd4bf;
-      border-radius: 3px;
-      padding: 0.25rem 0.6rem;
-      margin-bottom: 1rem;
-    }
-    .assumption-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .assumption-item {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      padding: 0.85rem 1rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 6px;
-      border-left: 2px solid rgba(13,115,119,0.5);
-    }
-    .assumption-title {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 0.2rem;
-    }
-    .assumption-desc {
-      font-size: 0.76rem;
-      color: rgba(255,255,255,0.4);
-      line-height: 1.5;
-    }
-
-    @media (max-width: 900px) {
-      .section-vol3-inner { grid-template-columns: 1fr; gap: 3rem; }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .anim { opacity: 0; animation: fadeUp 0.7s ease forwards; }
-    .anim-1 { animation-delay: 0.1s; }
-    .anim-2 { animation-delay: 0.25s; }
-    .anim-3 { animation-delay: 0.4s; }
-    .anim-4 { animation-delay: 0.55s; }
-    .anim-5 { animation-delay: 0.7s; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; padding-top: 7rem; gap: 3rem; }
-      .hero::before { display: none; }
-      .phases-grid { grid-template-columns: 1fr 1fr; }
-      .phase-arrow { display: none; }
-      .section-cost-inner { grid-template-columns: 1fr; gap: 3rem; }
-      .section-about { grid-template-columns: 1fr; gap: 2.5rem; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 600px) {
-      nav { padding: 1rem 1.25rem; }
-      .hero, .section-phases, .section-cost-inner, .section-about { padding-left: 1.25rem; padding-right: 1.25rem; }
-      .phases-grid { grid-template-columns: 1fr; }
-      .hero-meta { flex-wrap: wrap; gap: 1.25rem; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Supportability Engineering — Five-Volume Series by John A. Bowman</title>
+<meta name="description" content="Five-volume white paper series: Supportability Engineering for traditional software, agentic AI systems, agentic development workflows, AI operations, and regulated environments. Free download by John A. Bowman." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0f2340;
+  --navy2: #1b3a5c;
+  --accent: #2563eb;
+  --accent2:#1d4ed8;
+  --gold: #c9993a;
+  --light: #f0f4fa;
+  --muted: #6b7a90;
+  --white: #ffffff;
+  --text: #1a2535;
+  --border: rgba(255,255,255,0.08);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2.5rem;
+  background: rgba(15, 35, 64, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  opacity: 0.9;
+}
+.nav-brand span { color: var(--gold); }
+.nav-cta {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border: 1px solid rgba(201,153,58,0.4);
+  padding: 0.5rem 1.1rem;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.nav-cta:hover { background: rgba(201,153,58,0.12); border-color: var(--gold); }
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 4rem;
+  padding: 8rem 2.5rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 1;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(37,99,235,0.3) 30%, rgba(37,99,235,0.3) 70%, transparent);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+}
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.6rem, 4.5vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.hero h1 em { font-style: italic; color: #7eb3f7; }
+.hero-desc {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.7);
+  font-weight: 300;
+  margin-bottom: 2.5rem;
+  max-width: 480px;
+}
+.hero-meta { display: flex; gap: 2rem; }
+.meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+.meta-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.meta-value { font-size: 0.9rem; color: rgba(255,255,255,0.85); }
+.form-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 2.5rem;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+}
+.form-card-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 0.5rem; }
+.form-card-sub { font-size: 0.875rem; color: rgba(255,255,255,0.55); margin-bottom: 2rem; line-height: 1.5; }
+.form-group { margin-bottom: 1.1rem; }
+.form-group label { display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 0.45rem; }
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.925rem;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+}
+.form-group input::placeholder { color: rgba(255,255,255,0.25); }
+.form-group input:focus, .form-group select:focus { border-color: rgba(37,99,235,0.7); background: rgba(255,255,255,0.09); }
+.form-group select option { background: var(--navy2); color: var(--white); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.btn-download {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.95rem 1.5rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: 6px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.925rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.btn-download:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(37,99,235,0.4); }
+.btn-download svg { width: 16px; height: 16px; }
+.form-privacy { margin-top: 1rem; font-size: 0.72rem; color: rgba(255,255,255,0.3); text-align: center; line-height: 1.5; }
+.success-state { display: none; text-align: center; padding: 1rem 0; }
+.success-icon {
+  width: 56px; height: 56px;
+  background: rgba(37,99,235,0.15);
+  border: 1px solid rgba(37,99,235,0.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+.success-state h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 0.6rem; }
+.success-state p { font-size: 0.875rem; color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; line-height: 1.6; }
+.btn-dl-direct {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  background: linear-gradient(135deg, var(--gold), #a87a28);
+  border-radius: 6px; color: var(--white); font-weight: 600; font-size: 0.9rem;
+  text-decoration: none; transition: all 0.2s;
+}
+.btn-dl-direct:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,153,58,0.35); }
+.section-phases { position: relative; z-index: 1; padding: 6rem 2.5rem; max-width: 1200px; margin: 0 auto; }
+.section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.15; margin-bottom: 1.25rem; }
+.section-body { font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,0.6); font-weight: 300; max-width: 580px; margin-bottom: 3.5rem; }
+.phases-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden;
+}
+.phase-card { background: rgba(15,35,64,0.8); padding: 2rem 1.75rem; transition: background 0.2s; position: relative; }
+.phase-card:hover { background: rgba(27,58,92,0.9); }
+.phase-num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+.phase-name { font-family: 'DM Serif Display', serif; font-size: 1.15rem; margin-bottom: 0.3rem; }
+.phase-abbr { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.85rem; }
+.phase-desc { font-size: 0.82rem; line-height: 1.65; color: rgba(255,255,255,0.5); }
+.phase-arrow { position: absolute; top: 50%; right: -12px; transform: translateY(-50%); z-index: 2; width: 24px; height: 24px; background: var(--navy); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.3); font-size: 0.6rem; }
+.section-cost { position: relative; z-index: 1; background: rgba(255,255,255,0.025); border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.section-cost-inner { max-width: 1200px; margin: 0 auto; padding: 6rem 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.cost-table { border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; overflow: hidden; }
+.cost-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.cost-row:last-child { border-bottom: none; }
+.cost-row.header { background: rgba(37,99,235,0.15); }
+.cost-cell { padding: 0.85rem 1.1rem; font-size: 0.8rem; color: rgba(255,255,255,0.6); line-height: 1.5; border-right: 1px solid rgba(255,255,255,0.05); }
+.cost-cell:last-child { border-right: none; }
+.cost-cell.bad { color: #f87171; }
+.cost-cell.good { color: #86efac; }
+.cost-row.header .cost-cell { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+.cost-phase { font-weight: 600; color: rgba(255,255,255,0.85); font-size: 0.82rem; }
+.section-quote { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 6rem 2.5rem; text-align: center; }
+.big-quote { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 3vw, 2.4rem); line-height: 1.45; font-style: italic; color: rgba(255,255,255,0.85); margin-bottom: 1.5rem; }
+.big-quote-source { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.section-about { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 6rem 2.5rem; display: grid; grid-template-columns: 2fr 3fr; gap: 5rem; align-items: start; border-top: 1px solid rgba(255,255,255,0.06); }
+.about-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.about-name { font-family: 'DM Serif Display', serif; font-size: 2.2rem; line-height: 1.1; margin-bottom: 0.5rem; }
+.about-title { font-size: 0.875rem; color: rgba(255,255,255,0.45); margin-bottom: 1.5rem; letter-spacing: 0.03em; }
+.about-contact a { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--accent); text-decoration: none; transition: color 0.2s; }
+.about-contact a:hover { color: #7eb3f7; }
+.about-bio { font-size: 1rem; line-height: 1.85; color: rgba(255,255,255,0.6); font-weight: 300; }
+.about-bio p + p { margin-top: 1.25rem; }
+.about-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+.tag { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.12); border-radius: 3px; padding: 0.3rem 0.7rem; }
+footer { position: relative; z-index: 1; border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
+footer p { font-size: 0.75rem; color: rgba(255,255,255,0.25); }
+.bundle-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+.bundle-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem 1.1rem; }
+.bundle-card-accent { background: rgba(201,153,58,0.07); border-color: rgba(201,153,58,0.25); }
+.bundle-card-num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+.bundle-card-title { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.9); margin-bottom: 0.4rem; line-height: 1.3; }
+.bundle-card-desc { font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
+.section-agentic { position: relative; z-index: 1; background: rgba(201,153,58,0.04); border-top: 1px solid rgba(201,153,58,0.15); border-bottom: 1px solid rgba(201,153,58,0.15); }
+.section-agentic-inner { max-width: 1200px; margin: 0 auto; padding: 6rem 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.agentic-tag { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(201,153,58,0.15); border: 1px solid rgba(201,153,58,0.35); color: var(--gold); border-radius: 3px; padding: 0.25rem 0.6rem; margin-bottom: 1rem; }
+.agentic-failures { display: flex; flex-direction: column; gap: 0.75rem; }
+.agentic-failure-item { display: flex; gap: 1rem; align-items: flex-start; padding: 0.85rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; }
+.agentic-failure-icon { width: 28px; height: 28px; min-width: 28px; background: rgba(201,153,58,0.12); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800; color: var(--gold); }
+.agentic-failure-title { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: 0.2rem; }
+.agentic-failure-desc { font-size: 0.76rem; color: rgba(255,255,255,0.4); line-height: 1.5; }
+.bundle-card-teal { background: rgba(13,115,119,0.1); border-color: rgba(13,115,119,0.35); }
+.bundle-card-teal .bundle-card-num { color: #2dd4bf; }
+.bundle-card-purple { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.35); }
+.bundle-card-purple .bundle-card-num { color: #a78bfa; }
+.bundle-card-green { background: rgba(15,118,110,0.1); border-color: rgba(15,118,110,0.35); }
+.bundle-card-green .bundle-card-num { color: #34d399; }
+.section-vol3 { position: relative; z-index: 1; background: rgba(13,115,119,0.05); border-top: 1px solid rgba(13,115,119,0.2); border-bottom: 1px solid rgba(13,115,119,0.2); }
+.section-vol3-inner { max-width: 1200px; margin: 0 auto; padding: 6rem 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.teal-tag { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(13,115,119,0.15); border: 1px solid rgba(13,115,119,0.4); color: #2dd4bf; border-radius: 3px; padding: 0.25rem 0.6rem; margin-bottom: 1rem; }
+.assumption-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.assumption-item { display: flex; gap: 1rem; align-items: flex-start; padding: 0.85rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; border-left: 2px solid rgba(13,115,119,0.5); }
+.assumption-title { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: 0.2rem; }
+.assumption-desc { font-size: 0.76rem; color: rgba(255,255,255,0.4); line-height: 1.5; }
+/* Vol 5 compliance section */
+.section-vol5 { position: relative; z-index: 1; background: rgba(15,118,110,0.05); border-top: 1px solid rgba(15,118,110,0.2); border-bottom: 1px solid rgba(15,118,110,0.2); }
+.section-vol5-inner { max-width: 1200px; margin: 0 auto; padding: 6rem 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.green-tag { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(15,118,110,0.15); border: 1px solid rgba(15,118,110,0.4); color: #34d399; border-radius: 3px; padding: 0.25rem 0.6rem; margin-bottom: 1rem; }
+.compliance-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.compliance-item { display: flex; gap: 1rem; align-items: flex-start; padding: 0.85rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; border-left: 2px solid rgba(15,118,110,0.5); }
+.compliance-item-label { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: 0.2rem; }
+.compliance-item-desc { font-size: 0.76rem; color: rgba(255,255,255,0.4); line-height: 1.5; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.anim { opacity: 0; animation: fadeUp 0.7s ease forwards; }
+.anim-1 { animation-delay: 0.1s; } .anim-2 { animation-delay: 0.25s; }
+.anim-3 { animation-delay: 0.4s; } .anim-4 { animation-delay: 0.55s; }
+.anim-5 { animation-delay: 0.7s; }
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding-top: 7rem; gap: 3rem; }
+  .hero::before { display: none; }
+  .phases-grid { grid-template-columns: 1fr 1fr; }
+  .phase-arrow { display: none; }
+  .section-cost-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .section-about { grid-template-columns: 1fr; gap: 2.5rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .section-vol3-inner, .section-vol5-inner { grid-template-columns: 1fr; gap: 3rem; }
+}
+@media (max-width: 600px) {
+  nav { padding: 1rem 1.25rem; }
+  .hero, .section-phases, .section-cost-inner, .section-about { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .phases-grid { grid-template-columns: 1fr; }
+  .hero-meta { flex-wrap: wrap; gap: 1.25rem; }
+}
+</style>
 </head>
 <body>
+<nav>
+  <div class="nav-brand">Supportability <span>Engineering</span></div>
+  <a href="#download" class="nav-cta">Get the Bundle</a>
+</nav>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-brand">Supportability <span>Engineering</span></div>
-    <a href="#download" class="nav-cta">Get the Bundle</a>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-left">
-      <div class="hero-eyebrow anim anim-1">Four-Volume Series · 2026</div>
-      <h1 class="anim anim-2">
-        Supportability Engineering:<br>
-        The Complete <em>Shift Left</em> Series
-      </h1>
-      <p class="hero-desc anim anim-3">
-        Three white papers. One framework. The complete guide to designing supportability into software — for traditional systems, agentic AI products, the new reality of AI-generated code, and the AI systems now running your support operations.
-      </p>
-      <div class="hero-meta anim anim-4">
-        <div class="meta-item">
-          <span class="meta-label">Author</span>
-          <span class="meta-value">John A. Bowman</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Volumes</span>
-          <span class="meta-value">4 White Papers</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Format</span>
-          <span class="meta-value">Free Bundle · PDF</span>
-        </div>
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow anim anim-1">Five-Volume Series · 2026</div>
+    <h1 class="anim anim-2">
+      Supportability Engineering:<br>
+      The Complete <em>Shift Left</em> Series
+    </h1>
+    <p class="hero-desc anim anim-3">
+      Five white papers. One framework. The complete guide to designing supportability into software — for traditional systems, agentic AI products, AI-generated code, AI operations, and regulated environments.
+    </p>
+    <div class="hero-meta anim anim-4">
+      <div class="meta-item">
+        <span class="meta-label">Author</span>
+        <span class="meta-value">John A. Bowman</span>
       </div>
-      <div class="bundle-preview anim anim-5">
-        <div class="bundle-card">
-          <div class="bundle-card-num">Vol. 1</div>
-          <div class="bundle-card-title">Why the Best Support Organizations Shift Left</div>
-          <div class="bundle-card-desc">The foundational six-phase framework for traditional software.</div>
-        </div>
-        <div class="bundle-card bundle-card-accent">
-          <div class="bundle-card-num">Vol. 2</div>
-          <div class="bundle-card-title">Shifting Left When the System Can Think</div>
-          <div class="bundle-card-desc">Supportability for agentic AI systems as the product being built.</div>
-        </div>
-        <div class="bundle-card bundle-card-teal">
-          <div class="bundle-card-num">Vol. 3</div>
-          <div class="bundle-card-title">When the Builder Can't Sign Off</div>
-          <div class="bundle-card-desc">Supportability for systems built by AI agents, not human engineers.</div>
-        </div>
-        <div class="bundle-card bundle-card-purple">
-          <div class="bundle-card-num">Vol. 4 · New</div>
-          <div class="bundle-card-title">When the AI Running Your Support Needs Supporting</div>
-          <div class="bundle-card-desc">Governance for the AI systems operating your support stack.</div>
-        </div>
+      <div class="meta-item">
+        <span class="meta-label">Volumes</span>
+        <span class="meta-value">5 White Papers</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Format</span>
+        <span class="meta-value">Free Bundle · PDF</span>
       </div>
     </div>
+    <div class="bundle-preview anim anim-5">
+      <div class="bundle-card">
+        <div class="bundle-card-num">Vol. 1</div>
+        <div class="bundle-card-title">Why the Best Support Organizations Shift Left</div>
+        <div class="bundle-card-desc">The foundational six-phase framework for traditional software.</div>
+      </div>
+      <div class="bundle-card bundle-card-accent">
+        <div class="bundle-card-num">Vol. 2</div>
+        <div class="bundle-card-title">Shifting Left When the System Can Think</div>
+        <div class="bundle-card-desc">Supportability for agentic AI systems as the product being built.</div>
+      </div>
+      <div class="bundle-card bundle-card-teal">
+        <div class="bundle-card-num">Vol. 3</div>
+        <div class="bundle-card-title">When the Builder Can't Sign Off</div>
+        <div class="bundle-card-desc">Supportability for systems built by AI agents, not human engineers.</div>
+      </div>
+      <div class="bundle-card bundle-card-purple">
+        <div class="bundle-card-num">Vol. 4</div>
+        <div class="bundle-card-title">When the AI Running Your Support Needs Supporting</div>
+        <div class="bundle-card-desc">Governance for the AI systems operating your support stack.</div>
+      </div>
+      <div class="bundle-card bundle-card-green">
+        <div class="bundle-card-num">Vol. 5 · New</div>
+        <div class="bundle-card-title">Compliance by Design</div>
+        <div class="bundle-card-desc">SE in regulated environments — SOC 2, ISO 27001, GDPR, SOX, FedRAMP.</div>
+      </div>
+    </div>
+  </div>
 
-    <!-- FORM CARD -->
-    <div id="download" class="form-card anim anim-3">
-      <div id="form-content">
-        <h2 class="form-card-title">Get All Four Free</h2>
-        <p class="form-card-sub">The complete four-volume series — traditional software, agentic AI systems, agentic development, and AI operations governance. One form, instant access to all four.</p>
-
-        <form id="lead-form" novalidate>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="fname">First Name</label>
-              <input type="text" id="fname" name="fname" placeholder="Jane" required />
-            </div>
-            <div class="form-group">
-              <label for="lname">Last Name</label>
-              <input type="text" id="lname" name="lname" placeholder="Smith" required />
-            </div>
-          </div>
-
+  <div id="download" class="form-card anim anim-3">
+    <div id="form-content">
+      <h2 class="form-card-title">Get All Five Free</h2>
+      <p class="form-card-sub">The complete five-volume series — traditional software, agentic AI systems, agentic development, AI operations governance, and compliance by design. One form, instant access to all five.</p>
+      <form id="lead-form" novalidate>
+        <div class="form-row">
           <div class="form-group">
-            <label for="email">Work Email</label>
-            <input type="email" id="email" name="email" placeholder="jane@company.com" required />
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="fname" placeholder="Jane" required />
           </div>
-
           <div class="form-group">
-            <label for="company">Company</label>
-            <input type="text" id="company" name="company" placeholder="Acme Corp" />
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="lname" placeholder="Smith" required />
           </div>
-
-          <div class="form-group">
-            <label for="role">Your Role</label>
-            <select id="role" name="role">
-              <option value="" disabled selected>Select your role…</option>
-              <option>VP / Director of Engineering</option>
-              <option>VP / Director of Support</option>
-              <option>Engineering Manager</option>
-              <option>Support Manager / Lead</option>
-              <option>SRE / Platform Engineer</option>
-              <option>Software Engineer</option>
-              <option>Product Manager</option>
-              <option>CTO / CIO</option>
-              <option>Recruiter / Talent</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <button type="submit" class="btn-download">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
-            Download All Four Free
-          </button>
-        </form>
-        <p class="form-privacy">Your information is never sold or shared with third parties.</p>
-      </div>
-
-      <!-- SUCCESS STATE -->
-      <div class="success-state" id="success-state">
-        <div class="success-icon">
-          <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
         </div>
-        <h3>You're all set.</h3>
-        <p>All four volumes are ready. Download each one below.</p>
-        <a href="Supportability_Engineering_WhitePaper.pdf" download class="btn-dl-direct">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <div class="form-group">
+          <label for="email">Work Email</label>
+          <input type="email" id="email" name="email" placeholder="jane@company.com" required />
+        </div>
+        <div class="form-group">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company" placeholder="Acme Corp" />
+        </div>
+        <div class="form-group">
+          <label for="role">Your Role</label>
+          <select id="role" name="role">
+            <option value="" disabled selected>Select your role…</option>
+            <option>VP / Director of Engineering</option>
+            <option>VP / Director of Support</option>
+            <option>Engineering Manager</option>
+            <option>Support Manager / Lead</option>
+            <option>SRE / Platform Engineer</option>
+            <option>Software Engineer</option>
+            <option>Product Manager</option>
+            <option>CTO / CIO</option>
+            <option>CISO / Compliance Officer</option>
+            <option>Recruiter / Talent</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-download">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
           </svg>
-          Vol. 1 — Shift Left (Traditional)
-        </a>
-        <a href="Supportability_Engineering_Agentic_WhitePaper.pdf" download class="btn-dl-direct" style="margin-top:0.6rem; background: linear-gradient(135deg, #1b3a5c, #0f2340); border: 1px solid rgba(201,153,58,0.5);">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg>
-          Vol. 2 — Shift Left (Agentic Systems)
-        </a>
-        <a href="Supportability_Engineering_AgenticDev_WhitePaper.pdf" download class="btn-dl-direct" style="margin-top:0.6rem; background: linear-gradient(135deg, #0d7377, #094d50); border: 1px solid rgba(13,115,119,0.6);">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg>
-          Vol. 3 — Shift Left (Agentic Development)
-        </a>
-        <a href="Supportability_Engineering_AIOperations_WhitePaper.pdf" download class="btn-dl-direct" style="margin-top:0.6rem; background: linear-gradient(135deg, #7c3aed, #6d28d9); border: 1px solid rgba(124,58,237,0.6);">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg>
-          Vol. 4 — AI Operations
-        </a>
-        <p style="margin-top:1.5rem; font-size:0.75rem; color:rgba(255,255,255,0.3);">John will be in touch personally — dooohhead@gmail.com</p>
-      </div>
+          Download All Five Free
+        </button>
+      </form>
+      <p class="form-privacy">Your information is never sold or shared with third parties.</p>
     </div>
-  </section>
 
-  <!-- PHASES -->
-  <section class="section-phases">
-    <p class="section-label">The Framework</p>
-    <h2 class="section-title">Six Phases. One Connected System.</h2>
-    <p class="section-body">Every gap caught at requirements costs minutes to fix. The same gap caught in production costs months — per incident, indefinitely. The framework carries the right knowledge forward, phase by phase.</p>
-
-    <div class="phases-grid">
-      <div class="phase-card">
-        <div class="phase-num">Phase 01 · Requirements</div>
-        <div class="phase-name">Requirements</div>
-        <div class="phase-abbr">SRD</div>
-        <p class="phase-desc">Establishes observability requirements, failure mode inventory, and customer impact classification before design begins. Support signs off before a single line of code is scoped.</p>
-        <div class="phase-arrow">›</div>
+    <div class="success-state" id="success-state">
+      <div class="success-icon">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
       </div>
-      <div class="phase-card">
-        <div class="phase-num">Phase 02 · Design</div>
-        <div class="phase-name">Architecture Review</div>
-        <div class="phase-abbr">SAR</div>
-        <p class="phase-desc">Maps every failure point in the architecture before build. Identifies blind spots, trace gaps, and dependency risks while they're still cheap to eliminate.</p>
-        <div class="phase-arrow">›</div>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num">Phase 03 · Build</div>
-        <div class="phase-name">Implementation Checklist</div>
-        <div class="phase-abbr">SIC</div>
-        <p class="phase-desc">Attaches to every pull request. Verifies logging quality, error handling, four golden signal instrumentation, and failure mode test coverage. A PR cannot merge without it.</p>
-        <div class="phase-arrow">›</div>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num">Phase 04 · Test</div>
-        <div class="phase-name">Supportability Test Plan</div>
-        <div class="phase-abbr">STP</div>
-        <p class="phase-desc">Validates — before any feature ships — that a support engineer unfamiliar with the system can diagnose every failure mode independently using only the logs, alerts, and runbooks available.</p>
-        <div class="phase-arrow">›</div>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num">Phase 05 · Release</div>
-        <div class="phase-name">Readiness Review</div>
-        <div class="phase-abbr">SRR</div>
-        <p class="phase-desc">The final gate before production. Support lead and engineering lead both sign. Release does not proceed without both. Communication templates, rollback procedures, and on-call rotation confirmed.</p>
-        <div class="phase-arrow">›</div>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num">Phase 06 · Operate</div>
-        <div class="phase-name">Feedback Loop</div>
-        <div class="phase-abbr">SFL</div>
-        <p class="phase-desc">Converts every incident into an upstream improvement. Incident scores, observability gap logs, and runbook accuracy tracking feed back into the next design cycle. Every incident makes the next one cheaper.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- AGENTIC PAPER SECTION -->
-  <div class="section-agentic">
-    <div class="section-agentic-inner">
-      <div>
-        <div class="agentic-tag">Vol. 2 — Companion Paper</div>
-        <h2 class="section-title" style="margin-top:0;">Shifting Left When<br>the System Can Think</h2>
-        <p class="section-body" style="margin-bottom:1.5rem;">Agentic AI systems introduce a new class of failure that traditional supportability frameworks weren't built for. The companion paper extends every phase of the framework for the agentic era.</p>
-        <p class="section-body" style="margin-bottom:0; font-size:0.875rem;">In traditional software, a failure has a call stack. In an agentic workflow, a failure has a <em style="color:rgba(255,255,255,0.7);">reasoning chain</em> — and that is far harder to reconstruct after the fact.</p>
-      </div>
-      <div class="agentic-failures">
-        <div class="agentic-failure-item">
-          <div class="agentic-failure-icon">1</div>
-          <div>
-            <div class="agentic-failure-title">Non-Deterministic Failure</div>
-            <div class="agentic-failure-desc">Same input, same agent, different outcome. Traditional QA replay assumptions break entirely.</div>
-          </div>
-        </div>
-        <div class="agentic-failure-item">
-          <div class="agentic-failure-icon">2</div>
-          <div>
-            <div class="agentic-failure-title">Silent Confident Failure</div>
-            <div class="agentic-failure-desc">The agent completes the task. No error fires. The output looks plausible. It is wrong.</div>
-          </div>
-        </div>
-        <div class="agentic-failure-item">
-          <div class="agentic-failure-icon">3</div>
-          <div>
-            <div class="agentic-failure-title">Mid-Execution Intervention Triggers</div>
-            <div class="agentic-failure-desc">Decisions the agent should surface to a human — designed in from requirements, not discovered in production.</div>
-          </div>
-        </div>
-        <div class="agentic-failure-item">
-          <div class="agentic-failure-icon">4</div>
-          <div>
-            <div class="agentic-failure-title">Context Window Drift</div>
-            <div class="agentic-failure-desc">Long-running tasks change the agent's effective working memory. Step 40 is not Step 4.</div>
-          </div>
-        </div>
-        <div class="agentic-failure-item">
-          <div class="agentic-failure-icon">5</div>
-          <div>
-            <div class="agentic-failure-title">Tool Schema Drift</div>
-            <div class="agentic-failure-desc">A renamed parameter in an external API produces reasoning failures, not integration errors.</div>
-          </div>
-        </div>
-        <div class="agentic-failure-item">
-          <div class="agentic-failure-icon">6</div>
-          <div>
-            <div class="agentic-failure-title">Adversarial Redirect</div>
-            <div class="agentic-failure-desc">External content that instructs the agent to ignore its system prompt. A new class of failure at the intersection of security and supportability.</div>
-          </div>
-        </div>
-      </div>
+      <h3>You're all set.</h3>
+      <p>All five volumes are ready. Download each one below.</p>
+      <a href="Supportability_Engineering_WhitePaper.pdf" download class="btn-dl-direct">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+        Vol. 1 — Shift Left (Traditional)
+      </a>
+      <a href="Supportability_Engineering_Agentic_WhitePaper.pdf" download class="btn-dl-direct" style="margin-top:0.6rem; background: linear-gradient(135deg, #1b3a5c, #0f2340); border: 1px solid rgba(201,153,58,0.5);">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+        Vol. 2 — Shift Left (Agentic Systems)
+      </a>
+      <a href="Supportability_Engineering_AgenticDev_WhitePaper.pdf" download class="btn-dl-direct" style="margin-top:0.6rem; background: linear-gradient(135deg, #0d7377, #094d50); border: 1px solid rgba(13,115,119,0.6);">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+        Vol. 3 — Shift Left (Agentic Development)
+      </a>
+      <a href="Supportability_Engineering_AIOperations_WhitePaper.pdf" download class="btn-dl-direct" style="margin-top:0.6rem; background: linear-gradient(135deg, #7c3aed, #6d28d9); border: 1px solid rgba(124,58,237,0.6);">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+        Vol. 4 — AI Operations
+      </a>
+      <a href="Supportability_Engineering_Compliance_WhitePaper.pdf" download class="btn-dl-direct" style="margin-top:0.6rem; background: linear-gradient(135deg, #0f766e, #0a524d); border: 1px solid rgba(15,118,110,0.6);">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+        Vol. 5 — Compliance by Design
+      </a>
+      <p style="margin-top:1.5rem; font-size:0.75rem; color:rgba(255,255,255,0.3);">John will be in touch personally — dooohhead@gmail.com</p>
     </div>
   </div>
+</section>
 
-  <!-- VOL 3 SECTION -->
-  <div class="section-vol3">
-    <div class="section-vol3-inner">
-      <div>
-        <div class="teal-tag">Vol. 3 — New</div>
-        <h2 class="section-title" style="margin-top:0; color:var(--white);">When the Builder<br>Can't Sign Off</h2>
-        <p class="section-body" style="margin-bottom:1.5rem;">The hardest problem in the series. What happens to Supportability Engineering when the code is generated by an agent, the architecture emerged from autonomous sessions, and no human fully authored what went to production?</p>
-        <p class="section-body" style="margin-bottom:0; font-size:0.875rem;">The framework assumes humans make design decisions. Volume 3 addresses what happens when they don't — and how to ensure agent-built systems are still operable at 2am.</p>
-      </div>
-      <div class="assumption-list">
-        <div class="assumption-item">
-          <div>
-            <div class="assumption-title">Assumption 1 Broken: Someone knows why the code was written this way</div>
-            <div class="assumption-desc">In agentic development, the institutional knowledge that used to live in the engineer's head now lives nowhere — unless it was deliberately captured.</div>
-          </div>
-        </div>
-        <div class="assumption-item">
-          <div>
-            <div class="assumption-title">Assumption 2 Broken: The architecture was designed</div>
-            <div class="assumption-desc">Agentic development produces architecture through accretion. Blind spots appear not because a designer missed them — but because nobody designed anything.</div>
-          </div>
-        </div>
-        <div class="assumption-item">
-          <div>
-            <div class="assumption-title">Assumption 3 Broken: The reviewer understands what they're reviewing</div>
-            <div class="assumption-desc">AI-generated code looks clean and correct. Reviewers are less likely to catch subtle supportability issues in code they didn't write and can't fully reason about at volume.</div>
-          </div>
-        </div>
-        <div class="assumption-item">
-          <div>
-            <div class="assumption-title">Assumption 4 Broken: The feedback loop has a human memory</div>
-            <div class="assumption-desc">If the next sprint is also agentic, SFL findings need to flow into agent context — not just a quarterly slide deck that no agent will ever read.</div>
-          </div>
-        </div>
-      </div>
+<!-- PHASES -->
+<section class="section-phases">
+  <p class="section-label">The Framework</p>
+  <h2 class="section-title">Six Phases. One Connected System.</h2>
+  <p class="section-body">Every gap caught at requirements costs minutes to fix. The same gap caught in production costs months — per incident, indefinitely. The framework carries the right knowledge forward, phase by phase.</p>
+  <div class="phases-grid">
+    <div class="phase-card">
+      <div class="phase-num">Phase 01 · Requirements</div>
+      <div class="phase-name">Requirements</div>
+      <div class="phase-abbr">SRD</div>
+      <p class="phase-desc">Establishes observability requirements, failure mode inventory, and customer impact classification before design begins. Support signs off before a single line of code is scoped.</p>
+      <div class="phase-arrow">›</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 02 · Design</div>
+      <div class="phase-name">Architecture Review</div>
+      <div class="phase-abbr">SAR</div>
+      <p class="phase-desc">Maps every failure point in the architecture before build. Identifies blind spots, trace gaps, and dependency risks while they're still cheap to eliminate.</p>
+      <div class="phase-arrow">›</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 03 · Build</div>
+      <div class="phase-name">Implementation Checklist</div>
+      <div class="phase-abbr">SIC</div>
+      <p class="phase-desc">Attaches to every pull request. Verifies logging quality, error handling, four golden signal instrumentation, and failure mode test coverage. A PR cannot merge without it.</p>
+      <div class="phase-arrow">›</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 04 · Test</div>
+      <div class="phase-name">Supportability Test Plan</div>
+      <div class="phase-abbr">STP</div>
+      <p class="phase-desc">Validates — before any feature ships — that a support engineer unfamiliar with the system can diagnose every failure mode independently using only the logs, alerts, and runbooks available.</p>
+      <div class="phase-arrow">›</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 05 · Release</div>
+      <div class="phase-name">Readiness Review</div>
+      <div class="phase-abbr">SRR</div>
+      <p class="phase-desc">The final gate before production. Support lead and engineering lead both sign. Release does not proceed without both. Communication templates, rollback procedures, and on-call rotation confirmed.</p>
+      <div class="phase-arrow">›</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 06 · Operate</div>
+      <div class="phase-name">Feedback Loop</div>
+      <div class="phase-abbr">SFL</div>
+      <p class="phase-desc">Converts every incident into an upstream improvement. Incident scores, observability gap logs, and runbook accuracy tracking feed back into the next design cycle. Every incident makes the next one cheaper.</p>
     </div>
   </div>
+</section>
 
-  <!-- VOL 4 SECTION -->
-  <div style="position:relative;z-index:1;background:rgba(124,58,237,0.04);border-top:1px solid rgba(124,58,237,0.15);border-bottom:1px solid rgba(124,58,237,0.15);">
-    <div style="max-width:1200px;margin:0 auto;padding:6rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;">
-      <div>
-        <div style="display:inline-block;font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.4);color:#a78bfa;border-radius:3px;padding:0.25rem 0.6rem;margin-bottom:1rem;">Vol. 4 · New</div>
-        <h2 class="section-title" style="margin-top:0;color:var(--white);">When the AI Running<br>Your Support Needs Supporting</h2>
-        <p class="section-body" style="margin-bottom:0;">Your alert triage AI, automated remediation agent, and customer-facing support bot are all systems. They can fail silently, make confident wrong decisions, and produce outcomes that look like correct behavior until the downstream effect reveals them. Vol. 4 is the governance framework nobody has built yet.</p>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:0.75rem;">
-        <div style="display:flex;gap:1rem;align-items:flex-start;padding:0.85rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;">
-          <div style="width:28px;height:28px;min-width:28px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:#a78bfa;">!</div>
-          <div><div style="font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:0.2rem;">No runbook for your alert triage AI</div><div style="font-size:0.76rem;color:rgba(255,255,255,0.4);line-height:1.5;">It suppresses an alert that should have fired. Nobody is paged. The customer notices first.</div></div>
-        </div>
-        <div style="display:flex;gap:1rem;align-items:flex-start;padding:0.85rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;">
-          <div style="width:28px;height:28px;min-width:28px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:#a78bfa;">!</div>
-          <div><div style="font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:0.2rem;">No intervention triggers for automated remediation</div><div style="font-size:0.76rem;color:rgba(255,255,255,0.4);line-height:1.5;">It makes things worse faster than any human could. No blast radius limit. No stop condition.</div></div>
-        </div>
-        <div style="display:flex;gap:1rem;align-items:flex-start;padding:0.85rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;">
-          <div style="width:28px;height:28px;min-width:28px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:#a78bfa;">!</div>
-          <div><div style="font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:0.2rem;">No confidence threshold for your support bot</div><div style="font-size:0.76rem;color:rgba(255,255,255,0.4);line-height:1.5;">It tells a customer their data is fine during an active breach. Confidently. In writing.</div></div>
-        </div>
-        <div style="display:flex;gap:1rem;align-items:flex-start;padding:0.85rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;">
-          <div style="width:28px;height:28px;min-width:28px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:#a78bfa;">!</div>
-          <div><div style="font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:0.2rem;">No feedback loop for wrong AI decisions</div><div style="font-size:0.76rem;color:rgba(255,255,255,0.4);line-height:1.5;">The error is noted and forgotten. It never feeds back into configuration, retraining, or governance.</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- COST CURVE -->
-  <div class="section-cost">
-    <div class="section-cost-inner">
-      <div>
-        <p class="section-label">The Business Case</p>
-        <h2 class="section-title">The Cost of Waiting</h2>
-        <p class="section-body" style="margin-bottom:0;">The same supportability gap costs orders of magnitude more to fix the later it is discovered. This is not a theory — it is a calculable number from your own incident history.</p>
-      </div>
-      <div class="cost-table">
-        <div class="cost-row header">
-          <div class="cost-cell">Where Gap Is Found</div>
-          <div class="cost-cell">Cost to Fix</div>
-        </div>
-        <div class="cost-row">
-          <div class="cost-cell"><span class="cost-phase">Requirements</span></div>
-          <div class="cost-cell good">Minutes to hours</div>
-        </div>
-        <div class="cost-row">
-          <div class="cost-cell"><span class="cost-phase">Design</span></div>
-          <div class="cost-cell good">Hours</div>
-        </div>
-        <div class="cost-row">
-          <div class="cost-cell"><span class="cost-phase">Build</span></div>
-          <div class="cost-cell" style="color:#fde68a;">Hours to days</div>
-        </div>
-        <div class="cost-row">
-          <div class="cost-cell"><span class="cost-phase">Test</span></div>
-          <div class="cost-cell" style="color:#fde68a;">Days</div>
-        </div>
-        <div class="cost-row">
-          <div class="cost-cell"><span class="cost-phase">Release</span></div>
-          <div class="cost-cell bad">Days to weeks</div>
-        </div>
-        <div class="cost-row">
-          <div class="cost-cell"><span class="cost-phase">Production</span></div>
-          <div class="cost-cell bad">Weeks to months — per incident, forever</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PULL QUOTE -->
-  <section class="section-quote">
-    <p class="big-quote">"The best support organizations don't respond faster. They designed their systems so that when something breaks, anyone on the team can pick it up and know exactly what to do."</p>
-    <p class="big-quote-source">— Supportability Engineering White Paper</p>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="section-about">
+<!-- AGENTIC PAPER SECTION -->
+<div class="section-agentic">
+  <div class="section-agentic-inner">
     <div>
-      <p class="about-label">About the Author</p>
-      <h2 class="about-name">John A. Bowman</h2>
-      <p class="about-title">Supportability Engineering Practitioner</p>
-      <div class="about-contact">
-        <a href="mailto:dooohhead@gmail.com">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-          dooohhead@gmail.com
-        </a>
+      <div class="agentic-tag">Vol. 2 — Companion Paper</div>
+      <h2 class="section-title" style="margin-top:0;">Shifting Left When<br>the System Can Think</h2>
+      <p class="section-body" style="margin-bottom:1.5rem;">Agentic AI systems introduce a new class of failure that traditional supportability frameworks weren't built for. The companion paper extends every phase of the framework for the agentic era.</p>
+      <p class="section-body" style="margin-bottom:0; font-size:0.875rem;">In traditional software, a failure has a call stack. In an agentic workflow, a failure has a <em style="color:rgba(255,255,255,0.7);">reasoning chain</em> — and that is far harder to reconstruct after the fact.</p>
+    </div>
+    <div class="agentic-failures">
+      <div class="agentic-failure-item">
+        <div class="agentic-failure-icon">1</div>
+        <div>
+          <div class="agentic-failure-title">Non-Deterministic Failure</div>
+          <div class="agentic-failure-desc">Same input, same agent, different outcome. Traditional QA replay assumptions break entirely.</div>
+        </div>
       </div>
-      <div class="about-tags">
-        <span class="tag">Support Engineering</span>
-        <span class="tag">SRE</span>
-        <span class="tag">Observability</span>
-        <span class="tag">Incident Management</span>
-        <span class="tag">Shift Left</span>
-        <span class="tag">Runbooks</span>
-        <span class="tag">Operational Readiness</span>
-        <span class="tag">Agentic AI</span>
-        <span class="tag">Reasoning Trace</span>
-        <span class="tag">AI Governance</span>
-        <span class="tag">Agentic Development</span>
+      <div class="agentic-failure-item">
+        <div class="agentic-failure-icon">2</div>
+        <div>
+          <div class="agentic-failure-title">Silent Confident Failure</div>
+          <div class="agentic-failure-desc">The agent completes the task. No error fires. The output looks plausible. It is wrong.</div>
+        </div>
+      </div>
+      <div class="agentic-failure-item">
+        <div class="agentic-failure-icon">3</div>
+        <div>
+          <div class="agentic-failure-title">Mid-Execution Intervention Triggers</div>
+          <div class="agentic-failure-desc">Decisions the agent should surface to a human — designed in from requirements, not discovered in production.</div>
+        </div>
+      </div>
+      <div class="agentic-failure-item">
+        <div class="agentic-failure-icon">4</div>
+        <div>
+          <div class="agentic-failure-title">Context Window Drift</div>
+          <div class="agentic-failure-desc">Long-running agents lose context. The system degrades silently without any error signal.</div>
+        </div>
       </div>
     </div>
-    <div class="about-bio">
-      <p>John A. Bowman is a Supportability Engineering practitioner with experience designing and implementing shift-left supportability frameworks in enterprise software environments. His work spans support operations, software design, AI governance, and organizational reliability.</p>
-      <p>This four-volume series covers the complete landscape of modern software and AI operations: the foundational six-phase framework, its extension for agentic AI products, the governance model for AI-generated code, and the framework for governing the AI systems now operating your support stack.</p>
-      <p>John is available for <strong style="color:rgba(255,255,255,0.85);">consulting engagements</strong>, <strong style="color:rgba(255,255,255,0.85);">staff roles</strong> in support engineering, AI governance, or operational readiness, and <strong style="color:rgba(255,255,255,0.85);">advisory work</strong> at any level of the framework. Reach out directly.</p>
+  </div>
+</div>
+
+<!-- VOL 3 SECTION -->
+<div class="section-vol3">
+  <div class="section-vol3-inner">
+    <div class="assumption-list">
+      <div class="assumption-item">
+        <div>
+          <div class="assumption-title">Someone knows why the code was written this way</div>
+          <div class="assumption-desc">Not anymore. The agent that generated it has no memory of the session.</div>
+        </div>
+      </div>
+      <div class="assumption-item">
+        <div>
+          <div class="assumption-title">The architecture was designed</div>
+          <div class="assumption-desc">It emerged. From prompts. Across multiple sessions. Without a single author who can be asked.</div>
+        </div>
+      </div>
+      <div class="assumption-item">
+        <div>
+          <div class="assumption-title">The reviewer understands what they're reviewing</div>
+          <div class="assumption-desc">The PR is 800 lines. The reviewer approved it in four minutes. Nobody fully read it.</div>
+        </div>
+      </div>
+      <div class="assumption-item">
+        <div>
+          <div class="assumption-title">The feedback loop has human memory</div>
+          <div class="assumption-desc">Post-incident reviews ask why. Nobody can explain the code that caused it. The agent is gone.</div>
+        </div>
+      </div>
     </div>
-  </section>
+    <div>
+      <div class="teal-tag">Vol. 3 — Companion Paper</div>
+      <h2 class="section-title" style="margin-top:0;">When the Builder<br>Can't Sign Off</h2>
+      <p class="section-body" style="margin-bottom:0;">Four assumptions the SE framework makes about humans that agentic development breaks — and the D-prefix extension layer that fixes them. The hardest supportability problem in the series.</p>
+    </div>
+  </div>
+</div>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2026 John A. Bowman · Supportability Engineering · Confidential Consulting IP</p>
-    <p>902-489-2429</p>
-  </footer>
+<!-- VOL 5 COMPLIANCE SECTION -->
+<div class="section-vol5">
+  <div class="section-vol5-inner">
+    <div>
+      <div class="green-tag">Vol. 5 · New — Compliance by Design</div>
+      <h2 class="section-title" style="margin-top:0;">Compliance and Supportability<br>Are the Same Problem</h2>
+      <p class="section-body" style="margin-bottom:1.5rem;">Regulated environments ask four questions: What can go wrong? Will you know when it does? Can you respond correctly? Can you prove it? The SE framework answers all four — and produces audit evidence as a byproduct of building correctly.</p>
+      <p class="section-body" style="margin-bottom:0; font-size:0.875rem;">Vol. 5 maps the SE framework to SOC 2, ISO 27001, GDPR, SOX, and FedRAMP — and defines the C-prefix extension layer that completes the compliance picture without running two separate processes.</p>
+    </div>
+    <div class="compliance-list">
+      <div class="compliance-item">
+        <div>
+          <div class="compliance-item-label">SOC 2 &amp; ISO 27001</div>
+          <div class="compliance-item-desc">SE deliverables map directly to change management, monitoring, incident response, and security testing controls. No separate documentation process.</div>
+        </div>
+      </div>
+      <div class="compliance-item">
+        <div>
+          <div class="compliance-item-label">GDPR — Privacy by Design</div>
+          <div class="compliance-item-desc">The SRD is the mechanism for data protection by design. The C-STP rehearses the 72-hour breach notification path before it is ever needed.</div>
+        </div>
+      </div>
+      <div class="compliance-item">
+        <div>
+          <div class="compliance-item-label">SOX — IT General Controls</div>
+          <div class="compliance-item-desc">The SRR dual sign-off is a formal change approval record. The phase gate chain is the documented change management evidence Section 404 requires.</div>
+        </div>
+      </div>
+      <div class="compliance-item">
+        <div>
+          <div class="compliance-item-label">FedRAMP — NIST 800-53</div>
+          <div class="compliance-item-desc">The STP failure injection and on-call simulation satisfy annual incident response testing requirements. The SFL gap log satisfies continuous monitoring documentation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <script>
-    // Simple form handler — swaps to success state and logs to console
-    // Replace the fetch() block with your Tally/Google Sheets webhook endpoint
-    document.getElementById('lead-form').addEventListener('submit', function(e) {
-      e.preventDefault();
+<!-- COST CURVE -->
+<div class="section-cost">
+  <div class="section-cost-inner">
+    <div>
+      <p class="section-label">The Business Case</p>
+      <h2 class="section-title">The Cost of Waiting</h2>
+      <p class="section-body" style="margin-bottom:0;">The same supportability gap costs orders of magnitude more to fix the later it is found. This is not a theory — it is a calculable number from your own incident history.</p>
+    </div>
+    <div class="cost-table">
+      <div class="cost-row header"><div class="cost-cell">Where Gap Is Found</div><div class="cost-cell">Cost to Fix</div></div>
+      <div class="cost-row"><div class="cost-cell"><span class="cost-phase">Requirements</span></div><div class="cost-cell good">Minutes to hours</div></div>
+      <div class="cost-row"><div class="cost-cell"><span class="cost-phase">Design</span></div><div class="cost-cell good">Hours</div></div>
+      <div class="cost-row"><div class="cost-cell"><span class="cost-phase">Build</span></div><div class="cost-cell" style="color:#fde68a;">Hours to days</div></div>
+      <div class="cost-row"><div class="cost-cell"><span class="cost-phase">Test</span></div><div class="cost-cell" style="color:#fde68a;">Days</div></div>
+      <div class="cost-row"><div class="cost-cell"><span class="cost-phase">Release</span></div><div class="cost-cell bad">Days to weeks</div></div>
+      <div class="cost-row"><div class="cost-cell"><span class="cost-phase">Production</span></div><div class="cost-cell bad">Weeks to months — per incident, forever</div></div>
+    </div>
+  </div>
+</div>
 
-      const data = {
-        firstName: document.getElementById('fname').value.trim(),
-        lastName:  document.getElementById('lname').value.trim(),
-        email:     document.getElementById('email').value.trim(),
-        company:   document.getElementById('company').value.trim(),
-        role:      document.getElementById('role').value,
-        timestamp: new Date().toISOString()
-      };
+<!-- QUOTE -->
+<section class="section-quote">
+  <p class="big-quote">"The best support organizations don't respond faster. They designed their systems so that when something breaks, anyone on the team can pick it up and know exactly what to do."</p>
+  <p class="big-quote-source">— Supportability Engineering, Vol. 1</p>
+</section>
 
-      // Basic validation
-      if (!data.firstName || !data.email) {
-        document.getElementById('fname').focus();
-        return;
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-        document.getElementById('email').focus();
-        return;
-      }
+<!-- ABOUT -->
+<section class="section-about">
+  <div>
+    <p class="about-label">About the Author</p>
+    <h2 class="about-name">John A. Bowman</h2>
+    <p class="about-title">Supportability Engineering Practitioner</p>
+    <div class="about-contact">
+      <a href="mailto:dooohhead@gmail.com">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        dooohhead@gmail.com
+      </a>
+    </div>
+    <div class="about-tags">
+      <span class="tag">Support Engineering</span><span class="tag">SRE</span>
+      <span class="tag">Observability</span><span class="tag">Incident Management</span>
+      <span class="tag">Shift Left</span><span class="tag">Compliance by Design</span>
+      <span class="tag">Operational Readiness</span>
+    </div>
+  </div>
+  <div class="about-bio">
+    <p>John A. Bowman is a Supportability Engineering practitioner with experience designing and implementing shift-left supportability frameworks in enterprise software environments. His work sits at the intersection of support operations, software design, organizational reliability, and compliance.</p>
+    <p>This is a five-volume series. Vol. 1 establishes the foundational framework. Vol. 2 extends it for agentic AI systems. Vol. 3 addresses what happens when the code is generated by AI — and no human fully authored what went to production. Vol. 4 applies the framework to the AI systems now operating your support stack. Vol. 5 maps the complete framework to SOC 2, ISO 27001, GDPR, SOX, and FedRAMP — turning compliance evidence into a byproduct of building software correctly.</p>
+    <p>John is available for <strong style="color:rgba(255,255,255,0.85);">consulting engagements</strong>, <strong style="color:rgba(255,255,255,0.85);">staff roles</strong> in support engineering, operational readiness, or AI governance, and <strong style="color:rgba(255,255,255,0.85);">advisory work</strong> with teams building or maturing their supportability practice. Reach out directly.</p>
+  </div>
+</section>
 
-      // ── REPLACE THIS WITH YOUR WEBHOOK ──────────────────────────────────
-      // e.g. Tally webhook, Google Apps Script, Formspree, etc.
-       fetch('https://formspree.io/f/xnjlwnyk', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify(data)
-       });
-      // ────────────────────────────────────────────────────────────────────
+<footer>
+  <p>© 2026 John A. Bowman · Supportability Engineering · Confidential Consulting IP</p>
+  <p>902-489-2429</p>
+</footer>
 
-      // Log locally for now (remove in production)
-      console.log('Lead captured:', data);
-
-      // Show success state
-      document.getElementById('form-content').style.display = 'none';
-      const s = document.getElementById('success-state');
-      s.style.display = 'block';
-      s.style.animation = 'fadeUp 0.5s ease forwards';
-    });
-  </script>
-
+<script>
+document.getElementById('lead-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = {
+    firstName: document.getElementById('fname').value.trim(),
+    lastName: document.getElementById('lname').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    company: document.getElementById('company').value.trim(),
+    role: document.getElementById('role').value,
+    volume: 'Bundle — All Five Volumes',
+    timestamp: new Date().toISOString()
+  };
+  if (!data.firstName || !data.email) { document.getElementById('fname').focus(); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { document.getElementById('email').focus(); return; }
+  fetch('https://formspree.io/f/xnjlwnyk', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+  document.getElementById('form-content').style.display = 'none';
+  const s = document.getElementById('success-state');
+  s.style.display = 'block';
+  s.style.animation = 'fadeUp 0.5s ease forwards';
+});
+</script>
 </body>
 </html>

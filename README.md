@@ -1,181 +1,92 @@
-# Supportability Engineering
+# Supportability Engineering — Site
 
-> A shift-left framework that ensures software systems are designed to be diagnosed, operated, and supported from the first line of code — not after the first major incident.
+**Author:** John A. Bowman · dooohhead@gmail.com · 902-489-2429
 
-© 2026 John A. Bowman. All rights reserved.
-The Supportability Engineering framework, white papers, and templates are licensed under CC BY-NC-ND 4.0.
-The /starter and /scripts directories are licensed under MIT.
-See NOTICE for full attribution requirements.
+This repository hosts the landing pages for the Supportability Engineering five-volume white paper series. Served via GitHub Pages at [dooohhead.github.io/supportability-engineering-site](https://dooohhead.github.io/supportability-engineering-site).
 
 ---
 
-## What This Is
+## What Is Supportability Engineering?
 
-Supportability Engineering is the discipline of designing observability, runbooks, failure modes, and escalation paths into software **before the first line of code is written** — not retroactively after the first production incident.
+Supportability Engineering is a shift-left framework that ensures software systems are designed to be diagnosed, operated, and supported from the first line of code — not after the first major incident.
 
-The core principle is simple: **the cost of fixing a supportability gap grows exponentially the later it is found.**
+The framework provides a six-phase deliverable system that carries the right knowledge forward, phase by phase, so that any support engineer can operate any feature independently at 2am without calling the engineer who built it.
 
-A missing correlation ID caught at design review is a one-hour conversation. The same gap caught in production means every incident involving that service takes three times longer to diagnose than it should — indefinitely, until someone has time to fix it. Which they never do, because they are too busy investigating incidents.
-
-This repository contains the complete Supportability Engineering framework: the white papers that make the case, the templates that operationalize it, and the baseline standards kit that lets any team start immediately.
+> *Every gap caught at requirements costs minutes to fix. The same gap caught in production costs months — per incident, indefinitely.*
 
 ---
 
-## The Framework
+## The Five-Volume Series
 
-Six phases. One connected system. Every gap caught early saves the cost of catching it late.
+| Volume | Title | Focus | Accent |
+|--------|-------|-------|--------|
+| **Vol. 1** | Why the Best Support Organizations Shift Left | Foundational six-phase framework for traditional software | Blue `#2563EB` |
+| **Vol. 2** | Shifting Left When the System Can Think | Agentic AI systems as the product being built | Gold `#C9993A` |
+| **Vol. 3** | When the Builder Can't Sign Off | Systems built by agentic development tools (Copilot, Cursor, Claude Code) | Teal `#0D7377` |
+| **Vol. 4** | When the AI Running Your Support Needs Supporting | Governance for AI operational tools (alert triage AI, automated remediation, support bots) | Purple `#7C3AED` |
+| **Vol. 5** | Compliance by Design | SE framework mapped to SOC 2, ISO 27001, GDPR, SOX, and FedRAMP | Green `#0F766E` |
+
+---
+
+## The Six-Phase Framework
+
+| Phase | Deliverable | Gate |
+|-------|------------|------|
+| 1 — Requirements | Supportability Requirements Document (SRD) | Support signs off before design begins |
+| 2 — Design | Supportability Architecture Review (SAR) | Open items become build acceptance criteria |
+| 3 — Build | Supportability Implementation Checklist (SIC) | PR cannot merge without sign-off |
+| 4 — Test | Supportability Test Plan (STP) | Release blocked if any failure mode fails |
+| 5 — Release | Support Readiness Review (SRR) | Requires both Support Lead and Engineering Lead signatures |
+| 6 — Operate | Supportability Feedback Loop (SFL) | Feeds back into current SRD immediately |
+
+---
+
+## Site Structure
 
 ```
-SRD → SAR → SIC → STP → SRR → SFL → SRD (next cycle)
+index.html      — Five-volume bundle page (primary profile link)
+vol1.html       — Vol. 1 campaign page
+vol2.html       — Vol. 2 campaign page
+vol3.html       — Vol. 3 campaign page
+vol4.html       — Vol. 4 campaign page
+vol5.html       — Vol. 5 campaign page
+README.md       — This file
 ```
 
-| Phase | Deliverable | Purpose |
-|-------|-------------|---------|
-| 1 — Requirements | **SRD** — Supportability Requirements Document | Captures failure modes, observability requirements, and customer impact classification before design begins. Support signs off before a line of code is scoped. |
-| 2 — Design | **SAR** — Supportability Architecture Review | Maps every failure point and blind spot in the architecture before build begins. Every gap gets a priority and a plan. |
-| 3 — Build | **SIC** — Supportability Implementation Checklist | Attaches to every PR. Logging, error handling, four golden signals, failure mode tests. Cannot merge without sign-off. |
-| 4 — Test | **STP** — Supportability Test Plan | Validates that a support engineer can diagnose every failure mode independently before any feature ships. |
-| 5 — Release | **SRR** — Support Readiness Review | The final gate. Support lead and engineering lead both sign. Release does not proceed without both. |
-| 6 — Operate | **SFL** — Supportability Feedback Loop | Converts every incident into an upstream improvement. Closes the loop back into the next SRD cycle. |
+Each volume page links back to `index.html` for the full bundle download. Lead capture via Formspree — each form submission tags the volume that drove the lead.
 
 ---
 
-## The Four-Volume White Paper Series
+## LinkedIn Posting Cadence
 
-The white papers make the business case for each layer of the framework.
+One volume per week. URL posted in the **first comment** (not the post body) to avoid algorithm suppression.
 
-### Vol. 1 — Why the Best Support Organizations Shift Left
-The foundational paper. Phase-by-phase cost-benefit analysis of Supportability Engineering for traditional software development. The complete framework, the cost curve, and the ROI calculation.
-
-### Vol. 2 — Shifting Left When the System Can Think
-The agentic AI extension. Covers the six new failure categories that agentic systems introduce — non-deterministic failure, silent confident errors, reasoning chain traceability, mid-execution intervention triggers, context window drift, and tool schema drift — and extends every framework phase to address them.
-
-### Vol. 3 — When the Builder Can't Sign Off
-The hardest problem in the series. What happens to Supportability Engineering when the code is generated by an agent (Copilot, Cursor, Claude Code), the architecture emerged from autonomous sessions, and no human fully authored what went to production? This volume addresses the four assumptions the framework makes about humans that agentic development breaks — and how to fix them.
-
-### Vol. 4 — When the AI Running Your Support Needs Supporting
-The operational layer. What happens when the tools your support team relies on — alert triage, incident response, runbook generation, escalation routing — are themselves AI systems? This volume applies the Supportability Engineering framework to AIOps platforms and AI-assisted support tooling, covering seven operational categories and introducing the AOSR (AI Operations Governance Review) as a seventh framework phase. The core argument: AI agents deployed in incident response fail silently when observability was not designed in at build time — which is exactly the gap the SE framework was built to close.
+- Week 1 → `vol1.html`
+- Week 2 → `vol2.html`
+- Week 3 → `vol3.html`
+- Week 4 → `vol4.html`
+- Week 5 → `vol5.html`
 
 ---
 
-## What's in This Repository
+## White Papers
 
-```
-/doc
-  Supportability_Engineering_WhitePaper.docx              Vol. 1
-  Supportability_Engineering_Agentic_WhitePaper.docx      Vol. 2
-  Supportability_Engineering_AgenticDev_WhitePaper.docx   Vol. 3
-  Supportability_Engineering_AIOperations_WhitePaper.docx Vol. 4
+PDFs live in the repo root alongside the HTML files. Convert DOCX → PDF before uploading to protect IP.
 
-/templates
-  Supportability_Engineering_Templates.docx               Vol. 1 — Six phase templates (SRD, SAR, SIC, STP, SRR, SFL)
-  SE_AgenticSystems_Templates.docx                        Vol. 2 — Agentic system extensions (A-SRD through A-SFL)
-  SE_AgenticDev_Templates.docx                            Vol. 3 — Agentic development extensions (D-SRD through D-SFL)
-  SE_AIOperations_Templates.docx                          Vol. 4 — Governance for the AI systems operating your support stack. 
-
-/starter
-  SE_Baseline_1_ContextDocument.docx                      Pre-populated agent injection standard — use immediately
-  SE_Baseline_2_GateConfigSpec.docx                       Three CI/CD gates with GitHub Actions + GitLab CI config
-  SE_Baseline_3_PRTemplateAddition.docx                   PR template addition for agent-generated code review
-  SE_Baseline_4_FeatureSpecification.docx                 Per-feature delta specification template
-
-/scripts
-  contains drop-in script files that get you Supportability right away
-
-/skills
-  SE_AI_Context_README.md                                Start here
-  SE_AI_Content_Core.md
-  SE_Phase_Defaults_SAR.md
-  SE_Phase_Defaults_SIC.md
-  SE_Phase_Defaults_SRD.md
-  SE_Phase_Defaults_STP_SRR_SFL.md
-```
+| File | Volume |
+|------|--------|
+| `Supportability_Engineering_WhitePaper.pdf` | Vol. 1 |
+| `Supportability_Engineering_Agentic_WhitePaper.pdf` | Vol. 2 |
+| `Supportability_Engineering_AgenticDev_WhitePaper.pdf` | Vol. 3 |
+| `Supportability_Engineering_AIOperations_WhitePaper.pdf` | Vol. 4 |
+| `Supportability_Engineering_Compliance_WhitePaper.pdf` | Vol. 5 |
 
 ---
 
-## Where to Start
+## GitHub Pages Setup
 
-**If you are new to the framework:**
-Read Vol. 1. It takes about 20 minutes. Then look at the Vol. 1 templates to see what each phase produces.
-
-**If you are already using agentic development tools (Copilot, Cursor, Claude Code):**
-Go directly to the Baseline Kit. You can be up and running in a day without reading anything else first. The Context Document (Doc 1) is pre-populated with industry-standard requirements — drop it into your agent's system prompt and you're producing more supportable code immediately.
-
-**If you are building agentic AI products:**
-Read Vol. 2 alongside the Vol. 2 template pack. The six new failure categories and the reasoning trace logging standard are the most immediately actionable sections.
-
-**If you want the full picture:**
-Read all three volumes in order. They build on each other. Vol. 3 only makes full sense after Vol. 1 and 2.
+Settings → Pages → Deploy from `main` branch root. No build step required — all files are static HTML.
 
 ---
 
-## The Baseline Kit
-
-The fastest path to value. Four documents that give any team with existing engineering standards everything they need to apply those standards to agent-generated code — without adopting the full framework first.
-
-| Document | What It Is | Setup Time |
-|----------|------------|------------|
-| **Doc 1 — Context Document** | Pre-populated logging schema, error handling standard, observability requirements, sensitive data exclusion list, and dependency handling patterns. Inject into every agent session. | 2–4 hours (review + complete Section 7 with your org-specific fields) |
-| **Doc 2 — Gate Configuration Spec** | Three CI/CD pipeline gates with complete GitHub Actions and GitLab CI YAML. Sensitive data scan, correlation ID propagation check, dependency registry check. | 1–2 hours (add to pipeline) |
-| **Doc 3 — PR Template Addition** | Five-question review section for agent-generated PRs. Copy into your existing PR template. | 15 minutes |
-| **Doc 4 — Feature Specification** | Per-feature delta form capturing what the Context Document can't know: feature-specific failure modes, new dependencies, customer impact, and the context block addition for agent sessions. | 15 minutes per feature |
-
-**Total setup: approximately one working day.**
-**Ongoing overhead: 5–10 minutes per PR, 15 minutes per new feature, 1 hour per quarter.**
-
----
-
-## The Maturity Ladder
-
-| Stage | What You Have | What You Need |
-|-------|---------------|---------------|
-| **Starting out** | Nothing | Download the Baseline Kit. Use it as-is. |
-| **Using the baseline** | Generic industry standards | Customize Doc 1 Section 7 with your organization's specific fields and dependencies. |
-| **Customized** | Your standards in agent context | Add the full Vol. 1 template cycle for new features. Establish the SFL feedback loop. |
-| **Mature** | Full framework running | Advisory — keep the framework current as tooling and your codebase evolve. |
-
-The baseline is not a watered-down version of the framework. It is the entry point that makes the framework accessible to any team, regardless of where they are today.
-
----
-
-## The Business Case in One Table
-
-| Where Gap Is Found | Cost to Fix |
-|--------------------|-------------|
-| Requirements | Minutes to hours |
-| Design | Hours |
-| Build | Hours to days |
-| Test | Days |
-| Release | Days to weeks |
-| **Production** | **Weeks to months — per incident, forever** |
-
-A single avoided major incident typically pays for a full cycle of Supportability Engineering investment. The framework pays for itself and generates evidence that it does — the SFL Shift Left Effectiveness Metric tracks the percentage of incidents that were preventable by upstream framework action, in dollars and hours.
-
----
-
-## Template Prefix Guide
-
-Each template set uses a prefix to distinguish framework layer:
-
-| Prefix | Template Set | Applies To |
-|--------|-------------|------------|
-| *(none)* | Vol. 1 original templates | All software — traditional development |
-| `A-` | Vol. 2 agentic system templates | Systems where the **product** is an agentic AI workflow |
-| `D-` | Vol. 3 agentic development templates | Systems where the **builder** is an agentic development tool |
-
-Templates can be combined. A team building an agentic AI product using agentic development tools uses all three sets simultaneously.
-
----
-
-## About
-
-**John A. Bowman**
-Supportability Engineering Practitioner
-
-dooohhead@gmail.com · 902-489-2429
-
-Available for consulting engagements, staff roles in support engineering, operational readiness, or AI governance, and advisory work with teams building or maturing their supportability practice — for traditional software, agentic AI products, or agentic development workflows.
-
----
-
-*The best support organizations don't respond faster. They designed their systems so that when something breaks, anyone on the team can pick it up and know exactly what to do.*
+*© 2026 John A. Bowman · Supportability Engineering · Confidential Consulting IP*
