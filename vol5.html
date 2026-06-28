@@ -4,17 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Supportability Engineering — Compliance by Design</title>
-<meta name="description" content="SOC 2, ISO 27001, GDPR, SOX, FedRAMP — the SE framework maps to every major compliance standard and produces audit evidence as a byproduct of building correctly. Free white paper by John A. Bowman." />
+<meta name="description" content="SOC 2, ISO 27001, ISO 42001, GDPR, SOX, FedRAMP — the SE framework maps to every major compliance standard and produces audit evidence as a byproduct of building correctly. Free white paper by John A. Bowman." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --navy: #0f2340; --navy2: #1b3a5c;
-  --green: #0f766e; --green2: #0d9488; --green3: #34d399;
-  --gold: #c9993a; --muted: #6b7a90;
-  --white: #ffffff; --border: rgba(255,255,255,0.08);
+--navy: #0f2340; --navy2: #1b3a5c;
+--green: #0f766e; --green2: #0d9488; --green3: #34d399;
+--gold: #c9993a; --muted: #6b7a90;
+--white: #ffffff; --border: rgba(255,255,255,0.08);
 }
 html { scroll-behavior: smooth; }
 body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; }
@@ -62,7 +62,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; a
 .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green3); margin-bottom: 1rem; }
 .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.15; margin-bottom: 1.25rem; }
 .section-body { font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,0.6); font-weight: 300; max-width: 680px; margin-bottom: 3rem; }
-.frameworks-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; }
+.frameworks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; }
 .framework-card { background: rgba(15,35,64,0.8); padding: 1.75rem 1.25rem; transition: background 0.2s; }
 .framework-card:hover { background: rgba(15,118,110,0.12); }
 .framework-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(15,118,110,0.2); border: 1px solid rgba(52,211,153,0.3); color: var(--green3); border-radius: 3px; padding: 0.2rem 0.5rem; margin-bottom: 0.75rem; }
@@ -113,277 +113,287 @@ footer p { font-size: 0.75rem; color: rgba(255,255,255,0.25); }
 .anim { opacity: 0; animation: fadeUp 0.7s ease forwards; }
 .anim-1 { animation-delay: 0.1s; } .anim-2 { animation-delay: 0.25s; }
 .anim-3 { animation-delay: 0.4s; } .anim-4 { animation-delay: 0.55s; }
-@media (max-width: 1100px) { .frameworks-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 1100px) { .frameworks-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 900px) {
-  .hero, .section-convergence { grid-template-columns: 1fr; padding-top: 7rem; gap: 3rem; }
-  .hero::before { display: none; }
-  .frameworks-grid { grid-template-columns: 1fr 1fr; }
-  .scope-grid { grid-template-columns: 1fr; }
-  .section-about { grid-template-columns: 1fr; gap: 2.5rem; }
-  .form-row { grid-template-columns: 1fr; }
-  .section-series-inner { flex-direction: column; }
+.hero, .section-convergence { grid-template-columns: 1fr; padding-top: 7rem; gap: 3rem; }
+.hero::before { display: none; }
+.frameworks-grid { grid-template-columns: 1fr 1fr; }
+.scope-grid { grid-template-columns: 1fr; }
+.section-about { grid-template-columns: 1fr; gap: 2.5rem; }
+.form-row { grid-template-columns: 1fr; }
+.section-series-inner { flex-direction: column; }
 }
 @media (max-width: 600px) {
-  nav { padding: 1rem 1.25rem; }
-  .hero, .section-frameworks-inner, .section-scope-inner, .section-about { padding-left: 1.25rem; padding-right: 1.25rem; }
-  .frameworks-grid { grid-template-columns: 1fr; }
+nav { padding: 1rem 1.25rem; }
+.hero, .section-frameworks-inner, .section-scope-inner, .section-about { padding-left: 1.25rem; padding-right: 1.25rem; }
+.frameworks-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 <nav>
-  <div class="nav-brand">Supportability <span>Engineering</span></div>
-  <a href="#download" class="nav-cta">Get the Paper</a>
+<div class="nav-brand">Supportability <span>Engineering</span></div>
+<a href="#download" class="nav-cta">Get the Paper</a>
 </nav>
-
 <section class="hero">
-  <div class="hero-left">
-    <div class="hero-eyebrow anim anim-1">Vol. 5 of 5 · White Paper · 2026</div>
-    <h1 class="anim anim-2">
-      Compliance and Supportability<br>
-      Are the <em>Same Problem</em>
-    </h1>
-    <p class="hero-desc anim anim-3">
-      Every compliance framework asks four questions: What can go wrong? Will you know when it does? Can you respond correctly? Can you prove it? The Supportability Engineering framework answers all four — and produces audit evidence as a byproduct of building software correctly.
-    </p>
-    <div class="hero-meta anim anim-4">
-      <div class="meta-item"><span class="meta-label">Author</span><span class="meta-value">John A. Bowman</span></div>
-      <div class="meta-item"><span class="meta-label">Covers</span><span class="meta-value">5 Compliance Frameworks</span></div>
-      <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Free · PDF</span></div>
-    </div>
-  </div>
-
-  <div id="download" class="form-card anim anim-3">
-    <div id="form-content">
-      <h2 class="form-card-title">Download Vol. 5 Free</h2>
-      <p class="form-card-sub">Compliance by Design — the SE framework mapped to SOC 2, ISO 27001, GDPR, SOX, and FedRAMP. Stop running two parallel processes. Build once, comply continuously.</p>
-      <form id="lead-form" novalidate>
-        <div class="form-row">
-          <div class="form-group"><label for="fname">First Name</label><input type="text" id="fname" placeholder="Jane" required /></div>
-          <div class="form-group"><label for="lname">Last Name</label><input type="text" id="lname" placeholder="Smith" required /></div>
-        </div>
-        <div class="form-group"><label for="email">Work Email</label><input type="email" id="email" placeholder="jane@company.com" required /></div>
-        <div class="form-group"><label for="company">Company</label><input type="text" id="company" placeholder="Acme Corp" /></div>
-        <div class="form-group">
-          <label for="role">Your Role</label>
-          <select id="role">
-            <option value="" disabled selected>Select your role…</option>
-            <option>VP / Director of Engineering</option>
-            <option>VP / Director of Support</option>
-            <option>Engineering Manager</option>
-            <option>Support Manager / Lead</option>
-            <option>CISO / Security Lead</option>
-            <option>Compliance Officer / DPO</option>
-            <option>SRE / Platform Engineer</option>
-            <option>Software Engineer</option>
-            <option>Product Manager</option>
-            <option>CTO / CIO</option>
-            <option>Recruiter / Talent</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <button type="submit" class="btn-download">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
-          Download Vol. 5 Free
-        </button>
-      </form>
-      <p class="form-privacy">Your information is never sold or shared with third parties.</p>
-    </div>
-    <div class="success-state" id="success-state">
-      <div class="success-icon"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
-      <h3>You're all set.</h3>
-      <p>Your download is ready.</p>
-      <a href="Supportability_Engineering_Compliance_WhitePaper.pdf" download class="btn-dl-direct">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
-        Vol. 5 — Compliance by Design
-      </a>
-      <p style="margin-top:1.25rem;font-size:0.75rem;color:rgba(255,255,255,0.3);">John will be in touch — dooohhead@gmail.com</p>
-    </div>
-  </div>
+<div class="hero-left">
+<div class="hero-eyebrow anim anim-1">Vol. 5 of 5 · White Paper · 2026</div>
+<h1 class="anim anim-2">
+Compliance and Supportability<br>
+Are the <em>Same Problem</em>
+</h1>
+<p class="hero-desc anim anim-3">
+Every compliance framework asks four questions: What can go wrong? Will you know when it does? Can you respond correctly? Can you prove it? The Supportability Engineering framework answers all four — and produces audit evidence as a byproduct of building software correctly.
+</p>
+<div class="hero-meta anim anim-4">
+<div class="meta-item"><span class="meta-label">Author</span><span class="meta-value">John A. Bowman</span></div>
+<div class="meta-item"><span class="meta-label">Covers</span><span class="meta-value">6 Compliance Frameworks</span></div>
+<div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Free · PDF</span></div>
+</div>
+</div>
+<div id="download" class="form-card anim anim-3">
+<div id="form-content">
+<h2 class="form-card-title">Download Vol. 5 Free</h2>
+<p class="form-card-sub">Compliance by Design — the SE framework mapped to SOC 2, ISO 27001, ISO 42001, GDPR, SOX, and FedRAMP. Stop running two parallel processes. Build once, comply continuously.</p>
+<form id="lead-form" novalidate>
+<div class="form-row">
+<div class="form-group"><label for="fname">First Name</label><input type="text" id="fname" placeholder="Jane" required /></div>
+<div class="form-group"><label for="lname">Last Name</label><input type="text" id="lname" placeholder="Smith" required /></div>
+</div>
+<div class="form-group"><label for="email">Work Email</label><input type="email" id="email" placeholder="jane@company.com" required /></div>
+<div class="form-group"><label for="company">Company</label><input type="text" id="company" placeholder="Acme Corp" /></div>
+<div class="form-group">
+<label for="role">Your Role</label>
+<select id="role">
+<option value="" disabled selected>Select your role…</option>
+<option>VP / Director of Engineering</option>
+<option>VP / Director of Support</option>
+<option>Engineering Manager</option>
+<option>Support Manager / Lead</option>
+<option>CISO / Security Lead</option>
+<option>Compliance Officer / DPO</option>
+<option>SRE / Platform Engineer</option>
+<option>Software Engineer</option>
+<option>Product Manager</option>
+<option>CTO / CIO</option>
+<option>Recruiter / Talent</option>
+<option>Other</option>
+</select>
+</div>
+<button type="submit" class="btn-download">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+Download Vol. 5 Free
+</button>
+</form>
+<p class="form-privacy">Your information is never sold or shared with third parties.</p>
+</div>
+<div class="success-state" id="success-state">
+<div class="success-icon"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
+<h3>You're all set.</h3>
+<p>Your download is ready.</p>
+<a href="Supportability_Engineering_Compliance_WhitePaper.pdf" download class="btn-dl-direct">
+<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+Vol. 5 — Compliance by Design
+</a>
+<p style="margin-top:1.25rem;font-size:0.75rem;color:rgba(255,255,255,0.3);">John will be in touch — dooohhead@gmail.com</p>
+</div>
+</div>
 </section>
 
-<!-- FIVE FRAMEWORKS -->
+<!-- SIX FRAMEWORKS -->
 <div class="section-frameworks">
-  <div class="section-frameworks-inner">
-    <p class="section-label">Framework Mappings</p>
-    <h2 class="section-title">Five Frameworks. One Process.</h2>
-    <p class="section-body">The SE deliverable chain maps directly to the controls every major compliance framework requires. Stop producing documentation twice — once for engineering and once for audit. The SRD, SAR, SIC, STP, SRR, and SFL are the evidence.</p>
-    <div class="frameworks-grid">
-      <div class="framework-card">
-        <div class="framework-badge">SOC 2</div>
-        <div class="framework-title">Trust Services Criteria</div>
-        <div class="framework-controls">CC7.1–7.3 · CC8.1 · A1.2 · C1.1</div>
-        <div class="framework-mapping">The SIC satisfies change management controls. The STP satisfies detection and response testing. The SFL gap log satisfies continuous monitoring documentation.</div>
-      </div>
-      <div class="framework-card">
-        <div class="framework-badge">ISO 27001</div>
-        <div class="framework-title">Information Security Management</div>
-        <div class="framework-controls">A.12.1.2 · A.12.4 · A.16.1 · A.14.2.8</div>
-        <div class="framework-mapping">The SRD is the security requirement specification. The SAR is the architecture risk assessment. The SRR is the formal change approval record.</div>
-      </div>
-      <div class="framework-card">
-        <div class="framework-badge">GDPR</div>
-        <div class="framework-title">Privacy by Design</div>
-        <div class="framework-controls">Art. 25 · Art. 32 · Art. 33 · Art. 35</div>
-        <div class="framework-mapping">The SRD is the mechanism for data protection by design. The C-STP rehearses the 72-hour breach notification path before it is ever needed under Art. 33.</div>
-      </div>
-      <div class="framework-card">
-        <div class="framework-badge">SOX</div>
-        <div class="framework-title">IT General Controls</div>
-        <div class="framework-controls">Section 302 · Section 404 · ITGC</div>
-        <div class="framework-mapping">The SRR dual sign-off is a formal change approval record. The phase gate chain is the documented change management evidence Section 404 requires.</div>
-      </div>
-      <div class="framework-card">
-        <div class="framework-badge">FedRAMP</div>
-        <div class="framework-title">NIST 800-53 Controls</div>
-        <div class="framework-controls">SI-2/3 · AU-2/12 · IR-3/4 · CM-3/4 · CA-7</div>
-        <div class="framework-mapping">The STP failure injection satisfies annual IR testing requirements. The SFL gap log satisfies CA-7 continuous monitoring. The SIC satisfies CM-3/4 change control.</div>
-      </div>
-    </div>
-  </div>
+<div class="section-frameworks-inner">
+<p class="section-label">Framework Mappings</p>
+<h2 class="section-title">Six Frameworks. One Process.</h2>
+<p class="section-body">The SE deliverable chain maps directly to the controls every major compliance framework requires. Stop producing documentation twice — once for engineering and once for audit. The SRD, SAR, SIC, STP, SRR, and SFL are the evidence.</p>
+<div class="frameworks-grid">
+<div class="framework-card">
+<div class="framework-badge">SOC 2</div>
+<div class="framework-title">Trust Services Criteria</div>
+<div class="framework-controls">CC7.1–7.3 · CC8.1 · A1.2 · C1.1</div>
+<div class="framework-mapping">The SIC satisfies change management controls. The STP satisfies detection and response testing. The SFL gap log satisfies continuous monitoring documentation.</div>
+</div>
+<div class="framework-card">
+<div class="framework-badge">ISO 27001</div>
+<div class="framework-title">Information Security Management</div>
+<div class="framework-controls">A.12.1.2 · A.12.4 · A.16.1 · A.14.2.8</div>
+<div class="framework-mapping">The SRD is the security requirement specification. The SAR is the architecture risk assessment. The SRR is the formal change approval record.</div>
+</div>
+<div class="framework-card">
+<div class="framework-badge">ISO 42001</div>
+<div class="framework-title">AI Management System</div>
+<div class="framework-controls">Annex A.5–A.10 · Clause 9</div>
+<div class="framework-mapping">The SRD through SRR phase chain maps to the AI system lifecycle. The SFL incident scoring satisfies ongoing performance evaluation for AI systems in scope.</div>
+</div>
+<div class="framework-card">
+<div class="framework-badge">GDPR</div>
+<div class="framework-title">Privacy by Design</div>
+<div class="framework-controls">Art. 25 · Art. 32 · Art. 33 · Art. 35</div>
+<div class="framework-mapping">The SRD is the mechanism for data protection by design. The C-STP rehearses the 72-hour breach notification path before it is ever needed under Art. 33.</div>
+</div>
+<div class="framework-card">
+<div class="framework-badge">SOX</div>
+<div class="framework-title">IT General Controls</div>
+<div class="framework-controls">Section 302 · Section 404 · ITGC</div>
+<div class="framework-mapping">The SRR dual sign-off is a formal change approval record. The phase gate chain is the documented change management evidence Section 404 requires.</div>
+</div>
+<div class="framework-card">
+<div class="framework-badge">FedRAMP</div>
+<div class="framework-title">NIST 800-53 Controls</div>
+<div class="framework-controls">SI-2/3 · AU-2/12 · IR-3/4 · CM-3/4 · CA-7</div>
+<div class="framework-mapping">The STP failure injection satisfies annual IR testing requirements. The SFL gap log satisfies CA-7 continuous monitoring. The SIC satisfies CM-3/4 change control.</div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- CONVERGENCE -->
 <section class="section-convergence">
-  <div>
-    <p class="section-label">The Argument</p>
-    <h2 class="section-title">Four Questions. One Answer.</h2>
-    <p class="section-body" style="margin-bottom:1.5rem;">Regulated environments ask four questions of every system in scope. These are not compliance questions. They are supportability questions with a compliance deadline attached.</p>
-    <p class="section-body">The C-prefix extension layer adds six compliance-specific deliverable extensions — C-SRD through C-SFL — that complete the picture for regulated environments without replacing the base SE phases or running a separate process.</p>
-  </div>
-  <div class="convergence-list">
-    <div class="convergence-item">
-      <div>
-        <div class="convergence-q">Question 1</div>
-        <div class="convergence-title">What can go wrong?</div>
-        <div class="convergence-desc">The SRD failure mode inventory answers this. The C-SRD extension adds regulatory notification triggers and data classification obligations to every failure mode.</div>
-      </div>
-    </div>
-    <div class="convergence-item">
-      <div>
-        <div class="convergence-q">Question 2</div>
-        <div class="convergence-title">Will you know when it does?</div>
-        <div class="convergence-desc">The SIC golden signal instrumentation and STP alert validation answer this. The C-SIC extension adds audit log requirements, evidence retention rules, and tamper-evident logging standards.</div>
-      </div>
-    </div>
-    <div class="convergence-item">
-      <div>
-        <div class="convergence-q">Question 3</div>
-        <div class="convergence-title">Can you respond correctly?</div>
-        <div class="convergence-desc">The STP runbook walkthrough and SRR communication templates answer this. The C-STP extension adds a 72-hour breach notification rehearsal and a regulatory escalation path test.</div>
-      </div>
-    </div>
-    <div class="convergence-item">
-      <div>
-        <div class="convergence-q">Question 4</div>
-        <div class="convergence-title">Can you prove it?</div>
-        <div class="convergence-desc">The SRR dual sign-off and SFL shift-left effectiveness metric answer this. The C-SRR extension confirms the audit evidence repository is populated and the evidence chain is complete before release.</div>
-      </div>
-    </div>
-  </div>
+<div>
+<p class="section-label">The Argument</p>
+<h2 class="section-title">Four Questions. One Answer.</h2>
+<p class="section-body" style="margin-bottom:1.5rem;">Regulated environments ask four questions of every system in scope. These are not compliance questions. They are supportability questions with a compliance deadline attached.</p>
+<p class="section-body">The C-prefix extension layer adds six compliance-specific deliverable extensions — C-SRD through C-SFL — that complete the picture for regulated environments without replacing the base SE phases or running a separate process.</p>
+</div>
+<div class="convergence-list">
+<div class="convergence-item">
+<div>
+<div class="convergence-q">Question 1</div>
+<div class="convergence-title">What can go wrong?</div>
+<div class="convergence-desc">The SRD failure mode inventory answers this. The C-SRD extension adds regulatory notification triggers and data classification obligations to every failure mode.</div>
+</div>
+</div>
+<div class="convergence-item">
+<div>
+<div class="convergence-q">Question 2</div>
+<div class="convergence-title">Will you know when it does?</div>
+<div class="convergence-desc">The SIC golden signal instrumentation and STP alert validation answer this. The C-SIC extension adds audit log requirements, evidence retention rules, and tamper-evident logging standards.</div>
+</div>
+</div>
+<div class="convergence-item">
+<div>
+<div class="convergence-q">Question 3</div>
+<div class="convergence-title">Can you respond correctly?</div>
+<div class="convergence-desc">The STP runbook walkthrough and SRR communication templates answer this. The C-STP extension adds a 72-hour breach notification rehearsal and a regulatory escalation path test.</div>
+</div>
+</div>
+<div class="convergence-item">
+<div>
+<div class="convergence-q">Question 4</div>
+<div class="convergence-title">Can you prove it?</div>
+<div class="convergence-desc">The SRR dual sign-off and SFL shift-left effectiveness metric answer this. The C-SRR extension confirms the audit evidence repository is populated and the evidence chain is complete before release.</div>
+</div>
+</div>
+</div>
 </section>
 
 <!-- SCOPE PROFILES -->
 <div class="section-scope">
-  <div class="section-scope-inner">
-    <p class="section-label">C-Extension Scope Profiles</p>
-    <h2 class="section-title">Apply Only What Applies.</h2>
-    <p class="section-body">Not every feature triggers the full C-extension stack. Scope profiles determine which extensions activate — so engineering doesn't run a compliance overlay on features that don't need it.</p>
-    <div class="scope-grid">
-      <div class="scope-card">
-        <div class="scope-card-header"><div class="scope-dot" style="background:rgba(255,255,255,0.25);"></div><div class="scope-title">No regulated data</div></div>
-        <div class="scope-extensions">Base SE only</div>
-        <div class="scope-desc">Standard six-phase SE framework. No C-extensions required.</div>
-      </div>
-      <div class="scope-card">
-        <div class="scope-card-header"><div class="scope-dot" style="background:#fde68a;"></div><div class="scope-title">Personal data involved</div></div>
-        <div class="scope-extensions">C-SRD + C-SIC + C-SRR</div>
-        <div class="scope-desc">Data classification, audit log standards, and evidence confirmation at release. Add C-STP if 72-hour breach notification applies.</div>
-      </div>
-      <div class="scope-card">
-        <div class="scope-card-header"><div class="scope-dot" style="background:#fb923c;"></div><div class="scope-title">Financial reporting systems</div></div>
-        <div class="scope-extensions">C-SRD + C-SRR (3-signature)</div>
-        <div class="scope-desc">SOX change management evidence. SRR requires three signatures: engineering lead, support lead, and financial controls owner.</div>
-      </div>
-      <div class="scope-card">
-        <div class="scope-card-header"><div class="scope-dot" style="background:var(--green3);"></div><div class="scope-title">FedRAMP authorization boundary</div></div>
-        <div class="scope-extensions">Full C-stack + evidence package</div>
-        <div class="scope-desc">All six C-extensions active. Evidence package generated at SRR. Regulatory notification log required. Continuous monitoring documentation mandatory.</div>
-      </div>
-    </div>
-  </div>
+<div class="section-scope-inner">
+<p class="section-label">C-Extension Scope Profiles</p>
+<h2 class="section-title">Apply Only What Applies.</h2>
+<p class="section-body">Not every feature triggers the full C-extension stack. Scope profiles determine which extensions activate — so engineering doesn't run a compliance overlay on features that don't need it.</p>
+<div class="scope-grid">
+<div class="scope-card">
+<div class="scope-card-header"><div class="scope-dot" style="background:rgba(255,255,255,0.25);"></div><div class="scope-title">No regulated data</div></div>
+<div class="scope-extensions">Base SE only</div>
+<div class="scope-desc">Standard six-phase SE framework. No C-extensions required.</div>
+</div>
+<div class="scope-card">
+<div class="scope-card-header"><div class="scope-dot" style="background:#fde68a;"></div><div class="scope-title">Personal data involved</div></div>
+<div class="scope-extensions">C-SRD + C-SIC + C-SRR</div>
+<div class="scope-desc">Data classification, audit log standards, and evidence confirmation at release. Add C-STP if 72-hour breach notification applies.</div>
+</div>
+<div class="scope-card">
+<div class="scope-card-header"><div class="scope-dot" style="background:#a78bfa;"></div><div class="scope-title">AI system in scope</div></div>
+<div class="scope-extensions">C-SRD + C-SAR + C-SIC + C-SRR</div>
+<div class="scope-desc">AI impact assessment trigger, data flow mapping for training and inference data, and AIMS readiness confirmation before go-live. Pairs with Vol. 2 for AI-specific failure modes.</div>
+</div>
+<div class="scope-card">
+<div class="scope-card-header"><div class="scope-dot" style="background:#fb923c;"></div><div class="scope-title">Financial reporting systems</div></div>
+<div class="scope-extensions">C-SRD + C-SRR (3-signature)</div>
+<div class="scope-desc">SOX change management evidence. SRR requires three signatures: engineering lead, support lead, and financial controls owner.</div>
+</div>
+<div class="scope-card">
+<div class="scope-card-header"><div class="scope-dot" style="background:var(--green3);"></div><div class="scope-title">FedRAMP authorization boundary</div></div>
+<div class="scope-extensions">Full C-stack + evidence package</div>
+<div class="scope-desc">All six C-extensions active. Evidence package generated at SRR. Regulatory notification log required. Continuous monitoring documentation mandatory.</div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- QUOTE -->
 <section class="section-quote">
-  <p class="big-quote">"The audit question and the support question are the same question. Compliance frameworks don't ask you to prove you can build software. They ask you to prove you know what happens when it breaks."</p>
-  <p class="big-quote-source">— Supportability Engineering, Vol. 5</p>
+<p class="big-quote">"The audit question and the support question are the same question. Compliance frameworks don't ask you to prove you can build software. They ask you to prove you know what happens when it breaks."</p>
+<p class="big-quote-source">— Supportability Engineering, Vol. 5</p>
 </section>
 
 <!-- SERIES CTA -->
 <div class="section-series">
-  <div class="section-series-inner">
-    <div class="series-text">
-      <h3>This completes the series.</h3>
-      <p>Vol. 1 is the foundational framework. Vol. 2 extends it for agentic AI systems. Vol. 3 addresses agentic development. Vol. 4 governs the AI running your support stack. Vol. 5 maps it all to compliance. Get all five together.</p>
-    </div>
-    <a href="index.html" class="btn-series">
-      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-      Get the Full Series
-    </a>
-  </div>
+<div class="section-series-inner">
+<div class="series-text">
+<h3>This completes the series.</h3>
+<p>Vol. 1 is the foundational framework. Vol. 2 extends it for agentic AI systems. Vol. 3 addresses agentic development. Vol. 4 governs the AI running your support stack. Vol. 5 maps it all to compliance. Get all five together.</p>
+</div>
+<a href="index.html" class="btn-series">
+<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+Get the Full Series
+</a>
+</div>
 </div>
 
 <!-- ABOUT -->
 <section class="section-about">
-  <div>
-    <p class="about-label">About the Author</p>
-    <h2 class="about-name">John A. Bowman</h2>
-    <p class="about-title">Supportability Engineering Practitioner</p>
-    <div class="about-contact">
-      <a href="mailto:dooohhead@gmail.com">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        dooohhead@gmail.com
-      </a>
-    </div>
-    <div class="about-tags">
-      <span class="tag">Compliance by Design</span><span class="tag">SOC 2</span>
-      <span class="tag">GDPR</span><span class="tag">FedRAMP</span>
-      <span class="tag">ISO 27001</span><span class="tag">Shift Left</span>
-      <span class="tag">Support Engineering</span>
-    </div>
-  </div>
-  <div class="about-bio">
-    <p>John A. Bowman is a Supportability Engineering practitioner whose work spans support operations, software design, AI governance, and organizational reliability. Vol. 5 extends the series into regulated environments, where compliance and supportability obligations converge on the same question: does your team know what happens when this breaks, and can you prove it?</p>
-    <p>This paper completes the five-volume Supportability Engineering series. It is the entry point for engineering and compliance teams who want to stop running two parallel documentation processes — one for quality and one for audit — and start producing evidence as a byproduct of building correctly.</p>
-    <p>John is available for <strong style="color:rgba(255,255,255,0.85);">consulting engagements</strong>, <strong style="color:rgba(255,255,255,0.85);">staff roles</strong> in support engineering, compliance architecture, or operational readiness, and <strong style="color:rgba(255,255,255,0.85);">advisory work</strong> with regulated organizations building or maturing their SE practice. Reach out directly.</p>
-  </div>
+<div>
+<p class="about-label">About the Author</p>
+<h2 class="about-name">John A. Bowman</h2>
+<p class="about-title">Supportability Engineering Practitioner</p>
+<div class="about-contact">
+<a href="mailto:dooohhead@gmail.com">
+<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+dooohhead@gmail.com
+</a>
+</div>
+<div class="about-tags">
+<span class="tag">Compliance by Design</span><span class="tag">SOC 2</span>
+<span class="tag">GDPR</span><span class="tag">FedRAMP</span>
+<span class="tag">ISO 27001</span><span class="tag">ISO 42001</span>
+<span class="tag">Shift Left</span>
+<span class="tag">Support Engineering</span>
+</div>
+</div>
+<div class="about-bio">
+<p>John A. Bowman is a Supportability Engineering practitioner whose work spans support operations, software design, AI governance, and organizational reliability. Vol. 5 extends the series into regulated environments, where compliance and supportability obligations converge on the same question: does your team know what happens when this breaks, and can you prove it?</p>
+<p>This paper completes the five-volume Supportability Engineering series. It is the entry point for engineering and compliance teams who want to stop running two parallel documentation processes — one for quality and one for audit — and start producing evidence as a byproduct of building correctly.</p>
+<p>John is available for <strong style="color:rgba(255,255,255,0.85);">consulting engagements</strong>, <strong style="color:rgba(255,255,255,0.85);">staff roles</strong> in support engineering, compliance architecture, or operational readiness, and <strong style="color:rgba(255,255,255,0.85);">advisory work</strong> with regulated organizations building or maturing their SE practice. Reach out directly.</p>
+</div>
 </section>
 
 <footer>
-  <p>© 2026 John A. Bowman · Supportability Engineering · Confidential Consulting IP</p>
-  <p>902-489-2429</p>
+<p>© 2026 John A. Bowman · Supportability Engineering · Confidential Consulting IP</p>
+<p>902-489-2429</p>
 </footer>
 
 <script>
 document.getElementById('lead-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const data = {
-    firstName: document.getElementById('fname').value.trim(),
-    lastName: document.getElementById('lname').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    company: document.getElementById('company').value.trim(),
-    role: document.getElementById('role').value,
-    volume: 'Vol. 5 — Compliance by Design',
-    timestamp: new Date().toISOString()
-  };
-  if (!data.firstName || !data.email) { document.getElementById('fname').focus(); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { document.getElementById('email').focus(); return; }
-  fetch('https://formspree.io/f/xnjlwnyk', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
-  document.getElementById('form-content').style.display = 'none';
-  const s = document.getElementById('success-state');
-  s.style.display = 'block';
-  s.style.animation = 'fadeUp 0.5s ease forwards';
+e.preventDefault();
+const data = {
+firstName: document.getElementById('fname').value.trim(),
+lastName: document.getElementById('lname').value.trim(),
+email: document.getElementById('email').value.trim(),
+company: document.getElementById('company').value.trim(),
+role: document.getElementById('role').value,
+volume: 'Vol. 5 — Compliance by Design',
+timestamp: new Date().toISOString()
+};
+if (!data.firstName || !data.email) { document.getElementById('fname').focus(); return; }
+if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { document.getElementById('email').focus(); return; }
+fetch('https://formspree.io/f/xnjlwnyk', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+document.getElementById('form-content').style.display = 'none';
+const s = document.getElementById('success-state');
+s.style.display = 'block';
+s.style.animation = 'fadeUp 0.5s ease forwards';
 });
 </script>
 </body>
