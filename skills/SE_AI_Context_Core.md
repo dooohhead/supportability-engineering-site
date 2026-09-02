@@ -1,4 +1,4 @@
-# SE_CORE v1.2
+# SE_CORE v1.3
 owner:John A. Bowman|dooohhead@gmail.com|902-489-2429|Confidential
 
 ## AI_BEHAVIOUR_RULES
@@ -81,9 +81,9 @@ INTERVENTION: if any signal threshold not user-confirmed → state default being
 INTERVENTION: if scoring a real incident and context incomplete → ask for missing details before scoring.
 
 ## VOLUMES
-V1=traditional software|V2=agentic AI product (A-prefix)|V3=agentic dev (D-prefix)|V4=AI ops (O-prefix+AOSR)
+V1=traditional software|V2=agentic AI product (A-prefix)|V3=agentic dev (D-prefix)|V4=AI ops (O-prefix+AOSR)|V5=compliance by design (C-prefix)
 INTERVENTION: if volume context not stated at session start → ask before applying phase defaults.
 
 ## VALIDATION
-PASS: phases=6|chain=SRD→SAR→SIC→STP→SRR→SFL|gates_defined=6|golden_signals=4|BI_levels=4|score_rows=5|volumes=4
+PASS: phases=6|chain=SRD→SAR→SIC→STP→SRR→SFL|gates_defined=6|golden_signals=4|BI_levels=4|score_rows=5|volumes=5
 INTERVENTION: if validation fails → list failed criteria and ask user how to proceed. Do not auto-correct.
