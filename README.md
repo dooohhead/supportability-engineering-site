@@ -100,6 +100,8 @@ Maps the full SE framework to six major compliance standards: SOC 2, ISO 27001, 
   SE_Phase_Defaults_SIC.md
   SE_Phase_Defaults_SRD.md
   SE_Phase_Defaults_STP_SRR_SFL.md
+  SE_Phase_Defaults_B-SFL.md                                Brownfield/retrofit entry, canonical Root Category Analysis mapping
+  SE_Review_Assessment.md                                   Audit-mode layer for live Supportability Review engagements (client-facing)
 ```
 
 ---

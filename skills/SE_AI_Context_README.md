@@ -1,4 +1,4 @@
-# SE_AI_CONTEXT_USAGE v1.2
+# SE_AI_CONTEXT_USAGE v1.3
 
 ## FILES
 |File|Purpose|Include When|
@@ -8,11 +8,14 @@
 |SE_Phase_Defaults_SAR.md|Phase 2 defaults+interventions+validation|Architecture review|
 |SE_Phase_Defaults_SIC.md|Phase 3 defaults+interventions+validation|Build/PR review|
 |SE_Phase_Defaults_STP_SRR_SFL.md|Phases 4/5/6 defaults+interventions+validation|Test/release/operate work|
+|SE_Phase_Defaults_B-SFL.md|Brownfield entry defaults+scoring+canonical Root Category Analysis mapping|Existing system with no signed upstream chain|
+|SE_Review_Assessment.md|Audit-mode override (log-and-continue) + client-facing report structure|Conducting a live Supportability Review engagement|
 
 ## USAGE_PATTERNS
 Full session: Core.md + relevant phase defaults file
 Single phase: Core.md + that phase file only
 Quick ref: Core.md only
+Brownfield/review engagement: Core.md + SE_Review_Assessment.md + SE_Phase_Defaults_B-SFL.md
 
 ## HOW_AI_USES_THESE_FILES
 1. Parses tables as structured lookup data, not prose.
@@ -21,11 +24,13 @@ Quick ref: Core.md only
 4. VALIDATION block checked at phase completion — AI lists failures and asks for resolution, never auto-corrects.
 5. AI_BEHAVIOUR_RULES in Core apply globally across all phases.
 6. INTERVENTION_FORMAT is the standard output format when a trigger fires — specific, not generic.
+7. Exception: SE_Review_Assessment.md overrides rule 3 with a log-and-continue behavior for live client engagements. See that file's OPERATING_MODE_OVERRIDE section before applying standard intervention rules in a review context.
 
 ## INTERVENTION_BEHAVIOUR
 When a trigger fires, AI outputs: "STOP — [specific question]. Please answer before I continue."
 AI does not guess. AI does not proceed. AI waits for user input.
 This applies to: missing fields|ambiguous inputs|unnamed roles|unconfirmed defaults|framework rule conflicts.
+Does not apply in review-engagement mode. See SE_Review_Assessment.md.
 
 ## OVERRIDE_SYNTAX
 Tell AI: "Override [field] with [value]"
