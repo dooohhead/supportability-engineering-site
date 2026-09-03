@@ -1,6 +1,6 @@
 # SE_DEFAULTS_B-SFL v1.1
 phase:B (brownfield entry)|deliverable:B-SFL|gate:No signed upstream chain found→B-SFL required before next SRD opens
-changelog:v1.1 (2026-09-02) — absence-of-evidence resolved to unscored/flagged, not scored 1. See SE_Review_Assessment.md v1.1.
+changelog:v1.1 (2026-09-02) — absence-of-evidence resolved to unscored/flagged, not scored 1. Unscored phases now auto-escalate to High priority gap per UNSCORED_PHASE_ESCALATION, except SFL-equiv (no direct entry-phase mapping, does not block entry). See SE_Review_Assessment.md v1.1.
 
 ## PURPOSE
 Brownfield extension of SFL. Same scoring rubric, same gap log, same backlog output as standard SFL. Different trigger: not a closed incident, but a system with no signed SRD/SAR/SIC/STP/SRR on file. Produces a current-state maturity score per phase and a prescribed entry point for the next development cycle. This is the deliverable for a Supportability Review engagement.
@@ -52,7 +52,7 @@ INTERVENTION: if neither incident history nor current-state evidence is availabl
 Same structure as standard SFL gap log.
 |Priority|Criteria|Resolution Target|
 |---|---|---|
-|H|No detection or diagnosis path exists for a customer-facing failure mode|Immediate, precedes next release|
+|H|No detection or diagnosis path exists for a customer-facing failure mode, or a phase-equivalent is left unscored due to zero evidence found (see UNSCORED_PHASE_ESCALATION)|Immediate, precedes next release|
 |M|Detection exists but diagnosis requires engineering escalation every time|Within next full SE cycle|
 |L|Cosmetic or low-frequency gap|Quarterly review once SFL is running|
 Rule: every gap logged becomes a backlog item, same as standard SFL.
@@ -69,6 +69,17 @@ Canonical source for this mapping as of 2026-09-01. Templates §6.5 Incident Roo
 |Support not trained on system behavior|SRR|
 |Escalation path incorrect or slow|SRD or SRR|
 INTERVENTION: if a gap does not map cleanly to one of these categories → ask: "This gap does not match a known root category. Describe it precisely so it can be classified before a phase recommendation is issued."
+
+## UNSCORED_PHASE_ESCALATION
+A phase-equivalent left unscored per CURRENT_STATE_INDICATORS (zero evidence found) is automatically logged as a High priority gap. Root category is the phase's own deliverable, no manual classification needed, the absence of evidence is the classification.
+|Unscored Phase|Root Category|Recommended Entry Phase|
+|---|---|---|
+|SRD equiv.|Failure mode not anticipated/documented|SRD|
+|SAR equiv.|Architecture blind spot|SAR|
+|SIC equiv.|Logging/observability gap|SIC or SAR|
+|STP equiv.|Missing or inaccurate runbook|STP|
+|SRR equiv.|Support not trained on system behavior|SRR|
+|SFL equiv.|No direct mapping, SFL is the last phase in the chain. Log as High priority finding and state explicitly in the report: "No evidence of a feedback loop from incidents to backlog. This does not block phase entry but should be established once the recommended entry phase is complete."|N/A, see note|
 
 ## ENTRY_RECOMMENDATION_LOGIC
 1. Score all 6 phase-equivalents using CURRENT_STATE_INDICATORS and available incident history.
