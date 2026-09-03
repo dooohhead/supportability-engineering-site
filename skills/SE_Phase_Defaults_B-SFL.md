@@ -1,5 +1,6 @@
-# SE_DEFAULTS_B-SFL v1.0
+# SE_DEFAULTS_B-SFL v1.1
 phase:B (brownfield entry)|deliverable:B-SFL|gate:No signed upstream chain found→B-SFL required before next SRD opens
+changelog:v1.1 (2026-09-02) — absence-of-evidence resolved to unscored/flagged, not scored 1. See SE_Review_Assessment.md v1.1.
 
 ## PURPOSE
 Brownfield extension of SFL. Same scoring rubric, same gap log, same backlog output as standard SFL. Different trigger: not a closed incident, but a system with no signed SRD/SAR/SIC/STP/SRR on file. Produces a current-state maturity score per phase and a prescribed entry point for the next development cycle. This is the deliverable for a Supportability Review engagement.
@@ -23,10 +24,10 @@ Stop and ask whenever:
 INTERVENTION_FORMAT: "STOP — [specific phase/component] cannot be scored without evidence: [specific question]. Please provide or confirm before I continue."
 
 ## CURRENT_STATE_INDICATORS
-Evidence-based signals used to score each phase's current maturity. Absence of evidence scores the phase at 1, not a default assumption of partial credit.
+Evidence-based signals used to score each phase's current maturity. Absence of evidence leaves the phase unscored and flagged for follow-up, not a numeric score and not a default assumption of partial credit.
 |Phase|Evidence Sought|Absence Signal|
 |---|---|---|
-|SRD equiv.|Any documented failure mode inventory or requirements doc|None found→score 1|
+|SRD equiv.|Any documented failure mode inventory or requirements doc|None found→unscored, flagged for follow-up|
 |SAR equiv.|Architecture diagram with observability annotations|Diagram exists but unannotated→score 2|
 |SIC equiv.|Structured logging, correlation IDs, golden signals present in code/logs|Logs exist but unstructured/no correlation ID→score 2|
 |STP equiv.|Evidence of tested runbooks or rehearsed incident response|Runbook exists, never walked through by non-author→score 2|

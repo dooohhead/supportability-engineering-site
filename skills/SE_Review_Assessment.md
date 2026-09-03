@@ -1,5 +1,6 @@
-# SE_REVIEW_ASSESSMENT v1.0
+# SE_REVIEW_ASSESSMENT v1.1
 purpose:audit-mode operating layer for live Supportability Review engagements|invokes:B-SFL scoring+gap logic|produces:client-facing Supportability Review Report
+changelog:v1.1 (2026-09-02) — Required field missing row aligned to unscored/flagged, matching B-SFL v1.1. Resolves prior score-1-vs-unscored conflict.
 
 ## PURPOSE
 Build-mode files (SRD/SAR/SIC/STP/SRR/SFL/B-SFL) assume the AI is producing an internal working document and can stop indefinitely until every field is confirmed. That behavior is correct for document creation and wrong for a live client conversation. This file overrides the intervention discipline for the duration of a review engagement, replaces blocking with logging, and defines the report structure the engagement produces.
@@ -21,7 +22,7 @@ Exception: CRITICAL_GAP_ESCALATION items below still stop the review immediately
 Applies across all B-SFL and phase-scoring activity conducted in review mode:
 |Build-Mode Trigger|Review-Mode Behavior|
 |---|---|
-|Required field missing|Log as finding: "Not provided during review, scored 1 by default per CURRENT_STATE_INDICATORS"|
+|Required field missing|Log as finding: "Not provided during review, left unscored per CURRENT_STATE_INDICATORS, flagged for follow-up"|
 |Evidence not available for a phase|Log as finding: "No evidence available, phase unscored, flagged for follow-up"|
 |Signatory unnamed|Log as finding: "No named owner confirmed for [role/criterion]"|
 |Gap does not map to a known root category|Log as finding under Uncategorized, ask one clarifying question, do not block the rest of the review on the answer|
