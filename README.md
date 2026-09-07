@@ -12,7 +12,7 @@ The core principle is simple: **the cost of fixing a supportability gap grows ex
 
 A missing correlation ID caught at design review is a one-hour conversation. The same gap caught in production means every incident involving that service takes three times longer to diagnose than it should, indefinitely, until someone has time to fix it. Which they never do, because they are too busy investigating incidents.
 
-This repository contains the complete Supportability Engineering framework: the white papers that make the case, the templates that operationalize it, and the baseline standards kit that lets any team start immediately.
+This repository contains the complete Supportability Engineering framework: the white papers that make the case, the templates that operationalize it, the baseline standards kit that lets any team start immediately, and the Supportability Review agent for auditing brownfield systems that don't have it yet.
 
 ---
 
@@ -24,14 +24,14 @@ Six phases. One connected system. Every gap caught early saves the cost of catch
 SRD → SAR → SIC → STP → SRR → SFL → SRD (next cycle)
 ```
 
-| Phase | Deliverable | Purpose |
-|---|---|---|
-| 1 — Requirements | **SRD** — Supportability Requirements Document | Captures failure modes, observability requirements, and customer impact classification before design begins. Support signs off before a line of code is scoped. |
-| 2 — Design | **SAR** — Supportability Architecture Review | Maps every failure point and blind spot in the architecture before build begins. Every gap gets a priority and a plan. |
-| 3 — Build | **SIC** — Supportability Implementation Checklist | Attaches to every PR. Logging, error handling, four golden signals, failure mode tests. Cannot merge without sign-off. |
-| 4 — Test | **STP** — Supportability Test Plan | Validates that a support engineer can diagnose every failure mode independently before any feature ships. |
-| 5 — Release | **SRR** — Support Readiness Review | The final gate. Support lead and engineering lead both sign. Release does not proceed without both. |
-| 6 — Operate | **SFL** — Supportability Feedback Loop | Converts every incident into an upstream improvement. Closes the loop back into the next SRD cycle. |
+| Phase            | Deliverable                                       | Purpose                                                                                                                                                         |
+| ---------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 — Requirements | **SRD** — Supportability Requirements Document    | Captures failure modes, observability requirements, and customer impact classification before design begins. Support signs off before a line of code is scoped. |
+| 2 — Design       | **SAR** — Supportability Architecture Review      | Maps every failure point and blind spot in the architecture before build begins. Every gap gets a priority and a plan.                                          |
+| 3 — Build        | **SIC** — Supportability Implementation Checklist | Attaches to every PR. Logging, error handling, four golden signals, failure mode tests. Cannot merge without sign-off.                                          |
+| 4 — Test         | **STP** — Supportability Test Plan                | Validates that a support engineer can diagnose every failure mode independently before any feature ships.                                                       |
+| 5 — Release      | **SRR** — Support Readiness Review                | The final gate. Support lead and engineering lead both sign. Release does not proceed without both.                                                             |
+| 6 — Operate      | **SFL** — Supportability Feedback Loop            | Converts every incident into an upstream improvement. Closes the loop back into the next SRD cycle.                                                             |
 
 ---
 
@@ -58,6 +58,17 @@ The AIOps extension. Covers seven operational categories for AI systems that run
 ### Vol. 5 — Compliance by Design
 
 Maps the full SE framework to six major compliance standards: SOC 2, ISO 27001, ISO 42001, GDPR, SOX, and FedRAMP, and shows how SE deliverables function as audit evidence rather than retrospective documentation. The C- prefix extension layer adds the compliance-specific vocabulary that bridges SE language to audit language.
+
+---
+
+## The Supportability Review Agent
+
+A live-engagement audit tool for brownfield systems, systems already in production with no signed SE upstream chain. Where the six-phase framework builds supportability in before a system exists, the Supportability Review evaluates an existing system against the same standard using a brownfield-adapted scoring model (Brownfield SFL), and produces a maturity scorecard, prioritized findings, and a phase-entry recommendation. Positioned as a lower-commitment engagement ahead of a full framework adoption, and usable in a live client session.
+
+Core files, in `/skills`:
+
+- `SE_Review_Assessment.md` — audit-mode session rules for live client engagements, including the review halt condition for active security exposure, live compliance violation, or undisclosed customer harm
+- `SE_Phase_Defaults_B-SFL.md` — the Brownfield SFL scoring engine and entry-phase logic
 
 ---
 
@@ -95,13 +106,13 @@ Maps the full SE framework to six major compliance standards: SOC 2, ISO 27001, 
 
 /skills
   SE_AI_Context_README.md                                   Start here
-  SE_AI_Context_Core.md
+  SE_AI_Context_Core.md                                      Build-mode rulebook for async document creation
   SE_Phase_Defaults_SAR.md
   SE_Phase_Defaults_SIC.md
   SE_Phase_Defaults_SRD.md
   SE_Phase_Defaults_STP_SRR_SFL.md
-  SE_Phase_Defaults_B-SFL.md                                Brownfield/retrofit entry, canonical Root Category Analysis mapping
-  SE_Review_Assessment.md                                   Audit-mode layer for live Supportability Review engagements (client-facing)
+  SE_Review_Assessment.md                                    Audit-mode rules for live Supportability Review engagements
+  SE_Phase_Defaults_B-SFL.md                                 Brownfield SFL scoring engine and entry-phase logic
 ```
 
 ---
@@ -118,6 +129,8 @@ Maps the full SE framework to six major compliance standards: SOC 2, ISO 27001, 
 
 **If you operate in a regulated industry:** Read Vol. 5 to see which compliance frameworks apply to your features and which C- prefix extensions activate as a result. Then use the compliance-extended Baseline Kit (Doc 1-4, C- variants) if you need to start fast rather than adopt the full framework immediately.
 
+**If you have an existing production system with no supportability framework applied:** Use the Supportability Review agent (`/skills/SE_Review_Assessment.md`) to audit it and get a phase-entry recommendation before committing to a full engagement.
+
 **If you want the full picture:** Read all five volumes in order. They build on each other. Vol. 3 only makes full sense after Vol. 1 and 2, and Vol. 5 draws on terminology introduced in every prior volume.
 
 ---
@@ -126,12 +139,12 @@ Maps the full SE framework to six major compliance standards: SOC 2, ISO 27001, 
 
 The fastest path to value. Documents that give any team with existing engineering standards everything they need to apply those standards to agent-generated code, without adopting the full framework first. A compliance-extended variant of each document is available for regulated environments.
 
-| Document | What It Is | Setup Time |
-|---|---|---|
-| **Doc 1 — Context Document** | Pre-populated logging schema, error handling standard, observability requirements, sensitive data exclusion list, and dependency handling patterns. Inject into every agent session. | 2-4 hours (review + complete Section 7 with your org-specific fields) |
-| **Doc 2 — Gate Configuration Spec** | Three CI/CD pipeline gates with complete GitHub Actions and GitLab CI YAML. Sensitive data scan, correlation ID propagation check, dependency registry check. | 1-2 hours (add to pipeline) |
-| **Doc 3 — PR Template Addition** | Five-question review section for agent-generated PRs. Copy into your existing PR template. | 15 minutes |
-| **Doc 4 — Feature Specification** | Per-feature delta form capturing what the Context Document can't know: feature-specific failure modes, new dependencies, customer impact, and the context block addition for agent sessions. | 15 minutes per feature |
+| Document                            | What It Is                                                                                                                                                                                   | Setup Time                                                            |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| **Doc 1 — Context Document**        | Pre-populated logging schema, error handling standard, observability requirements, sensitive data exclusion list, and dependency handling patterns. Inject into every agent session.         | 2-4 hours (review + complete Section 7 with your org-specific fields) |
+| **Doc 2 — Gate Configuration Spec** | Three CI/CD pipeline gates with complete GitHub Actions and GitLab CI YAML. Sensitive data scan, correlation ID propagation check, dependency registry check.                                | 1-2 hours (add to pipeline)                                           |
+| **Doc 3 — PR Template Addition**    | Five-question review section for agent-generated PRs. Copy into your existing PR template.                                                                                                   | 15 minutes                                                            |
+| **Doc 4 — Feature Specification**   | Per-feature delta form capturing what the Context Document can't know: feature-specific failure modes, new dependencies, customer impact, and the context block addition for agent sessions. | 15 minutes per feature                                                |
 
 **Compliance-extended variants (C- prefix, Doc 1-4):** Same four-document structure, extended with data classification, DPIA trigger assessment, regulated-data-in-logs checks, and audit evidence packaging. Use these instead of the base four when the feature is in scope of SOC 2, ISO 27001, ISO 42001, GDPR, SOX, or FedRAMP.
 
@@ -141,12 +154,12 @@ The fastest path to value. Documents that give any team with existing engineerin
 
 ## The Maturity Ladder
 
-| Stage | What You Have | What You Need |
-|---|---|---|
-| **Starting out** | Nothing | Download the Baseline Kit. Use it as-is. |
-| **Using the baseline** | Generic industry standards | Customize Doc 1 Section 7 with your organization's specific fields and dependencies. |
-| **Customized** | Your standards in agent context | Add the full Vol. 1 template cycle for new features. Establish the SFL feedback loop. |
-| **Mature** | Full framework running | Advisory: keep the framework current as tooling and your codebase evolve. |
+| Stage                  | What You Have                   | What You Need                                                                         |
+| ----------------------- | --------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Starting out**       | Nothing                         | Download the Baseline Kit. Use it as-is.                                              |
+| **Using the baseline** | Generic industry standards      | Customize Doc 1 Section 7 with your organization's specific fields and dependencies.  |
+| **Customized**         | Your standards in agent context | Add the full Vol. 1 template cycle for new features. Establish the SFL feedback loop. |
+| **Mature**             | Full framework running          | Advisory: keep the framework current as tooling and your codebase evolve.             |
 
 The baseline is not a watered-down version of the framework. It is the entry point that makes the framework accessible to any team, regardless of where they are today.
 
@@ -154,14 +167,14 @@ The baseline is not a watered-down version of the framework. It is the entry poi
 
 ## The Business Case in One Table
 
-| Where Gap Is Found | Cost to Fix |
-|---|---|
-| Requirements | Minutes to hours |
-| Design | Hours |
-| Build | Hours to days |
-| Test | Days |
-| Release | Days to weeks |
-| **Production** | **Weeks to months, per incident, forever** |
+| Where Gap Is Found | Cost to Fix                                |
+| -------------------- | --------------------------------------------- |
+| Requirements        | Minutes to hours                           |
+| Design              | Hours                                      |
+| Build                | Hours to days                              |
+| Test                 | Days                                       |
+| Release              | Days to weeks                              |
+| **Production**       | **Weeks to months, per incident, forever** |
 
 A single avoided major incident typically pays for a full cycle of Supportability Engineering investment. The framework pays for itself and generates evidence that it does: the SFL Shift Left Effectiveness Metric tracks the percentage of incidents that were preventable by upstream framework action, in dollars and hours.
 
@@ -171,13 +184,13 @@ A single avoided major incident typically pays for a full cycle of Supportabilit
 
 Each template set uses a prefix to distinguish framework layer:
 
-| Prefix | Template Set | Applies To |
-|---|---|---|
-| *(none)* | Vol. 1 original templates | All software, traditional development |
-| `A-` | Vol. 2 agentic system templates | Systems where the **product** is an agentic AI workflow |
-| `D-` | Vol. 3 agentic development templates | Systems where the **builder** is an agentic development tool |
-| `O-` | Vol. 4 AI operations templates | Systems where an **AI tool operates your support stack** (AIOps, autonomous incident response) |
-| `C-` | Vol. 5 compliance extension templates | Features in scope of a regulated compliance framework: SOC 2, ISO 27001, ISO 42001, GDPR, SOX, FedRAMP |
+| Prefix   | Template Set                          | Applies To                                                                                             |
+| -------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| *(none)* | Vol. 1 original templates             | All software, traditional development                                                                  |
+| `A-`     | Vol. 2 agentic system templates       | Systems where the **product** is an agentic AI workflow                                                |
+| `D-`     | Vol. 3 agentic development templates  | Systems where the **builder** is an agentic development tool                                           |
+| `O-`     | Vol. 4 AI operations templates        | Systems where an **AI tool operates your support stack** (AIOps, autonomous incident response)         |
+| `C-`     | Vol. 5 compliance extension templates | Features in scope of a regulated compliance framework: SOC 2, ISO 27001, ISO 42001, GDPR, SOX, FedRAMP |
 
 Templates can be combined. A team building an agentic AI product using agentic development tools in a regulated environment uses the base set plus A-, D-, and C- simultaneously.
 
@@ -185,10 +198,9 @@ Templates can be combined. A team building an agentic AI product using agentic d
 
 ## About
 
-**John A. Bowman**
-Supportability Engineering Practitioner
+**John A. Bowman** Supportability Engineering Practitioner
 
-dooohhead@gmail.com · 902-489-2429
+<dooohhead@gmail.com> · 902-489-2429
 
 Available for consulting engagements, staff roles in support engineering, operational readiness, or AI governance, and advisory work with teams building or maturing their supportability practice, for traditional software, agentic AI products, agentic development workflows, AI operations, or regulated environments.
 
