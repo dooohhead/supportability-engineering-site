@@ -88,8 +88,8 @@ Core files, in `/skills`:
   SE_AgenticSystems_Templates.docx                          Vol. 2 — Agentic system extensions (A-SRD through A-SFL)
   SE_AgenticDev_Templates.docx                              Vol. 3 — Agentic development extensions (D-SRD through D-SFL)
   SE_AIOperations_Templates.docx                            Vol. 4 — Governance for AI systems operating your support stack (O-SRD through O-SFL, AOSR)
-  SE_Compliance_Templates.docx                              Vol. 5 — Base compliance requirements templates
-  SE_Compliance_C_Templates.docx                            Vol. 5 — C- prefix compliance extension templates
+  SE_Compliance_Templates.docx                              Vol. 5: Detailed C- working pack (scope worksheet, HIPAA and EU AI Act items, evidence chain map)
+  SE_Compliance_C_Templates.docx                            Vol. 5: C- templates aligned to whitepaper v2.1 (six frameworks including ISO 42001, awareness start event, evidence states, review control test, rehearsal log)
 
 /starter
   SE_Baseline_1_ContextDocument.docx                        Pre-populated agent injection standard, use immediately
@@ -127,7 +127,7 @@ Core files, in `/skills`:
 
 **If you are running AIOps or autonomous incident response tools:** Read Vol. 4. AOSR is the gate that confirms those tools can be trusted with the support stack they're operating.
 
-**If you operate in a regulated industry:** Read Vol. 5 to see which compliance frameworks apply to your features and which C- prefix extensions activate as a result. Then use the compliance-extended Baseline Kit (Doc 1-4, C- variants) if you need to start fast rather than adopt the full framework immediately.
+**If you operate in a regulated industry:** Read Vol. 5 to see which compliance frameworks apply to your features and which C- prefix extensions activate as a result. Then use the compliance-extended Baseline Kit (Doc 1-4, C- variants) if you need to start fast rather than adopt the full framework immediately. Start with the scope worksheet in SE_Compliance_Templates.docx to see which C- extensions apply, then use SE_Compliance_C_Templates.docx for the Vol. 5 v2.1 templates. Where the two differ, the C pack and Vol. 5 govern.
 
 **If you have an existing production system with no supportability framework applied:** Use the Supportability Review agent (`/skills/SE_Review_Assessment.md`) to audit it and get a phase-entry recommendation before committing to a full engagement.
 
